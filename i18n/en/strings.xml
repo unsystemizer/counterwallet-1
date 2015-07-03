@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="language">en</string>
+	
+	<string name="appname">CounterWallet</string>
+	<string name="label_about">About</string>
+	
+	<string name="label_holdAssets">Asset Balance</string>
+	<string name="label_ownAssets">Assests Created</string>
+	<string name="label_qrcode">Show QR Code</string>
+	<string name="label_histories">Transaction History</string>
+	<string name="label_createtoken">Create a Token</string>
+	<string name="label_tokenname">Choose Your Token Name</string>
+	<string name="label_numeric">Free Token</string>
+	<string name="label_description">Description</string>
+	<string name="label_quantity_issue">Quantity</string>
+	<string name="label_quantity_order">Amount to Order</string>
+	<string name="label_quantity_send">Amount to Send</string>
+	<string name="label_cancel">Cancel</string>
+	<string name="label_ok">OK</string>
+	<string name="label_hinttext_password">Password(at least 6 letters)</string>
+	<string name="label_password">Password</string>
+	<string name="label_passphrase">12 word passphrase</string>
+	<string name="label_send">Send</string>
+	<string name="label_showinfo">Asset Info</string>
+	<string name="label_order">Order</string>
+	<string name="label_price">Price</string>
+	<string name="label_buy">Buy</string>
+	<string name="label_sell">Sell</string>
+	<string name="label_noprice">No Price</string>
+	<string name="label_confirm">Confirm</string>
+	<string name="label_close">Close</string>
+	<string name="label_login">Login</string>
+	<string name="label_bitcoinaddress">Your Bitcoin Address</string>
+	<string name="label_destination">Receipient</string>
+	<string name="label_fee">Miner's fee</string>
+	<string name="label_create">Create</string>
+	<string name="label_back">Go Back</string>
+	<string name="label_delete">Erase</string>
+	<string name="text_reconfirm">Input Again for Confirmation</string>
+	<string name="label_done">Done</string>
+	<string name="label_search">Search</string>
+	
+	<string name="text_createnewwallet">Create a New Wallet</string>
+	<string name="text_createToken">Create a Token</string>
+	<string name="text_confirmIssuance">Issue{quantity}units of {token}</string>
+	
+	<string name="text_confirmorder"> Confirm Order</string>
+	<string name="text_confirmsend">Confirm Send</string>
+	
+	<string name="text_issuance_done">Created {asset}</string>
+	<string name="text_orderd">Placed an Order</string>
+	<string name="text_sent">Sent</string>
+	
+	<string name="text_doissuance">Issue</string>
+	<string name="text_dosend">Send</string>
+	
+	<string name="text_makedivisible">Make Divisible</string>
+	<string name="text_hold">You Own {balance}Units of {asset}</string>
+	<string name="text_totalcost">{asset}の合計 {amount}</string>
+	<string name="text_comfirmorder">Place a {type} Order for {quantity}{main_asset} with {price}{price_asset}</string>
+	<string name="text_necessarycost">You need {total} {price_asset}</string>
+	<string name="text_canget"> With order matched, you get {total}{price_asset}</string>
+	<string name="text_createnewwallet">Create New Wallet</string>
+	<string name="text_loginasuser">Already have an account?</string>
+	<string name="text_descript_password">DO NOT forget your password</string>
+	<string name="text_newcommer">For the first time user</string>
+	<string name="text_copied">Copied</string>
+	<string name="text_copied_message">Address copied on clipboard</string>
+	<string name="text_use_line">Send thru Line</string>
+	<string name="text_use_mail">Email your Bitcoin address</string>
+	
+	<string name="label_issueadditional">Issue extra</string>
+	<string name="label_transferownership">Transfer the ownership</string>
+	<string name="label_locktoken">Lock</string>
+	<string name="label_changedescription">Change the description</string>
+	<string name="label_noorders">No orders</string>
+	<string name="text_holdcount">{count}people own this asset</string>
+	<string name="label_holders">Assetholders</string>
+	
+	<string name="text_history_order">Sold {give_quantity} {give_asset} for {get_quantity} {get_asset}</string>
+	<string name="text_history_send">Sent {quantity}{asset} to {target}</string>
+	<string name="text_history_receive">Received {quantity}{asset} from {target}</string>
+	<string name="text_history_issuance">Issued {quantity} {asset}</string>
+	<string name="text_history_dividend">Issued {quantity_per_unit}% {dividend_asset} dividends to{asset} holders</string>
+	<string name="text_history_get_dividend">Received {quantity_per_unit}% {dividend_asset} dividends for {asset} holders</string>
+	
+	<string name="label_easypass">Quick Passcode</string>
+	<string name="text_easypass"> Do you want to set up a 4 digit passcode for easier access</string>
+	<string name="label_fingerprint">Touch ID</string>
+	<string name="text_fingerprint">Do you want to set up Touch ID for easier access</string>
+	<string name="label_adminerror">Authentication error</string>
+	<string name="text_adminerror">Authentication failed</string>
+	<string name="label_privecypolicy">Privacy Policy & Terms of Service</string>
+	<string name="label_privecypolicy2"> Agree and press Create New</string>
+	<string name="text_withmessage">Message attached</string>
+	<string name="text_unreadable">Could not recognize a valid address</string>
+	<string name="text_noregisted"> Not registered</string>
+	<string name="label_rename">Change name</string>
+	<string name="text_rename">You can change your account name</string>
+	<string name="text_desc_fingerprint">You will be able to send tokens and more with your fingerprint</string>
+	<string name="text_desc_easypass">You will be able to send tokens and more with 4 digit PIN</string>
+	<string name="text_identifier">ID that identifies your wallet</string>
+	<string name="label_copy">Copy</string>
+	<string name="label_copied">Copied</string>
+	<string name="text_copied">Paste anywehere you want!</string>
+	<string name="text_inputverify_number">Input {name}with numbers</string>
+	<string name="text_inputverify_equal">{name} doesn't match</string>
+	<string name="text_inputverify_empty">Enter {name}</string>
+	<string name="text_inputverify_more">{name} requires more than {over} letters</string>
+	<string name="text_inputverify_shouldvalue">{name} is invalid</string>
+	<string name="text_inputpass">Enter your password</string>
+	<string name="text_wrongpass">Wrong password</string>
+	<string name="text_pleasefingerprint"> Require Touch ID to continue</string>
+	<string name="text_initialize">Initializing...</string>
+	
+	<string name="label_reload">Reloading</string>
+	
+	<string name="label_passphrase">Passphrase</string>
+	<string name="text_passphrase">Please record the following.\n"{passphrase}"</string>
+	
+	<string name="label_passphrase_ok">Recorded!</string>
+	<string name="text_passphrase_re">This is really important. Are you sure you recorded the passphrase?</string>
+	<string name="label_passphrase_re"> Look again</string>
+	<string name="label_passphrase_continue">I recorded for sure</string>
+	
+	<string name="label_historytype_send">Send</string>
+	<string name="label_historytype_receive">Receive</string>
+	<string name="label_historytype_order">Order</string>
+	<string name="label_historytype_issuance">Issue</string>
+	<string name="label_historytype_dividend">Dividend issue</string>
+	<string name="label_historytype_get_dividend">Dividend receive</string>
+	<string name="label_historytype_"></string>
+	
+	<string name="lebal_orderhistory">Order History</string>
+	<string name="label_order_price">Price</string>
+	<string name="label_order_num">Quantity</string>
+	<string name="label_order_status">Status</string>
+	<string name="label_order_status_open"> Pending</string>
+	<string name="label_order_status_filled">Complete</string>
+	<string name="label_order_status_expired">Incomplete</string>
+	<string name="label_order_status_canceled">Cancel</string>
+	<string name="label_hinttext_password_confirm"> Confirm password</string>
+	<string name="text_nohistory"> No history</string>
+	<string name="text_history_error">Could not retrieve history</string>
+	
+	<string name="warning_insufficientfunds">Are you sure you have sufficient fund?</string>
+	<string name="text_assetinfo_error"> The asset might not exist or yet to be confirmed</string>
+	<string name="text_sendconfirmation">Send \n {amount} to {address}</string>
+	<string name="label_issue_supply">Total supply {supply}</string>
+	<string name="label_issue_balance">Balance {balance}</string>
+	
+	<string name="label_exchange">Exchange</string>
+	<string name="label_dividend">Dividend</string>
+	
+	<string name="label_dividend_token">Token Name</string>
+	<string name="text_dividend_description">Pay a distribution to holders of {asset}</string>
+	<string name="label_dodividend">Pay distribution</string>
+	
+	<string name="text_dividendconfirmation">Pay｛perunit｝% dividends of {token} to assetholders.</string>
+	<string name="text_dividend">Done.</string>
+	
+	<string name="text_imageupload">Asset Image</string>
+	<string name="label_website">Website</string>
+	<string name="label_pgpsig">pgp signature</string>
+	
+	<string name="text_passphrase_q">Show the passphrase?</string>
+	<string name="label_show">Show!</string>
+	<string name="label_reissue">Issue more units</string>
+	<string name="text_reissue">How many units to issue?</string>
+	<string name="text_reissued">Issued</string>
+	<string name="label_lock">Lock</string>
+	<string name="text_lock">Are you sure you want to lock the supply of this asset? You need 0.0001BTC to lock it.</string>
+	<string name="text_locked">Locked</string>
+	<string name="label_edit">Edit</string> 
+	<string name="text_doedit">Done</string>
+	
+	<string name="text_webfailed">Failed to read...</string>
+	
+</resources>

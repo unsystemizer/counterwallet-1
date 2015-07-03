@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+    <id>inc.lireneosoft.counterparty</id>
+    <name>CounterParty</name>
+    <version>0.5.0</version>
+    <publisher>IndieSquare</publisher>
+    <url>https://wallet.indiesquare.me</url>
+    <description>Simple CounterWallet for mobile.</description>
+    <copyright>2015 by IndieSquare</copyright>
+    <icon>appicon.png</icon>
+    <fullscreen>false</fullscreen>
+    <navbar-hidden>true</navbar-hidden>
+    <analytics>false</analytics>
+    <guid>c4b6a89d-7012-4fe2-9fff-fd1f18b7fea6</guid>
+    <ios>
+        <plist>
+            <dict>
+                <key>CFBundleDevelopmentRegion</key>
+                <string>Japanese</string>
+                <key>UISupportedInterfaceOrientations~iphone</key>
+                <array>
+                    <string>UIInterfaceOrientationPortrait</string>
+                </array>
+                <key>UISupportedInterfaceOrientations~ipad</key>
+                <array>
+                    <string>UIInterfaceOrientationPortrait</string>
+                </array>
+                <key>CFBundleURLTypes</key>
+                <array>
+                    <dict>
+                        <key>CFBundleURLName</key>
+                        <string>inc.movfunds.counterparty</string>
+                        <key>CFBundleURLSchemes</key>
+                        <array>
+                            <string>cwallet</string>
+                        </array>
+                    </dict>
+                </array>
+                <key>UIRequiresPersistentWiFi</key>
+                <false/>
+                <key>UIPrerenderedIcon</key>
+                <false/>
+                <key>UIStatusBarHidden</key>
+                <false/>
+                <key>UIStatusBarStyle</key>
+                <string>UIStatusBarStyleDefault</string>
+                <key>CFBundleIconFiles</key>
+                <array>
+                    <string>appicon.png</string>
+                    <string>appicon@2x.png</string>
+                    <string>appicon-120.png</string>
+                    <string>appicon-Small.png</string>
+                    <string>appicon-Small-50.png</string>
+                    <string>appicon-Small@2x.png</string>
+                </array>
+            </dict>
+        </plist>
+    </ios>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+        <manifest android:versionCode="11" android:versionName="0.5.0">
+            <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="21"/>
+            <application android:theme="@style/Theme.IndiesquareTheme"/>
+        </manifest>
+        <activities>
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+            <uses-permission android:name="android.permission.WAKE_LOCK"/>
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.VIBRATE"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <activity android:alwaysRetainTaskState="true"
+                android:launchMode="singleTask" url="index.js">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW"/>
+                    <category android:name="android.intent.category.DEFAULT"/>
+                    <category android:name="android.intent.category.BROWSABLE"/>
+                    <data android:host="" android:scheme="cwallet"/>
+                </intent-filter>
+            </activity>
+        </activities>
+    </android>
+    <modules>
+        <module platform="android">com.mirasense.scanditsdk</module>
+        <module platform="iphone">com.mirasense.scanditsdk</module>
+        <module platform="iphone">ti.touchid</module>
+    </modules>
+    <deployment-targets>
+        <target device="android">true</target>
+        <target device="ipad">false</target>
+        <target device="iphone">true</target>
+        <target device="mobileweb">false</target>
+    </deployment-targets>
+    <sdk-version>4.0.0.GA</sdk-version>
+    <plugins>
+        <plugin version="1.0">ti.alloy</plugin>
+    </plugins>
+    <property name="ti.ui.defaultunit" type="string">dip</property>
+</ti:app>

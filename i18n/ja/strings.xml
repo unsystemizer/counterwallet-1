@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="language">ja</string>
+	
+	<string name="appname">カウンターお財布</string>
+	<string name="label_about">このアプリについて</string>
+	
+	<string name="label_holdAssets">保有アセット</string>
+	<string name="label_ownAssets">発行アセット</string>
+	<string name="label_qrcode">QRコードを表示</string>
+	<string name="label_histories">履歴を見る</string>
+	<string name="label_createtoken">トークン新規発行</string>
+	<string name="label_tokenname">トークン名</string>
+	<string name="label_numeric">無料トークン</string>
+	<string name="label_description">説明</string>
+	<string name="label_quantity_issue">発行量</string>
+	<string name="label_quantity_order">注文数</string>
+	<string name="label_quantity_send">送金数</string>
+	<string name="label_cancel">キャンセル</string>
+	<string name="label_ok">はい</string>
+	<string name="label_hinttext_password">パスワード(6文字以上)</string>
+	<string name="label_password">パスワード</string>
+	<string name="label_passphrase">12パスフレーズ</string>
+	<string name="label_send">送る</string>
+	<string name="label_showinfo">情報を見る</string>
+	<string name="label_order">注文</string>
+	<string name="label_price">価格</string>
+	<string name="label_buy">買い</string>
+	<string name="label_sell">売り</string>
+	<string name="label_noprice">価格なし</string>
+	<string name="label_confirm">確認</string>
+	<string name="label_close">閉じる</string>
+	<string name="label_login">ログイン</string>
+	<string name="label_bitcoinaddress">ビットコインアドレス</string>
+	<string name="label_destination">送り先</string>
+	<string name="label_fee">手数料</string>
+	<string name="label_create">新規作成</string>
+	<string name="label_back">戻る</string>
+	<string name="label_delete">削除</string>
+	<string name="text_reconfirm">確認のためもう一度入力して下さい</string>
+	<string name="label_done">完了</string>
+	<string name="label_search">検索</string>
+	
+	<string name="text_createnewwallet">新しいウォレットを作ります</string>
+	<string name="text_createToken">トークンを発行します</string>
+	<string name="text_confirmIssuance">{token}を{quantity}発行します</string>
+	
+	<string name="text_confirmorder">注文を出します</string>
+	<string name="text_confirmsend">送信します</string>
+	
+	<string name="text_issuance_done">{asset}を発行しました</string>
+	<string name="text_orderd">注文を出しました</string>
+	<string name="text_sent">送りました</string>
+	
+	<string name="text_doissuance">発行</string>
+	<string name="text_dosend">送信</string>
+	
+	<string name="text_makedivisible">Satoshi単位を許可</string>
+	<string name="text_hold">{asset}を{balance}持っています</string>
+	<string name="text_totalcost">{asset}の合計 {amount}</string>
+	<string name="text_comfirmorder">{price}{price_asset}の価格で{quantity}{main_asset}の{type}注文を出します</string>
+	<string name="text_necessarycost">{price_asset}が{total}必要です</string>
+	<string name="text_canget">成立すると{price_asset}を{total}入手できます</string>
+	<string name="text_createnewwallet">新しいウォレットを作る</string>
+	<string name="text_loginasuser">アカウントをお持ちの方</string>
+	<string name="text_descript_password">パスワードは絶対に忘れないで下さい</string>
+	<string name="text_newcommer">はじめての方</string>
+	<string name="text_copied">コピーしました</string>
+	<string name="text_copied_message">アドレスをクリップボードにコピーしました</string>
+	<string name="text_use_line">LINEで伝える</string>
+	<string name="text_use_mail">メールで伝える</string>
+	
+	<string name="label_issueadditional">追加発行</string>
+	<string name="label_transferownership">所有権を移動させる</string>
+	<string name="label_locktoken">ロックする</string>
+	<string name="label_changedescription">説明を変更する</string>
+	<string name="label_noorders">注文がありません</string>
+	<string name="text_holdcount">{count}人が保有しています</string>
+	<string name="label_holders">保有者一覧</string>
+	
+	<string name="text_history_order">{give_quantity} {give_asset} で {get_quantity} {get_asset}を入手します</string>
+	<string name="text_history_send">{quantity}{asset}を{target}へ送りました</string>
+	<string name="text_history_receive">{quantity}{asset}を{target}から受け取りました</string>
+	<string name="text_history_issuance">{asset}を{quantity}発行しました。</string>
+	<string name="text_history_dividend">{asset}保有者に対して保有数の{quantity_per_unit}%を{dividend_asset}で配当しました。</string>
+	<string name="text_history_get_dividend">{asset}の保有数の{quantity_per_unit}%の配当を{dividend_asset}で受けました。</string>
+	
+	<string name="label_easypass">簡単パスワード</string>
+	<string name="text_easypass">4桁のパスワードを設定して、簡単に操作できるようにしますか？</string>
+	<string name="label_fingerprint">指紋認証</string>
+	<string name="text_fingerprint">送金などの操作を指紋認証で行うように設定しますか？</string>
+	<string name="label_adminerror">認証エラー</string>
+	<string name="text_adminerror">認証できませんでした</string>
+	<string name="label_privecypolicy">プライバシーポリシー＆利用規約</string>
+	<string name="label_privecypolicy2">に同意し「新規作成」をタップ</string>
+	<string name="text_withmessage">メッセージが添付されています</string>
+	<string name="text_unreadable">ウォレットアドレスを認識できませんでした…。</string>
+	<string name="text_noregisted">登録されていません</string>
+	<string name="label_rename">名前変更</string>
+	<string name="text_rename">名前を変更できます</string>
+	<string name="text_desc_fingerprint">タッチIDを使った指紋認証で送金等を行えるようになります</string>
+	<string name="text_desc_easypass">４桁のパスワードで送金等を行えるようになります</string>
+	<string name="text_identifier">ウォレットを識別するIDです</string>
+	<string name="label_copy">コピー</string>
+	<string name="label_copied">コピーしました</string>
+	<string name="text_copied">ペースト(貼付)で使用できます</string>
+	<string name="text_inputverify_number">{name}は数字で入力して下さい</string>
+	<string name="text_inputverify_equal">{name}が合致しません。</string>
+	<string name="text_inputverify_empty">{name}を入力して下さい</string>
+	<string name="text_inputverify_more">{name}は{over}文字以上入力して下さい</string>
+	<string name="text_inputverify_shouldvalue">{name}の値が不正です</string>
+	<string name="text_inputpass">パスワードを入力して下さい</string>
+	<string name="text_wrongpass">パスワードが間違っています</string>
+	<string name="text_pleasefingerprint">続けるには、指紋認証して下さい</string>
+	<string name="text_initialize">初期化中です...</string>
+	
+	<string name="label_reload">再読み込み</string>
+	
+	<string name="label_passphrase">パスフレーズ</string>
+	<string name="text_passphrase">下記を大切に保管して下さい\n{passphrase}\n</string>
+	
+	<string name="label_passphrase_ok">記録しました</string>
+	<string name="text_passphrase_re">とても重要なパスフレーズです。本当に記録しましたか？</string>
+	<string name="label_passphrase_re">もう一度見る</string>
+	<string name="label_passphrase_continue">間違いなく記録しました</string>
+	
+	<string name="label_historytype_send">送金</string>
+	<string name="label_historytype_receive">受取</string>
+	<string name="label_historytype_order">注文</string>
+	<string name="label_historytype_issuance">発行</string>
+	<string name="label_historytype_dividend">配当発行</string>
+	<string name="label_historytype_get_dividend">配当受取</string>
+	<string name="label_historytype_"></string>
+	
+	<string name="lebal_orderhistory">取引履歴</string>
+	<string name="label_order_price">価格</string>
+	<string name="label_order_num">注文数</string>
+	<string name="label_order_status">状態</string>
+	<string name="label_order_status_open">注文中</string>
+	<string name="label_order_status_filled">約定済</string>
+	<string name="label_order_status_expired">不成立</string>
+	<string name="label_order_status_canceled">キャンセル</string>
+	<string name="label_hinttext_password_confirm">もう一度パスワード</string>
+	<string name="text_nohistory">履歴はまだありません</string>
+	<string name="text_history_error">履歴を取得できませんでした</string>
+	
+	<string name="warning_insufficientfunds">残高が未承認の可能性があります</string>
+	<string name="text_assetinfo_error">トークンが存在しないか、まだ未承認です</string>
+	<string name="text_sendconfirmation">{address}へ\n{amount}送ります。</string>
+	<string name="label_issue_supply">総発行数 {supply}</string>
+	<string name="label_issue_balance">保有数 {balance}</string>
+	
+	<string name="label_exchange">取引所</string>
+	<string name="label_dividend">配当</string>
+	
+	<string name="label_dividend_token">支払いトークン</string>
+	<string name="text_dividend_description">{asset}の保有者に対して配当をします</string>
+	<string name="label_dodividend">配当する</string>
+	
+	<string name="text_dividendconfirmation">保有者に対して持ち分の{perunit}%を{token}で支払います</string>
+	<string name="text_dividend">配当を出しました</string>
+	
+	<string name="text_imageupload">イメージ画像</string>
+	<string name="label_website">ウェブサイト</string>
+	<string name="label_pgpsig">pgp シグネチャ</string>
+	
+	<string name="text_passphrase_q">パスフレーズを表示しますか？</string>
+	<string name="label_show">表示する！</string>
+	
+	<string name="label_reissue">追加発行</string>
+	<string name="text_reissue">発行量を入力して下さい。</string>
+	<string name="text_reissued">発行しました。</string>
+	
+	<string name="label_lock">ロック</string>
+	<string name="text_lock">トークンの発行量をロックしますか？この操作には0.0001BTCが必要です。</string>
+	<string name="text_locked">ロックしました。</string>
+	<string name="label_edit">編集</string>
+	
+	<string name="text_doedit">完了</string>
+	<string name="text_webfailed">読み込みに失敗しました...。</string>
+</resources>
