@@ -1,7 +1,7 @@
 ##Counterwallet by IndieSquare
 
-#What is Counter Wallet?
-The world's first mobile wallet that allows you to easily send/receive and trade counterparty assets as well as Bitcoin.
+#The world's first mobile wallet
+CounterWallet is the world's first mobile wallet that allows you to easily send/receive and trade counterparty assets as well as Bitcoin.
 
 #What is Counterparty?
 "the world’s first protocol for decentralized financial tools"―counterparty.io  
