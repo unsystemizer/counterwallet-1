@@ -1,4 +1,5 @@
 module.exports = (function() {
+	var self = {};
 	
 	function onerror(params, e){
 		Ti.API.error('Error: '+e.error);
@@ -10,7 +11,7 @@ module.exports = (function() {
 		if( params.onError ) params.onError( json.errorMessage );
 	};
 	
-	this.connect = function( params ){
+	self.connect = function( params ){
 		var xhr = Ti.Network.createHTTPClient();
 		if( OS_ANDROID ){
 			xhr.validatesSecureCertificate = false;
@@ -34,7 +35,7 @@ module.exports = (function() {
 		xhr.send( params.post );
 	};
 	
-	this.getjson = function( params ){
+	self.getjson = function( params ){
 		var xhr = Ti.Network.createHTTPClient();
 		if( OS_ANDROID ){
 			xhr.validatesSecureCertificate = false;
@@ -51,5 +52,5 @@ module.exports = (function() {
 		xhr.send();
 	};
 	
-	return this;
+	return self;
 }());

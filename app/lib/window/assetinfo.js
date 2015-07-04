@@ -246,7 +246,8 @@ exports.run = function( params ){
 			if( /^(https?:\/\/).*\.json/.test(result.description) ){
 				_requires['network'].getjson({
 					uri: result.description,
-					callback: function(json){ createInfo(json); }
+					callback: function(json){ createInfo(json); },
+					onError: function(){ createInfo(); }
 				});
 			}
 			else createInfo();

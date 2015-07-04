@@ -189,7 +189,7 @@ exports.run = function( params ){
 		if( !sl_numeric.is ) _requires['inputverify'].unshift({ name: L('label_tokenname'), type: 'plain', target: box_token.field, over: 0 });
 		
 		if( (result = _requires['inputverify'].check()) == true ){
-			var token = ((sl_numeric.is)? 'Numeric Token': box_token.field.value);
+			var token = box_token.field.value;
 			var dialog = _requires['util'].createDialog({
 				title: L('label_confirm'),
 				message: L('text_confirmIssuance').format( {'token': token, 'quantity': box_quantity.field.value} ),
@@ -211,8 +211,6 @@ exports.run = function( params ){
 									pgpsig: box_pgpsig.field.value,
 								},
 								'callback': function( url ){
-									loading.removeSelf();
-									
 									var md5 = require('crypt/md5');
 									_requires['network'].connect({
 										'method': 'doIssue',
@@ -248,15 +246,13 @@ exports.run = function( params ){
 										},
 										'onError': function(error){
 											alert(error);
-										},
-										'always': function(){
-											loading.removeSelf();
+											if( loading != null ) loading.removeSelf();
 										}
 									});
 								},
 								'onError': function(error){
 									alert(error);
-									loading.removeSelf();
+									if( loading != null ) loading.removeSelf();
 								}
 							});
 						}
@@ -285,6 +281,7 @@ exports.run = function( params ){
 		'box_website': box_website,
 		'box_pgpsig': box_pgpsig,
 		'box_image': box_image,
+		'box_divisible': box_divisible,
 		'send_button': send_button
 	}, 'vertical'));
 	

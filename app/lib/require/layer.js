@@ -1,7 +1,8 @@
 module.exports = (function() {
+	var self = {};
 	var util = require('require/util');
 	
-	this.createWindow = function(){
+	self.createWindow = function(){
 		var win = {};
 		win.origin = Ti.UI.createWindow(
 			{
@@ -27,7 +28,7 @@ module.exports = (function() {
 		return win;
 	};
 	
-	this.drawFrame = function( win, params ){
+	self.drawFrame = function( win, params ){
 		var frame = {};
 		frame.top = Ti.UI.createView({ backgroundColor:'#ffc07f', top: 0, width: Ti.UI.FILL, height: 40 });
 		frame.bottom = Ti.UI.createView({ backgroundColor:'#ffc07f', bottom: 0, width: Ti.UI.FILL, height: 50 });
@@ -80,7 +81,7 @@ module.exports = (function() {
 		return frame;
 	};
 	
-	this.newLayer = function( parent ){
+	self.newLayer = function( parent ){
 		var layer = Ti.UI.createView({
 			width: Ti.UI.FILL, height: util.getDisplayHeight() - 90,
 			top: 40,
@@ -91,11 +92,11 @@ module.exports = (function() {
 		return layer;
 	};
 	
-	this.removeLayer = function( win, layer ){
+	self.removeLayer = function( win, layer ){
 		win.origin.remove( layer );
 	};
 	
-	this.addPullEvent = function( view, params ){
+	self.addPullEvent = function( view, params ){
 		var a = view.children[0].convertPointToView({
 			x: view.children[0].rect.x,
 			y: view.children[0].rect.y
@@ -203,5 +204,5 @@ module.exports = (function() {
 		}
 	};
 	
-	return this;
+	return self;
 }());

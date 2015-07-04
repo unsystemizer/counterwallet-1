@@ -3085,34 +3085,34 @@ RSAKey.prototype.verifyHexSignatureForMessage = _rsasign_verifyHexSignatureForMe
  // later modifications by wwwtyro@github
  
 var aes = (function () {
-	
-    this.Sbox = new Array(99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192, 183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21, 4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117, 9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132, 83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207, 208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168, 81, 163, 64, 143, 146, 157, 56, 245, 188, 182, 218, 33, 16, 255, 243, 210, 205, 12, 19, 236, 95, 151, 68, 23, 196, 167, 126, 61, 100, 93, 25, 115, 96, 129, 79, 220, 34, 42, 144, 136, 70, 238, 184, 20, 222, 94, 11, 219, 224, 50, 58, 10, 73, 6, 36, 92, 194, 211, 172, 98, 145, 149, 228, 121, 231, 200, 55, 109, 141, 213, 78, 169, 108, 86, 244, 234, 101, 122, 174, 8, 186, 120, 37, 46, 28, 166, 180, 198, 232, 221, 116, 31, 75, 189, 139, 138, 112, 62, 181, 102, 72, 3, 246, 14, 97, 53, 87, 185, 134, 193, 29, 158, 225, 248, 152, 17, 105, 217, 142, 148, 155, 30, 135, 233, 206, 85, 40, 223, 140, 161, 137, 13, 191, 230, 66, 104, 65, 153, 45, 15, 176, 84, 187, 22);
+	var self = {};
+    self.Sbox = new Array(99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192, 183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21, 4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117, 9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132, 83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207, 208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168, 81, 163, 64, 143, 146, 157, 56, 245, 188, 182, 218, 33, 16, 255, 243, 210, 205, 12, 19, 236, 95, 151, 68, 23, 196, 167, 126, 61, 100, 93, 25, 115, 96, 129, 79, 220, 34, 42, 144, 136, 70, 238, 184, 20, 222, 94, 11, 219, 224, 50, 58, 10, 73, 6, 36, 92, 194, 211, 172, 98, 145, 149, 228, 121, 231, 200, 55, 109, 141, 213, 78, 169, 108, 86, 244, 234, 101, 122, 174, 8, 186, 120, 37, 46, 28, 166, 180, 198, 232, 221, 116, 31, 75, 189, 139, 138, 112, 62, 181, 102, 72, 3, 246, 14, 97, 53, 87, 185, 134, 193, 29, 158, 225, 248, 152, 17, 105, 217, 142, 148, 155, 30, 135, 233, 206, 85, 40, 223, 140, 161, 137, 13, 191, 230, 66, 104, 65, 153, 45, 15, 176, 84, 187, 22);
 
-    this.ShiftRowTab = new Array(0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11);
+    self.ShiftRowTab = new Array(0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11);
 
-    this.Init = function () {
-        this.Sbox_Inv = new Array(256);
+    self.Init = function () {
+        self.Sbox_Inv = new Array(256);
         for (var i = 0; i < 256; i++)
-        this.Sbox_Inv[this.Sbox[i]] = i;
+        self.Sbox_Inv[this.Sbox[i]] = i;
 
-        this.ShiftRowTab_Inv = new Array(16);
+        self.ShiftRowTab_Inv = new Array(16);
         for (var i = 0; i < 16; i++)
-        this.ShiftRowTab_Inv[this.ShiftRowTab[i]] = i;
+        self.ShiftRowTab_Inv[self.ShiftRowTab[i]] = i;
 
-        this.xtime = new Array(256);
+        self.xtime = new Array(256);
         for (var i = 0; i < 128; i++) {
-            this.xtime[i] = i << 1;
-            this.xtime[128 + i] = (i << 1) ^ 0x1b;
+            self.xtime[i] = i << 1;
+            self.xtime[128 + i] = (i << 1) ^ 0x1b;
         }
     };
 
-    this.Done = function () {
-        delete this.Sbox_Inv;
-        delete this.ShiftRowTab_Inv;
-        delete this.xtime;
+    self.Done = function () {
+        delete self.Sbox_Inv;
+        delete self.ShiftRowTab_Inv;
+        delete self.xtime;
     };
 
-    this.ExpandKey = function (key) {
+    self.ExpandKey = function (key) {
         var kl = key.length,
             ks, Rcon = 1;
         switch (kl) {
@@ -3131,99 +3131,100 @@ var aes = (function () {
         for (var i = kl; i < ks; i += 4) {
             var temp = key.slice(i - 4, i);
             if (i % kl == 0) {
-                temp = new Array(this.Sbox[temp[1]] ^ Rcon, this.Sbox[temp[2]], this.Sbox[temp[3]], this.Sbox[temp[0]]);
+                temp = new Array(self.Sbox[temp[1]] ^ Rcon, self.Sbox[temp[2]], self.Sbox[temp[3]], self.Sbox[temp[0]]);
                 if ((Rcon <<= 1) >= 256) Rcon ^= 0x11b;
             }
-            else if ((kl > 24) && (i % kl == 16)) temp = new Array(this.Sbox[temp[0]], this.Sbox[temp[1]], this.Sbox[temp[2]], this.Sbox[temp[3]]);
+            else if ((kl > 24) && (i % kl == 16)) temp = new Array(self.Sbox[temp[0]], self.Sbox[temp[1]], self.Sbox[temp[2]], self.Sbox[temp[3]]);
             for (var j = 0; j < 4; j++)
             key[i + j] = key[i + j - kl] ^ temp[j];
         }
     };
 
-    this.Encrypt = function (block, key) {
+    self.Encrypt = function (block, key) {
         var l = key.length;
-        this.AddRoundKey(block, key.slice(0, 16));
+        self.AddRoundKey(block, key.slice(0, 16));
         for (var i = 16; i < l - 16; i += 16) {
-            this.SubBytes(block, this.Sbox);
-            this.ShiftRows(block, this.ShiftRowTab);
-            this.MixColumns(block);
-            this.AddRoundKey(block, key.slice(i, i + 16));
+            self.SubBytes(block, self.Sbox);
+            self.ShiftRows(block, self.ShiftRowTab);
+            self.MixColumns(block);
+            self.AddRoundKey(block, key.slice(i, i + 16));
         }
-        this.SubBytes(block, this.Sbox);
-        this.ShiftRows(block, this.ShiftRowTab);
-        this.AddRoundKey(block, key.slice(i, l));
+        self.SubBytes(block, self.Sbox);
+        self.ShiftRows(block, self.ShiftRowTab);
+        self.AddRoundKey(block, key.slice(i, l));
     };
 
-    this.Decrypt = function (block, key) {
+    self.Decrypt = function (block, key) {
         var l = key.length;
-        this.AddRoundKey(block, key.slice(l - 16, l));
-        this.ShiftRows(block, this.ShiftRowTab_Inv);
-        this.SubBytes(block, this.Sbox_Inv);
+        self.AddRoundKey(block, key.slice(l - 16, l));
+        self.ShiftRows(block, self.ShiftRowTab_Inv);
+        self.SubBytes(block, self.Sbox_Inv);
         for (var i = l - 32; i >= 16; i -= 16) {
-            this.AddRoundKey(block, key.slice(i, i + 16));
-            this.MixColumns_Inv(block);
-            this.ShiftRows(block, this.ShiftRowTab_Inv);
-            this.SubBytes(block, this.Sbox_Inv);
+            self.AddRoundKey(block, key.slice(i, i + 16));
+            self.MixColumns_Inv(block);
+            self.ShiftRows(block, self.ShiftRowTab_Inv);
+            self.SubBytes(block, self.Sbox_Inv);
         }
-        this.AddRoundKey(block, key.slice(0, 16));
+        self.AddRoundKey(block, key.slice(0, 16));
     };
 
-    this.SubBytes = function (state, sbox) {
+    self.SubBytes = function (state, sbox) {
         for (var i = 0; i < 16; i++)
         state[i] = sbox[state[i]];
     };
 
-    this.AddRoundKey = function (state, rkey) {
+    self.AddRoundKey = function (state, rkey) {
         for (var i = 0; i < 16; i++)
         state[i] ^= rkey[i];
     };
 
-    this.ShiftRows = function (state, shifttab) {
+    self.ShiftRows = function (state, shifttab) {
         var h = new Array().concat(state);
         for (var i = 0; i < 16; i++)
         state[i] = h[shifttab[i]];
     };
 
-    this.MixColumns = function (state) {
+    self.MixColumns = function (state) {
         for (var i = 0; i < 16; i += 4) {
             var s0 = state[i + 0],
                 s1 = state[i + 1];
             var s2 = state[i + 2],
                 s3 = state[i + 3];
             var h = s0 ^ s1 ^ s2 ^ s3;
-            state[i + 0] ^= h ^ this.xtime[s0 ^ s1];
-            state[i + 1] ^= h ^ this.xtime[s1 ^ s2];
-            state[i + 2] ^= h ^ this.xtime[s2 ^ s3];
-            state[i + 3] ^= h ^ this.xtime[s3 ^ s0];
+            state[i + 0] ^= h ^ self.xtime[s0 ^ s1];
+            state[i + 1] ^= h ^ self.xtime[s1 ^ s2];
+            state[i + 2] ^= h ^ self.xtime[s2 ^ s3];
+            state[i + 3] ^= h ^ self.xtime[s3 ^ s0];
         }
     };
 
-    this.MixColumns_Inv = function (state) {
+    self.MixColumns_Inv = function (state) {
         for (var i = 0; i < 16; i += 4) {
             var s0 = state[i + 0],
                 s1 = state[i + 1];
             var s2 = state[i + 2],
                 s3 = state[i + 3];
             var h = s0 ^ s1 ^ s2 ^ s3;
-            var xh = this.xtime[h];
-            var h1 = this.xtime[this.xtime[xh ^ s0 ^ s2]] ^ h;
-            var h2 = this.xtime[this.xtime[xh ^ s1 ^ s3]] ^ h;
-            state[i + 0] ^= h1 ^ this.xtime[s0 ^ s1];
-            state[i + 1] ^= h2 ^ this.xtime[s1 ^ s2];
-            state[i + 2] ^= h1 ^ this.xtime[s2 ^ s3];
-            state[i + 3] ^= h2 ^ this.xtime[s3 ^ s0];
+            var xh = self.xtime[h];
+            var h1 = self.xtime[self.xtime[xh ^ s0 ^ s2]] ^ h;
+            var h2 = self.xtime[self.xtime[xh ^ s1 ^ s3]] ^ h;
+            state[i + 0] ^= h1 ^ self.xtime[s0 ^ s1];
+            state[i + 1] ^= h2 ^ self.xtime[s1 ^ s2];
+            state[i + 2] ^= h1 ^ self.xtime[s2 ^ s3];
+            state[i + 3] ^= h2 ^ self.xtime[s3 ^ s0];
         }
     };
 
-    return this;
+    return self;
 }());
 
 module.exports = (function() {
+	var self = {};
 	aes.Init();
 
     var base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
-    this.b256to64 = function(t) {
+    self.b256to64 = function(t) {
         var a, c, n;
         var r = '', l = 0, s = 0;
         var tl = t.length;
@@ -3264,7 +3265,7 @@ module.exports = (function() {
         return r;
     };
 
-    this.b64to256 = function(t) 
+    self.b64to256 = function(t) 
     {
         var c, n;
         var r = '', s = 0, a = 0;
@@ -3282,7 +3283,7 @@ module.exports = (function() {
         return r;
     };  
 
-    this.b16to64 = function(h) {
+    self.b16to64 = function(h) {
         var i;
         var c;
         var ret = "";
@@ -3309,7 +3310,7 @@ module.exports = (function() {
         return ret;
     };
 
-    this.b64to16 = function(s) {
+    self.b64to16 = function(s) {
         var ret = "";
         var i;
         var k = 0;
@@ -3350,7 +3351,7 @@ module.exports = (function() {
     };
     
     // Converts a string to a byte array.
-    this.string2bytes = function(string)
+    self.string2bytes = function(string)
     {
         var bytes = new Array();
         for(var i = 0; i < string.length; i++) 
@@ -3361,7 +3362,7 @@ module.exports = (function() {
     };
 
     // Converts a byte array to a string.
-    this.bytes2string = function(bytes)
+    self.bytes2string = function(bytes)
     {
         var string = "";
         for(var i = 0; i < bytes.length; i++)
@@ -3372,7 +3373,7 @@ module.exports = (function() {
     };
     
     // Returns a XOR b, where a and b are 16-byte byte arrays.
-    this.blockXOR = function(a, b)
+    self.blockXOR = function(a, b)
     {
         var xor = new Array(16);
         for(var i = 0; i < 16; i++)
@@ -3383,7 +3384,7 @@ module.exports = (function() {
     };
     
     // Returns a 16-byte initialization vector.
-    this.blockIV = function()
+    self.blockIV = function()
     {
         var r = new SecureRandom();
         var IV = new Array(16);
@@ -3393,7 +3394,7 @@ module.exports = (function() {
     
     // Returns a copy of bytes with zeros appended to the end
     // so that the (length of bytes) % 16 == 0.
-    this.pad16 = function(bytes)
+    self.pad16 = function(bytes)
     {
         var newBytes = bytes.slice(0);
         var padding = (16 - (bytes.length % 16)) % 16;
@@ -3405,7 +3406,7 @@ module.exports = (function() {
     };
     
     // Removes trailing zeros from a byte array.
-    this.depad = function(bytes)
+    self.depad = function(bytes)
     {
         var newBytes = bytes.slice(0);
         while(newBytes[newBytes.length - 1] == 0)
@@ -3416,47 +3417,47 @@ module.exports = (function() {
     };
     
     // AES CBC Encryption.
-    this.encryptAESCBC = function(plaintext, key)
+    self.encryptAESCBC = function(plaintext, key)
     {
         var exkey = key.slice(0);
         aes.ExpandKey(exkey);
-        var blocks = this.string2bytes(plaintext);
-        blocks = this.pad16(blocks);
-        var encryptedBlocks = this.blockIV();
+        var blocks = self.string2bytes(plaintext);
+        blocks = self.pad16(blocks);
+        var encryptedBlocks = self.blockIV();
         for(var i = 0; i < blocks.length/16; i++)
         {
             var tempBlock = blocks.slice(i * 16, i * 16 + 16);
             var prevBlock = encryptedBlocks.slice((i) * 16, (i) * 16 + 16);
-            tempBlock = this.blockXOR(prevBlock, tempBlock);
+            tempBlock = self.blockXOR(prevBlock, tempBlock);
             aes.Encrypt(tempBlock, exkey);
             encryptedBlocks = encryptedBlocks.concat(tempBlock);
         }
-        var ciphertext = this.bytes2string(encryptedBlocks);
-        return this.b256to64(ciphertext);
+        var ciphertext = self.bytes2string(encryptedBlocks);
+        return self.b256to64(ciphertext);
     };
 
     // AES CBC Decryption.
-    this.decryptAESCBC = function(encryptedText, key)
+    self.decryptAESCBC = function(encryptedText, key)
     {
         var exkey = key.slice(0);
         aes.ExpandKey(exkey);
-        var encryptedText = this.b64to256(encryptedText);
-        var encryptedBlocks = this.string2bytes(encryptedText);
+        var encryptedText = self.b64to256(encryptedText);
+        var encryptedBlocks = self.string2bytes(encryptedText);
         var decryptedBlocks = new Array();
         for(var i = 1; i < encryptedBlocks.length/16; i++)
         {
             var tempBlock = encryptedBlocks.slice(i * 16, i * 16 + 16);
             var prevBlock = encryptedBlocks.slice((i-1) * 16, (i-1) * 16 + 16);
             aes.Decrypt(tempBlock, exkey);
-            tempBlock = this.blockXOR(prevBlock, tempBlock);
+            tempBlock = self.blockXOR(prevBlock, tempBlock);
             decryptedBlocks = decryptedBlocks.concat(tempBlock);
         }
-        decryptedBlocks = this.depad(decryptedBlocks);
-        return this.bytes2string(decryptedBlocks);
+        decryptedBlocks = self.depad(decryptedBlocks);
+        return self.bytes2string(decryptedBlocks);
     };
     
     // Wraps a string to 60 characters.
-    this.wrap60 = function(string) 
+    self.wrap60 = function(string) 
     {
         var outstr = "";
         for(var i = 0; i < string.length; i++) {
@@ -3466,7 +3467,7 @@ module.exports = (function() {
     };
 
     // Generate a random key for the AES-encrypted message.
-    this.generateAESKey = function()
+    self.generateAESKey = function()
     {
         var key = new Array(32);
         var r = new SecureRandom();
@@ -3475,7 +3476,7 @@ module.exports = (function() {
     };
 
     // Generates an RSA key from a passphrase.
-    this.generateRSAKey = function(passphrase, bitlength)
+    self.generateRSAKey = function(passphrase, bitlength)
     {
     	Math.seedrandom(sha256.hex(passphrase));
         
@@ -3486,37 +3487,37 @@ module.exports = (function() {
     };
 
     // Returns the ascii-armored version of the public key.
-    this.publicKeyString = function(rsakey) 
+    self.publicKeyString = function(rsakey) 
     {
-        pubkey = this.b16to64(rsakey.n.toString(16));
+        pubkey = self.b16to64(rsakey.n.toString(16));
         return pubkey; 
     };
     
     // Returns an MD5 sum of a publicKeyString for easier identification.
-    this.publicKeyID = function(publicKeyString)
+    self.publicKeyID = function(publicKeyString)
     {
         return MD5(publicKeyString);
     };
     
-    this.publicKeyFromString = function(string)
+    self.publicKeyFromString = function(string)
     {
-        var N = this.b64to16(string.split("|")[0]);
+        var N = self.b64to16(string.split("|")[0]);
         var E = "03";
         var rsa = new RSAKey();
         rsa.setPublic(N, E);
         return rsa;
     };
     
-    this.encrypt = function(plaintext, publickeystring, signingkey)
+    self.encrypt = function(plaintext, publickeystring, signingkey)
     {
         plaintext = encodeURIComponent(plaintext);//.replace(/[!'()]/g, escape).replace(/\*/g, "%2A").replace(/%(?:7C|60|5E)/g, unescape);
        
         var cipherblock = "";
-        var aeskey = this.generateAESKey();
+        var aeskey = self.generateAESKey();
         try
         {
-            var publickey = this.publicKeyFromString(publickeystring);
-            cipherblock += this.b16to64(publickey.encrypt(this.bytes2string(aeskey))) + "?";
+            var publickey = self.publicKeyFromString(publickeystring);
+            cipherblock += self.b16to64(publickey.encrypt(self.bytes2string(aeskey))) + "?";
         }
         catch(err)
         {
@@ -3530,37 +3531,37 @@ module.exports = (function() {
             plaintext += "::52cee64bb3a38f6403386519a39ac91c::";
             plaintext += signString;
         }
-        cipherblock += this.encryptAESCBC(plaintext, aeskey);    
+        cipherblock += self.encryptAESCBC(plaintext, aeskey);    
         return {status: "success", cipher: cipherblock};
     };
 
-    this.decrypt = function(ciphertext, key)
+    self.decrypt = function(ciphertext, key)
     {
     	var cipherblock = ciphertext.split('?');
-    	var aeskey = key.decrypt(this.b64to16(cipherblock[0]));
+    	var aeskey = key.decrypt(self.b64to16(cipherblock[0]));
         if(aeskey == null)
         {
             return {status: "failure"};
         }
-        aeskey = this.string2bytes(aeskey);
-        var plaintext = this.decryptAESCBC(cipherblock[1], aeskey).split("::52cee64bb3a38f6403386519a39ac91c::");
+        aeskey = self.string2bytes(aeskey);
+        var plaintext = self.decryptAESCBC(cipherblock[1], aeskey).split("::52cee64bb3a38f6403386519a39ac91c::");
         if(plaintext.length == 3)
         {
-            var publickey = this.publicKeyFromString(plaintext[1]);
-            var signature = this.b64to16(plaintext[2]);
+            var publickey = self.publicKeyFromString(plaintext[1]);
+            var signature = self.b64to16(plaintext[2]);
             if(publickey.verifyString(plaintext[0], signature))
             {
                 return {status: "success", 
                         plaintext: plaintext[0], 
                         signature: "verified", 
-                        publicKeyString: this.publicKeyString(publickey)};
+                        publicKeyString: self.publicKeyString(publickey)};
             }
             else
             {
                 return {status: "success", 
                         plaintext: plaintext[0], 
                         signature: "forged", 
-                        publicKeyString: this.publicKeyString(publickey)};
+                        publicKeyString: self.publicKeyString(publickey)};
             }
         }
         else
@@ -3569,12 +3570,11 @@ module.exports = (function() {
         }
     };
     
-    this.loadRSAkey = function( str ){
+    self.loadRSAkey = function( str ){
     	var ret = new RSAKey();
     	ret.load( str );
     	return ret;
     };
 
-    return this;
-
+    return self;
 }());

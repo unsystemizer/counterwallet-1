@@ -1,21 +1,23 @@
 module.exports = (function() {
-	this.set = function( verifies ){
-		this.verifies = verifies;
+	var self = {};
+	
+	self.set = function( verifies ){
+		self.verifies = verifies;
 	};
 	
-	this.push = function( verify ){
-		if( this.verifies == null ) this.verifies = new Array();
-		this.verifies.push(verify);
+	self.push = function( verify ){
+		if( self.verifies == null ) self.verifies = new Array();
+		self.verifies.push(verify);
 	};
 	
-	this.unshift = function( verify ){
-		if( this.verifies == null ) this.verifies = new Array();
-		this.verifies.unshift(verify);
+	self.unshift = function( verify ){
+		if( self.verifies == null ) self.verifies = new Array();
+		self.verifies.unshift(verify);
 	};
 	
-	this.check = function(){
-		for(var i = 0; i < this.verifies.length; i++ ){
-			var verify = this.verifies[i];
+	self.check = function(){
+		for(var i = 0; i < self.verifies.length; i++ ){
+			var verify = self.verifies[i];
 			if( verify.type === 'number' ){
 				if( isNaN(verify.target.value) ){
 					return {target: verify.target, message: L('text_inputverify_number').format({ 'name': verify.name })};
@@ -41,5 +43,5 @@ module.exports = (function() {
 		return true;
 	};
 	
-	return this;
+	return self;
 }());

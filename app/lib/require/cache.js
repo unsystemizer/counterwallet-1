@@ -1,4 +1,5 @@
 module.exports = (function() {
+	var self = {};
 	var crypt = require('crypt/api');
 	
 	function getPath(){
@@ -34,7 +35,7 @@ module.exports = (function() {
 		if ( !data || data.length <= 0 ) data = '{}';
 		else{
 			if( globals.useRSA ){
-				var rsa_info = this.load_rsa();
+				var rsa_info = self.load_rsa();
 				var RSAkey = (globals.Crypt_key == null)? (globals.Crypt_key = crypt.loadRSAkey(rsa_info.a)): globals.Crypt_key;
 				var DecryptionResult = crypt.decrypt(data.toString(), RSAkey);
 				data = DecryptionResult.plaintext;
@@ -43,9 +44,9 @@ module.exports = (function() {
 		return JSON.parse(data);
 	}
 	
-	this.data = null;
+	self.data = null;
 	
-	this.init = function(){
+	self.init = function(){
 		var f = Ti.Filesystem.getFile( getPath() );
 	    f.write('');
 	    
@@ -53,7 +54,7 @@ module.exports = (function() {
 	    f2.write('');
 	};
 	
-	this.load_rsa = function(){
+	self.load_rsa = function(){
 		var f  = Ti.Filesystem.getFile( getRSAPath() );
 			
 		var json = f.read();
@@ -62,22 +63,22 @@ module.exports = (function() {
 		return JSON.parse(json);
 	};
 	
-	this.save_rsa = function( data ){
+	self.save_rsa = function( data ){
 		var f  = Ti.Filesystem.getFile( getRSAPath() );
 	    f.write(JSON.stringify( data ));
 	};
 	
-	this.load = function(){
+	self.load = function(){
 		globals.datas = getData();
-		this.data = globals.datas;
+		self.data = globals.datas;
 	};
 	
-	this.save = function(){
+	self.save = function(){
 		var f = Ti.Filesystem.getFile( getPath() );
 	    
-	    var str_data = JSON.stringify(this.data);
+	    var str_data = JSON.stringify(self.data);
 	    if( globals.useRSA ){
-		    var rsa_info = this.load_rsa();
+		    var rsa_info = self.load_rsa();
 		    
 		    var RSAkey = (globals.Crypt_key == null)? (globals.Crypt_key = crypt.loadRSAkey(rsa_info.a)): globals.Crypt_key;
 		    var PubKey = crypt.publicKeyString(RSAkey);
@@ -88,5 +89,5 @@ module.exports = (function() {
 	    f.write(str_data);
 	};
 	
-	return this;
+	return self;
 }());

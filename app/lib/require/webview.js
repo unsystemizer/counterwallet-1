@@ -1,5 +1,7 @@
 module.exports = (function() {
-	this.create = function( params ){
+	var self = {};
+	
+	self.create = function( params ){
 		var webview = Ti.UI.createWebView({
 	        width: Ti.UI.FILL,
 	        height: Ti.UI.FILL,
@@ -19,5 +21,5 @@ module.exports = (function() {
         return webview;
 	};
 	
-	return this;
+	return self;
 }());

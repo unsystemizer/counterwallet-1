@@ -318,8 +318,6 @@ exports.run = function( params ){
 										},
 										'onError': function(error){
 											alert(error);
-										},
-										'always': function(){
 											loading.removeSelf();
 										}
 									});

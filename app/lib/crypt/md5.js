@@ -106,7 +106,8 @@ function MD5_apply_round(x, s, f, abcd, r) {
 }
 
 module.exports = (function() {
-	this.MD5_hash = function(data) {
+	var self = {};
+	self.MD5_hash = function(data) {
 	  var abcd, x, state, s;
 	  var len, index, padLen, f, r;
 	  var i, j, k;
@@ -162,11 +163,11 @@ module.exports = (function() {
 		 MD5_pack(state[3]);
 	};
 	
-	this.MD5_hexhash = function(data) {
+	self.MD5_hexhash = function(data) {
 	    var i, out, c;
 	    var bit128;
 	
-	    bit128 = this.MD5_hash(data);
+	    bit128 = self.MD5_hash(data);
 	    out = "";
 	    for(i = 0; i < 16; i++) {
 		c = bit128.charCodeAt(i);
@@ -176,5 +177,5 @@ module.exports = (function() {
 	    return out;
 	};
 	
-	return this;
+	return self;
 }());

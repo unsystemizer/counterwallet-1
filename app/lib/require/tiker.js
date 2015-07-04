@@ -1,5 +1,7 @@
 module.exports = (function() {
-	this.getTiker = function( params ){
+	var self = {};
+	
+	self.getTiker = function( params ){
 		var _requires = globals.requires;
 		_requires['network'].connect({
 			'method': 'getTiker',
@@ -13,7 +15,7 @@ module.exports = (function() {
 		});
 	};
 	
-	this.to = function( type, quantity, currency, isUpdate ){
+	self.to = function( type, quantity, currency, isUpdate ){
 		if( type === 'XCP' ){
 			var price = globals.tiker[currency].last;
 			var symbol = globals.tiker[currency].symbol;
@@ -27,5 +29,5 @@ module.exports = (function() {
 		}
 	};
 	
-	return this;
+	return self;
 }());

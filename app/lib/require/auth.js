@@ -1,15 +1,17 @@
 module.exports = (function() {
+	var self = {};
+	
 	var TiTouchId;
 	var cache = require('require/cache');
 	if( OS_IOS ) TiTouchId = require('ti.touchid');
 	
-	this.REASON_CANCEL 			= -1;
-	this.REASON_EASY 				= 0;
-	this.REASON_SECONDEPASSWORD 	= 1;
-	this.REASON_PASSWORD 			= 2;
-	this.REASON_TOUCHID 			= 3;
+	self.REASON_CANCEL				= -1;
+	self.REASON_EASY 				= 0;
+	self.REASON_SECONDEPASSWORD 	= 1;
+	self.REASON_PASSWORD 			= 2;
+	self.REASON_TOUCHID 			= 3;
 	
-	this.check = function( win, v ){
+	self.check = function( win, v ){
 		function input_password(){
 			var util = require('require/util');
 			var info = globals.datas;
@@ -17,10 +19,10 @@ module.exports = (function() {
 				var easyInput = util.createEasyInput({
 					type: 'confirm',
 					callback: function( number ){
-						v.callback({ success: true, reason: this.REASON_EASY, inputText: number });
+						v.callback({ success: true, reason: self.REASON_EASY, inputText: number });
 					},
 					cancel: function(){
-						v.callback({ success: false, reason: this.REASON_CANCEL });
+						v.callback({ success: false, reason: self.REASON_CANCEL });
 					}
 				});
 				easyInput.open();
@@ -38,7 +40,7 @@ module.exports = (function() {
 						var inputText = (OS_ANDROID)?dialog.androidField.value: e.text;
 					  	if( e.index == 1 ){
 					  		if( cache.data.password === inputText ){
-								v.callback({ success: true, reason: this.REASON_PASSWORD, inputText: inputText });
+								v.callback({ success: true, reason: self.REASON_PASSWORD, inputText: inputText });
 							}
 							else{
 								var dialog2 = util.createDialog({
@@ -52,7 +54,7 @@ module.exports = (function() {
 							}
 						}
 						else{
-							v.callback({ success: false, reason: this.REASON_CANCEL });
+							v.callback({ success: false, reason: self.REASON_CANCEL });
 						}
 					});
 					dialog.origin.show();
@@ -66,9 +68,9 @@ module.exports = (function() {
 			if( cache.data.isTouchId != null ){
 				var done = function(params){
 					Ti.App.removeEventListener('auth', done);
-					if( params.e.success ) v.callback({ success: true, reason: this.REASON_TOUCHID });
+					if( params.e.success ) v.callback({ success: true, reason: self.REASON_TOUCHID });
 					else{
-						if( params.e.code == TiTouchId.ERROR_USER_CANCEL ) v.callback({ success: false, reason: this.REASON_CANCEL });
+						if( params.e.code == TiTouchId.ERROR_USER_CANCEL ) v.callback({ success: false, reason: self.REASON_CANCEL });
 						else input_password();
 					}
 				};
@@ -83,7 +85,7 @@ module.exports = (function() {
 		}
 	};
 	
-	this.useTouchID = function(v){
+	self.useTouchID = function(v){
 		var done = function(params){
 			Ti.App.removeEventListener('usetouchid', done);
 			if( params.e.success ) v.callback({ success: true });
@@ -97,5 +99,5 @@ module.exports = (function() {
 	    });
 	};
 	
-    return this;
+    return self;
 }());

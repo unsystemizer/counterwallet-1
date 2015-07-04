@@ -1,4 +1,5 @@
 module.exports = (function() {
+	var self = {};
 	
 	function merge( obj1, obj2 ){
 	    if( !obj2 ) obj2 = {};
@@ -30,12 +31,12 @@ module.exports = (function() {
 		return animation;
 	};
 	
-	this.makeImage = function( params ){
+	self.makeImage = function( params ){
 		var image = Ti.UI.createImageView( params );
 		return image;
 	};
 	
-	this.makeImageButton = function( params ){
+	self.makeImageButton = function( params ){
 		var image = Ti.UI.createImageView(params);
 		if( params.listener != null ){
 			image.addEventListener('click', function(){
@@ -46,9 +47,9 @@ module.exports = (function() {
 		return image;
 	};
 	
-	this.makeButton = function( params ){
+	self.makeButton = function( params ){
 		var view = Ti.UI.createView( params );
-		var label = this.makeLabel({
+		var label = self.makeLabel({
 			text: params.label,
 			color: params.color || '#ffffff',
 			font: params.font
@@ -84,7 +85,7 @@ module.exports = (function() {
 		return view;
 	};
 	
-	this.makeTextField = function( params ){
+	self.makeTextField = function( params ){
 		var basic = {
 			clearButtonMode: Ti.UI.INPUT_BUTTONMODE_ONFOCUS,
 			keyboardType: Ti.UI.KEYBOARD_DEFAULT,
@@ -129,7 +130,7 @@ module.exports = (function() {
 		return field;
 	};
 	
-	this.makeCustomTextField = function( params ){
+	self.makeCustomTextField = function( params ){
 		var basic = {
 			width: Ti.UI.SIZE,
 			height: Ti.UI.SIZE,
@@ -137,7 +138,7 @@ module.exports = (function() {
 		
 		var field = Ti.UI.createView(merge(basic, params));
         if( params.hintText ){
-	    	var text = this.makeLabel({
+	    	var text = self.makeLabel({
 				text: params.hintText,
 				left: 10,
 				color: '#a6a8ab'
@@ -151,7 +152,7 @@ module.exports = (function() {
 			params.width = Ti.UI.FILL;
 			params.top = null; params.bottom = null;
 			
-			var textField = this.makeTextField(params);
+			var textField = self.makeTextField(params);
 			textField.addEventListener('blur', function(){
 				var text = textField.getValue();
 				field.text.visible = true;
@@ -215,7 +216,7 @@ module.exports = (function() {
 		return field;
 	};
 	
-	this.makeLabel = function( params ){
+	self.makeLabel = function( params ){
 		var basic = {
 			color: '#000000',
 		    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -226,9 +227,9 @@ module.exports = (function() {
 		return label;
 	};
 	
-	this.makeAnimation = makeAnimation;
+	self.makeAnimation = makeAnimation;
 	
-	this.openScanner = function( v ){
+	self.openScanner = function( v ){
 		var scanditsdk = require("com.mirasense.scanditsdk");
 		var window = Ti.UI.createWindow({  
 			title:'Scan QRcode',
@@ -270,7 +271,7 @@ module.exports = (function() {
 		window.open();
 	};
 	
-	this.group = function( v, layout ){
+	self.group = function( v, layout ){
 		var basic = {
 			width: Ti.UI.SIZE,
         	height: Ti.UI.SIZE
@@ -286,7 +287,7 @@ module.exports = (function() {
 		return group;
 	};
 	
-	this.createDialog = function( params, listener ){
+	self.createDialog = function( params, listener ){
 		if( params.title == null ) params.title = '';
 		var dialog = Ti.UI.createAlertDialog(params);
 		if( listener!= null ) dialog.addEventListener('click', listener);
@@ -294,7 +295,7 @@ module.exports = (function() {
 		return dialog;
 	};
 	
-	this.createInputDialog = function( params ){
+	self.createInputDialog = function( params ){
 		var dialog = {};
 		if( params.title == null ) params.title = '';
 		
@@ -335,13 +336,13 @@ module.exports = (function() {
 		return dialog;
 	};
 	
-	this.createEasyInput = function( params ){
+	self.createEasyInput = function( params ){
 		var inputView = {};
 		
 		inputView.view = Ti.UI.createView({
 			width: Ti.UI.FILL,
 			height: Ti.UI.FILL,
-			top: this.getDisplayHeight() - 1
+			top: self.getDisplayHeight() - 1
 		});
 		
 		var back = Ti.UI.createView({
@@ -362,13 +363,13 @@ module.exports = (function() {
 				font = 25;
 				opacity = 1.0;
 			}
-			var button = this.group({
-				image: this.makeImage({
+			var button = self.group({
+				image: self.makeImage({
 				    image: '/images/img_button_easy.png',
 				    width: 60,
 				    opacity: opacity
 				}),
-				text: this.makeLabel({
+				text: self.makeLabel({
 					text: sign,
 					color: '#ff8200',
 					font:{ fontSize: font },
@@ -448,7 +449,7 @@ module.exports = (function() {
 			}
 		};
 		
-		var buttons = this.group({
+		var buttons = self.group({
 			b1: createButton('1', {top: 0, left: 0}, callback),
 			b2: createButton('2', {top: 0, left: 70}, callback),
 			b3: createButton('3', {top: 0, left: 140}, callback),
@@ -464,8 +465,8 @@ module.exports = (function() {
 		});
 		buttons.top = 120;
 		
-		var logos = this.group({
-			logo: this.makeImage({
+		var logos = self.group({
+			logo: self.makeImage({
 			    image: '/images/icon_logo.png',
 			    width: 70,
 			})
@@ -473,33 +474,33 @@ module.exports = (function() {
 		logos.top = 0;
 		
 		var comp_marks = {
-			m0: this.makeImage({
+			m0: self.makeImage({
 			    image: '/images/img_easyinput_none.png',
 			    width: 12,
 			    left: 0
 			}),
-			m1: this.makeImage({
+			m1: self.makeImage({
 			    image: '/images/img_easyinput_none.png',
 			    width: 12,
 			    left: 20
 			}),
-			m2: this.makeImage({
+			m2: self.makeImage({
 			    image: '/images/img_easyinput_none.png',
 			    width: 12,
 			    left: 40
 			}),
-			m3: this.makeImage({
+			m3: self.makeImage({
 			    image: '/images/img_easyinput_none.png',
 			    width: 12,
 			    left: 60
 			})
 		};
-		var marks = this.group(comp_marks);
+		var marks = self.group(comp_marks);
 		marks.top = 80;
 		
 		var comp_whole = {
 			logos: logos,
-			text: this.makeLabel({
+			text: self.makeLabel({
 				text: L('text_inputpass'),
 				color: '#ff8200',
 				font:{ fontSize: 12 },
@@ -508,7 +509,7 @@ module.exports = (function() {
 			marks: marks,
 			buttons: buttons
 		};
-		var whole_view = this.group(comp_whole);
+		var whole_view = self.group(comp_whole);
 		inputView.view.add(whole_view);
 		
 		var inputWindow = null;
@@ -521,7 +522,7 @@ module.exports = (function() {
 		};
 		
 		inputView.close = function(){
-			inputView.view.animate({ top: this.getDisplayHeight(), duration: 500 }, function(){
+			inputView.view.animate({ top: self.getDisplayHeight(), duration: 500 }, function(){
 				inputWindow.close();
 				inputWindow.remove(inputView.view);
 				inputView = null;
@@ -531,7 +532,7 @@ module.exports = (function() {
 		return inputView;
 	};
 	
-	this.createCustomInput = function( params ){
+	self.createCustomInput = function( params ){
 		var inputView = {};
 		
 		inputView.view = Ti.UI.createView({
@@ -558,13 +559,13 @@ module.exports = (function() {
 				font = 25;
 				opacity = 1.0;
 			}
-			var button = this.group({
-				image: this.makeImage({
+			var button = self.group({
+				image: self.makeImage({
 				    image: '/images/img_button_custom.png',
 				    width: 70,
 				    opacity: opacity
 				}),
-				text: this.makeLabel({
+				text: self.makeLabel({
 					text: sign,
 					color: '#ff8200',
 					font:{ fontSize: font },
@@ -601,7 +602,7 @@ module.exports = (function() {
 			}
 		};
 		
-		var buttons = this.group({
+		var buttons = self.group({
 			b1: createButton('1', {bottom: 155, left: 0}, callback),
 			b2: createButton('2', {bottom: 155, left: 75}, callback),
 			b3: createButton('3', {bottom: 155, left: 150}, callback),
@@ -625,13 +626,13 @@ module.exports = (function() {
 		};
 		
 		inputView.close = function(){
-			inputView.view.animate({ top: this.getDisplayHeight(), duration: 500 }, function(){ inputView = null; });
+			inputView.view.animate({ top: self.getDisplayHeight(), duration: 500 }, function(){ inputView = null; });
 		};
 		
 		return inputView;
 	};
 	
-	this.showLoading = function(parent,  params ){
+	self.showLoading = function(parent,  params ){
 		params.font = getFont( params );
 		if( params.width == Ti.UI.FILL && params.height == Ti.UI.FILL ){
 			params.backgroundColor = '#ffffff';
@@ -663,8 +664,8 @@ module.exports = (function() {
 		return act;
 	};
 	
-	this.readQRcode = function( params ){
-		this.openScanner({
+	self.readQRcode = function( params ){
+		self.openScanner({
 			'callback': function(e){
 				var matches = e.barcode.match(/[a-zA-Z0-9]{27,34}/);
 				
@@ -686,7 +687,7 @@ module.exports = (function() {
 		});
 	};
 	
-	this.createSlider = function( params ){
+	self.createSlider = function( params ){
 		var slider = {};
 		
 		slider.is = params.init || false;
@@ -698,7 +699,7 @@ module.exports = (function() {
 			height: 25
 		});
 		
-		var swit = this.makeImage({
+		var swit = self.makeImage({
 		    image: '/images/settings_slider.png',
 		    height: 22.5,
 		    width: 64.2
@@ -739,7 +740,7 @@ module.exports = (function() {
 		return slider;
 	};
 	
-	this.getStatusBarHeight = function(){
+	self.getStatusBarHeight = function(){
 		switch ( Ti.Platform.displayCaps.density ) {
 			case 160:
 			    return 25;
@@ -754,33 +755,33 @@ module.exports = (function() {
 		}
 	};
 	
-	this.getDisplayHeight = function(){
+	self.getDisplayHeight = function(){
 		if( OS_ANDROID ){
-			return (Ti.Platform.displayCaps.platformHeight / Ti.Platform.displayCaps.logicalDensityFactor) - this.getStatusBarHeight();
+			return (Ti.Platform.displayCaps.platformHeight / Ti.Platform.displayCaps.logicalDensityFactor) - self.getStatusBarHeight();
 		}
 		return Ti.Platform.displayCaps.platformHeight;
 	};
 	
-	this.getDisplayWidth = function(){
+	self.getDisplayWidth = function(){
 		if( OS_ANDROID ){
 			return (Ti.Platform.displayCaps.platformWidth / Ti.Platform.displayCaps.logicalDensityFactor);
 		}
 		return Ti.Platform.displayCaps.platformWidth;
 	};
 	
-	this.convert_x = function(val){
+	self.convert_x = function(val){
 		return (OS_ANDROID)? (val / Ti.Platform.displayCaps.logicalDensityFactor): val;
 	};
 	
-	this.convert_y = function(val){
+	self.convert_y = function(val){
 		return (OS_ANDROID)? (val / Ti.Platform.displayCaps.logicalDensityFactor): val;
 	};
 	
-	this.isTestAccount = function(){
+	self.isTestAccount = function(){
 		return (globals.datas.identifier === 'test' && globals.datas.password === 'test');
 	};
 	
-	this.createTableList = function(params){
+	self.createTableList = function(params){
 		var tableview = Ti.UI.createTableView(params);
 		
 		tableview.setRowDesign = function(data, func){
@@ -816,7 +817,7 @@ module.exports = (function() {
 		return tableview;
 	};
 	
-	this.createAutocompleteField = function( params ){
+	self.createAutocompleteField = function( params ){
 		var basic = {
 			color: '#333333',
 			hintText: L('label_search'),
@@ -824,7 +825,7 @@ module.exports = (function() {
 			width: 150, height: 35,
 			bottom: 0
 		};
-		var textField = this.makeTextField( merge(basic, params) );
+		var textField = self.makeTextField( merge(basic, params) );
 		var last_search = null;
 		var timer = null;
 		
@@ -854,8 +855,8 @@ module.exports = (function() {
 			view = Ti.UI.createTableView({
 				backgroundColor: '#ffffff',
 				width: textField.width, height: 100,
-				left: this.convert_x(a.x),
-				top: this.convert_y(a.y) + ((OS_ANDROID)? 0: params.parent.contentOffset.y) - 100
+				left: self.convert_x(a.x),
+				top: self.convert_y(a.y) + ((OS_ANDROID)? 0: params.parent.contentOffset.y) - 100
 			});
 			view.addEventListener('click', function(e){
 				textField.value = last_search = e.row.children[0].text;
@@ -873,7 +874,7 @@ module.exports = (function() {
 				function apply( result ){
 					function createRow( d ){
 						var row = Ti.UI.createTableViewRow({ height: 30 });
-						var text = this.makeLabel({
+						var text = self.makeLabel({
 							text: result[i],
 							top: 5,
 							font:{ fontSize: 15 }
@@ -914,7 +915,7 @@ module.exports = (function() {
 		return textField;
 	};
 	
-	this.createUpScreen = function( params ){
+	self.createUpScreen = function( params ){
 		var layer = require('require/layer');
 		var menu = {};
 		
@@ -967,5 +968,5 @@ module.exports = (function() {
 		return menu;
 	};
 	
-	return this;
+	return self;
 }());

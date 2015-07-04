@@ -1,10 +1,12 @@
 module.exports = (function() {
+	var self = {};
+	
 	require('vendor/UintArray');
 	var bitcore = require('vendor/bitcore');
 	var MnemonicJS = require('vendor/mnemonic');
 	var account = null;
 	
-	this.init = function(passphrase){
+	self.init = function(passphrase){
 		if( passphrase == null ) return null;
 		
 		var words = passphrase.split(' ');
@@ -16,7 +18,7 @@ module.exports = (function() {
 		account = master.derive("m/0'/0/0");
 	};
 	
-	this.getpassphrase = function( passphrase ){
+	self.getpassphrase = function( passphrase ){
 		var words = null;
 		if( passphrase != null ) words = passphrase.split(' ');
 		var m;
@@ -28,26 +30,26 @@ module.exports = (function() {
 		return m.toWords().toString().replace(/,/gi, ' ');
 	};
 	
-	this.getAddress = function(){
+	self.getAddress = function(){
 		if( account == null ) return null;
 		return account.privateKey.toAddress().toString();
 	};
 	
-	this.getPrivKey = function(){
+	self.getPrivKey = function(){
 		if( account == null ) return null;
 		return account.privateKey;
 	};
 	
-	this.sign = function( raw_tx, callback ){
+	self.sign = function( raw_tx, callback ){
 		if( account == null ) return null;
 		bitcore.signrawtransaction(raw_tx, account.privateKey, callback);
 	};
 	
-	this.getPublicKey = function( passphrase, bool ){
-		if( bool ) this.init(passphrase);
+	self.getPublicKey = function( passphrase, bool ){
+		if( bool ) self.init(passphrase);
 		if( account == null ) return null;
 		return account.publicKey.toString();
 	};
 	
-    return this;
+    return self;
 }());
