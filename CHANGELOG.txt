@@ -1,3 +1,7 @@
+#ver 0.5.2(2015.7.4)
+Fixed a bug in new token issuance.
+-----
+
 #ver0.5.0(2015.7.2)
 Achieved higher security with client side wallet encryption. Counterwallet is now even more secure and the only person that has access to the private key is you. See the source code from the link below.
 https://github.com/IndieSquare/counterwallet
