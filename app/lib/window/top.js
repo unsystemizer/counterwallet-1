@@ -5,7 +5,12 @@ exports.run = function(){
 	var win = _requires['layer'].createWindow();
 	var frame = _requires['layer'].drawFrame(win, { NoScroll: true });
 	
-	_requires['bitcore'].init(_requires['cache'].data.passphrase);
+	if( !globals.DEMO ) _requires['bitcore'].init(_requires['cache'].data.passphrase);
+	
+	_requires['acs'].login({
+		id: _requires['cache'].data.id,
+		password: _requires['cache'].data.password
+	});
 	
 	_requires['network'].connect({
 		'method': 'dbGet',
@@ -116,20 +121,17 @@ exports.run = function(){
 				for( var i = 0; i < result.length; i++ ){
 					var val = result[i];
 					
-					var name_left = 10;
-					if( /^(https?:\/\/).*\.json/.test(val.description) ) name_left = 70;
-					
 					var box = createBox({ height: 100 });
 					box.top = 10;
-					box.add(
-						_requires['util'].makeLabel({
-							text: val.asset,
-							font:{ fontSize: 16 },
-							top: 10, left: name_left
-						})
-					);
+					var asset_name = _requires['util'].makeLabel({
+						text: val.asset,
+						font:{ fontSize: 16 },
+						top: 10, left: 10
+					});
+					box.add(asset_name);
 					
-					if( name_left == 70 ){
+					if( /^(https?:\/\/).*\.json/.test(val.description) ){
+						asset_name.left = 70;
 						_requires['network'].getjson({
 							uri: val.description,
 							callback: (function(box) {
@@ -191,6 +193,29 @@ exports.run = function(){
 								btc_balance.fiat_balance.text = _requires['tiker'].to('BTC', btc_balance.balance, _requires['cache'].data.currncy);
 							}
 						});
+						
+						asset_name.left = 70;
+						box.add( Ti.UI.createImageView({
+							image: '/images/asset_bitcoin.png',
+							width: 50, height: 50,
+							top: 10, left: 10
+						}) );
+					}
+					if( val.asset === 'XCP' ){
+						asset_name.left = 70;
+						box.add( Ti.UI.createImageView({
+							image: '/images/asset_xcp.png',
+							width: 50, height: 50,
+							top: 10, left: 10
+						}) );
+						
+						if( val.balance === '???' ){
+							var dialog = _requires['util'].createDialog({
+								title: L('label_reorganisation'),
+								message: L('text_reorganisation'),
+								buttonNames: [L('label_close')]
+							}).show();
+						}
 					}
 					
 					menu.info.addEventListener('click', function(e){
@@ -357,7 +382,8 @@ exports.run = function(){
 		{ icon: 'icon_review.png', title: L('label_qrcode') },
 		{ icon: 'icon_review.png', title: L('label_createtoken') },
 		{ icon: 'icon_history.png', title: L('label_histories') },
-		{ icon: 'icon_history.png', title: L('label_about') }
+		{ icon: 'icon_history.png', title: L('label_about') },
+		{ icon: 'icon_history.png', title: L('label_signout') }
 	);
 	var menu_height = menus.length * 50;
 	var menuScreen = _requires['util'].createUpScreen({
@@ -428,6 +454,22 @@ exports.run = function(){
 						buttonNames: [L('label_close')]
 					}).show();
 				}
+				else if( e.row.children[0].text === menus[4].title ){
+					var dialog = _requires['util'].createDialog({
+						title: L('label_signout'),
+						message: L('text_signout'),
+						buttonNames: [L('label_cancel'), L('label_ok')]
+					});
+					dialog.addEventListener('click', function(e){
+						if( e.index == 1 ){
+							_requires['cache'].init();
+							_windows['login'].run();
+							win.close();
+						}
+					});
+					dialog.show();
+				}
+				
 			});
 			view.add(menuTable);
 		}
@@ -584,12 +626,6 @@ exports.run = function(){
 		}
 	);
 	frame.bottom.add(icon_search);
-	
-	Ti.App.addEventListener('resume', function(){
-		if( OS_IOS ){
-			if( globals.keepRegister != null ) globals.keepRegister();
-		}
-	});
 	
 	win.open();
 };

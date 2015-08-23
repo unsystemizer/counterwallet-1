@@ -41,6 +41,7 @@ module.exports = (function() {
 	};
 	
 	self.sign = function( raw_tx, callback ){
+		if( globals.DEMO ) callback('signed_tx');
 		if( account == null ) return null;
 		bitcore.signrawtransaction(raw_tx, account.privateKey, callback);
 	};

@@ -197,7 +197,7 @@ exports.run = function( params ){
 			});
 			dialog.addEventListener('click', function(e){
 				if( e.index == 1 ){
-					_requires['auth'].check(win, { title: L('text_createToken'), callback: function(e){
+					_requires['auth'].check({ title: L('text_createToken'), callback: function(e){
 						if( e.success ){
 							var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL});
 							
@@ -211,13 +211,13 @@ exports.run = function( params ){
 									pgpsig: box_pgpsig.field.value,
 								},
 								'callback': function( url ){
-									var md5 = require('crypt/md5');
+									
 									_requires['network'].connect({
 										'method': 'doIssue',
 										'post': {
 											id: _requires['cache'].data.id,
-											code: md5.MD5_hexhash(_requires['cache'].data.password),
-											token: token,
+											code: _requires['cache'].data.pass_hash,
+											asset: token,
 											description: url,
 											quantity: box_quantity.field.value,
 											divisible: sl_divisible.is
@@ -231,7 +231,7 @@ exports.run = function( params ){
 													},
 													'callback': function( r ){
 														_requires['util'].createDialog({
-															message: L('text_issuance_done').format({'asset': result.asset}),
+															message: L('text_issuance_done').format({'asset': token}),
 															buttonNames: [L('label_close')]
 														}).show();
 													},

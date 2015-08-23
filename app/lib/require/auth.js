@@ -6,12 +6,12 @@ module.exports = (function() {
 	if( OS_IOS ) TiTouchId = require('ti.touchid');
 	
 	self.REASON_CANCEL				= -1;
-	self.REASON_EASY 				= 0;
+	self.REASON_EASY 				= 0; 
 	self.REASON_SECONDEPASSWORD 	= 1;
 	self.REASON_PASSWORD 			= 2;
 	self.REASON_TOUCHID 			= 3;
 	
-	self.check = function( win, v ){
+	self.check = function( params ){
 		function input_password(){
 			var util = require('require/util');
 			var info = globals.datas;
@@ -19,10 +19,10 @@ module.exports = (function() {
 				var easyInput = util.createEasyInput({
 					type: 'confirm',
 					callback: function( number ){
-						v.callback({ success: true, reason: self.REASON_EASY, inputText: number });
+						params.callback({ success: true, reason: self.REASON_EASY, inputText: number });
 					},
 					cancel: function(){
-						v.callback({ success: false, reason: self.REASON_CANCEL });
+						params.callback({ success: false, reason: self.REASON_CANCEL });
 					}
 				});
 				easyInput.open();
@@ -31,7 +31,7 @@ module.exports = (function() {
 				function input(){
 					var message = L('text_inputpass');
 					var dialog = util.createInputDialog({
-						title: v.title,
+						title: params.title,
 						message: message,
 						passwordMask: true,
 						buttonNames: [L('label_cancel'), L('label_ok')]
@@ -40,7 +40,7 @@ module.exports = (function() {
 						var inputText = (OS_ANDROID)?dialog.androidField.value: e.text;
 					  	if( e.index == 1 ){
 					  		if( cache.data.password === inputText ){
-								v.callback({ success: true, reason: self.REASON_PASSWORD, inputText: inputText });
+								params.callback({ success: true, reason: self.REASON_PASSWORD, inputText: inputText });
 							}
 							else{
 								var dialog2 = util.createDialog({
@@ -54,7 +54,7 @@ module.exports = (function() {
 							}
 						}
 						else{
-							v.callback({ success: false, reason: self.REASON_CANCEL });
+							params.callback({ success: false, reason: self.REASON_CANCEL });
 						}
 					});
 					dialog.origin.show();
@@ -66,11 +66,11 @@ module.exports = (function() {
 		if( OS_ANDROID ) input_password();
 		else{
 			if( cache.data.isTouchId != null ){
-				var done = function(params){
+				var done = function(params2){
 					Ti.App.removeEventListener('auth', done);
-					if( params.e.success ) v.callback({ success: true, reason: self.REASON_TOUCHID });
+					if( params2.e.success ) params.callback({ success: true, reason: self.REASON_TOUCHID });
 					else{
-						if( params.e.code == TiTouchId.ERROR_USER_CANCEL ) v.callback({ success: false, reason: self.REASON_CANCEL });
+						if( params2.e.code == TiTouchId.ERROR_USER_CANCEL ) params.callback({ success: false, reason: self.REASON_CANCEL });
 						else input_password();
 					}
 				};
@@ -85,11 +85,11 @@ module.exports = (function() {
 		}
 	};
 	
-	self.useTouchID = function(v){
-		var done = function(params){
+	self.useTouchID = function(params){
+		var done = function(params2){
 			Ti.App.removeEventListener('usetouchid', done);
-			if( params.e.success ) v.callback({ success: true });
-			else v.callback({ success: false });
+			if( params2.e.success ) params.callback({ success: true });
+			else params.callback({ success: false });
 		};
 		Ti.App.addEventListener('usetouchid', done);
 		

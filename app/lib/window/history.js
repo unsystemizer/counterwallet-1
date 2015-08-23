@@ -3,7 +3,7 @@ exports.run = function(){
 	var _requires = globals.requires;
 	
 	var win = _requires['layer'].createWindow();
-	var frame = _requires['layer'].drawFrame(win, { back: true});
+	var frame = _requires['layer'].drawFrame(win, { back: true });
 	frame.view.backgroundColor = '#ffe0c1';
 	
 	view = Ti.UI.createScrollView({ scrollType: 'vertical', height: '100%', layout: 'vertical', showVerticalScrollIndicator: true });

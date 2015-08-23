@@ -150,16 +150,15 @@ exports.run = function( params ){
 			});
 			dialog.addEventListener('click', function(e){
 				if( e.index == 1 ){
-					_requires['auth'].check(win, { title: L('text_confirmsend'), callback: function(e){
+					_requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
 						if( e.success ){
 							var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL});
 							
-							var md5 = require('crypt/md5');
 							_requires['network'].connect({
 								'method': 'doSend',
 								'post': {
 									id: _requires['cache'].data.id,
-									code: md5.MD5_hexhash(_requires['cache'].data.password),
+									code: _requires['cache'].data.pass_hash,
 									asset: params.asset,
 									destination: box_address.address.value,
 									quantity: box_amount.amount.value
@@ -180,6 +179,24 @@ exports.run = function( params ){
 													win.close({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
 												});
 												dialog.show();
+												
+												_requires['network'].connect({
+													'method': 'acs_push',
+													'post': {
+														id: _requires['cache'].data.id,
+														acs_key: Alloy.CFG.acs_key,
+														type: 'send',
+														asset: params.asset,
+														destination: box_address.address.value,
+														quantity: box_amount.amount.value
+													},
+													'callback': function( result ){
+														//
+													},
+													'onError': function(error){
+														alert(error);
+													}
+												});
 											},
 											'onError': function(error){
 												alert(error);

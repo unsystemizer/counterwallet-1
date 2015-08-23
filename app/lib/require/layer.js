@@ -6,7 +6,7 @@ module.exports = (function() {
 		var win = {};
 		win.origin = Ti.UI.createWindow(
 			{
-				orientationModes: [Titanium.UI.PORTRAIT],
+				orientationModes: [Ti.UI.PORTRAIT],
 				navBarHidden: true
 			}
 		);

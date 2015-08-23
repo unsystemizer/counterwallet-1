@@ -97,6 +97,10 @@ exports.run = function(){
 		var passphrase = params.passphrase;
 		var password = params.password;
 		
+		if( passphrase === 'demo' && password === 'demo3728' ){
+			globals.DEMO = true;
+		}
+		
 		var loading = _requires['util'].showLoading(params.win, { width: Ti.UI.FILL, height: Ti.UI.FILL, style: 'dark' });
 		_requires['network'].connect({
 			'method': 'getKey',
@@ -122,121 +126,122 @@ exports.run = function(){
 						globals.generateRSAKey = true;
 					});
 				}
-				passphrase = _requires['bitcore'].getpassphrase(passphrase);
 				
-				_requires['bitcore'].init(passphrase);
-				var address = _requires['bitcore'].getAddress();
-				var pubkey = _requires['bitcore'].getPublicKey();
-				var md5 = require('crypt/md5');
-				_requires['network'].connect({
-					'method': 'createAccount',
-					'post': {
-						address: address,
-						pubkey: pubkey,
-						code: md5.MD5_hexhash(password)
-					},
-					'callback': function( result ){
-						_requires['cache'].data.id = result.id;
-						_requires['cache'].data.address = address;
-						_requires['cache'].data.passphrase = passphrase;
-						_requires['cache'].data.password = password;
-						if( L('language') === 'ja' ) _requires['cache'].data.currncy = 'JPY';
-						else _requires['cache'].data.currncy = 'USD';
-						
-						var timer = setInterval(function(){
-							if(globals.generateRSAKey){
-								_requires['cache'].save();
-								clearInterval(timer);
-							}
-						}, 100);
-						
-						_windows['top'].run();
-						win.close();
-						
-						function record(){
-							function registEasyPass(){
-								var dialog = _requires['util'].createDialog({
-									title: L('label_easypass'),
-									message: L('text_easypass'),
-									buttonNames: [L('label_cancel'), L('label_ok')]
-								});
-								dialog.addEventListener('click', function(e){
-									if( e.index == 1 ){
-										var easyInput = _requires['util'].createEasyInput({
-											type: 'reconfirm',
-											callback: function( number ){
-												_requires['cache'].data.easypass = number;
-											},
-											cancel: function(){}
-										});
-										easyInput.open();
-									}
-								});
-								dialog.show();
+				var address, pubkey;
+				if( globals.DEMO ){
+					passphrase = 'DemoPassphrase';
+					address = '1TestWalletAddress';
+					pubkey = '02TestWalletPublicKey';
+				}
+				else{
+					passphrase = _requires['bitcore'].getpassphrase(passphrase);
+					_requires['bitcore'].init(passphrase);
+					address = _requires['bitcore'].getAddress();
+					pubkey = _requires['bitcore'].getPublicKey();
+				}
+				
+				var b = require('crypt/bcrypt');
+				bcrypt = new b();
+				
+				bcrypt.hashpw(password, bcrypt.gensalt(10), function(pass_hash) {
+					_requires['network'].connect({
+						'method': 'createAccount',
+						'post': {
+							address: address,
+							pubkey: pubkey,
+							code: pass_hash
+						},
+						'callback': function( result ){
+							_requires['cache'].data.id = result.id;
+							_requires['cache'].data.address = address;
+							_requires['cache'].data.passphrase = passphrase;
+							_requires['cache'].data.pass_hash = pass_hash;
+							_requires['cache'].data.password = password;
+							if( L('language') === 'ja' ) _requires['cache'].data.currncy = 'JPY';
+							else _requires['cache'].data.currncy = 'USD';
+							
+							var timer = setInterval(function(){
+								if( globals.generateRSAKey ){
+									_requires['cache'].save();
+									clearInterval(timer);
+								}
+							}, 100);
+							_windows['top'].run();
+							win.close();
+							
+							function record(){
+								function registEasyPass(){
+									var dialog = _requires['util'].createDialog({
+										title: L('label_easypass'),
+										message: L('text_easypass'),
+										buttonNames: [L('label_cancel'), L('label_ok')]
+									});
+									dialog.addEventListener('click', function(e){
+										if( e.index == 1 ){
+											var easyInput = _requires['util'].createEasyInput({
+												type: 'reconfirm',
+												callback: function( number ){
+													_requires['cache'].data.easypass = number;
+													_requires['cache'].save();
+												},
+												cancel: function(){}
+											});
+											easyInput.open();
+										}
+									});
+									dialog.show();
+								}
+								
+								if( OS_IOS ){
+									var dialog = _requires['util'].createDialog({
+										title: L('label_fingerprint'),
+										message: L('text_fingerprint'),
+										buttonNames: [L('label_cancel'), L('label_ok')]
+									});
+									dialog.addEventListener('click', function(e){
+										if( e.index == 1 ){
+											_requires['auth'].useTouchID({ callback: function(e){
+												if( e.success ){
+													_requires['cache'].data.isTouchId = true;
+													_requires['cache'].save();
+												}
+												else{
+													var dialog = _requires['util'].createDialog({
+														title: L('label_adminerror'),
+														message: L('text_adminerror'),
+														buttonNames: [L('label_close')]
+													});
+													dialog.addEventListener('click', function(e){
+														registEasyPass();
+													});
+													dialog.show();
+												}
+											}});
+										}
+										else registEasyPass();
+									});
+									dialog.show();
+								}
+								else registEasyPass();
 							}
 							
-							if( OS_IOS ){
-								var dialog = _requires['util'].createDialog({
-									title: L('label_fingerprint'),
-									message: L('text_fingerprint'),
-									buttonNames: [L('label_cancel'), L('label_ok')]
-								});
-								dialog.addEventListener('click', function(e){
-									if( e.index == 1 ){
-										_requires['auth'].useTouchID({ callback: function(e){
-											if( e.success ){
-												_requires['cache'].data.isTouchId = true;
-											}
-											else{
-												var dialog = _requires['util'].createDialog({
-													title: L('label_adminerror'),
-													message: L('text_adminerror'),
-													buttonNames: [L('label_close')]
-												});
-												dialog.addEventListener('click', function(e){
-													registEasyPass();
-												});
-												dialog.show();
-											}
-										}});
-									}
-									else registEasyPass();
-								});
-								dialog.show();
-							}
-							else registEasyPass();
-						}
-						
-						globals.keepRegister = function(){
 							var dialog = _requires['util'].createDialog({
-								title: L('label_passphrase'),
+								title: L('label_passphrase_title'),
 								message: L('text_passphrase').format({'passphrase': passphrase}),
 								buttonNames: [L('label_passphrase_ok')]
 							});
 							dialog.addEventListener('click', function(e){
-								var dialog2 = _requires['util'].createDialog({
-									message: L('text_passphrase_re'),
-									buttonNames: [L('label_passphrase_re'), L('label_passphrase_continue')]
-								});
-								dialog2.addEventListener('click', function(e){
-									if( e.index <= 0 ) globals.keepRegister();
-									else if( e.index == 1 ){
-										globals.keepRegister = null;
-										record();
-									}
-								});
-								dialog2.show();
+								record();
 							});
 							dialog.show();
-						};
-						globals.keepRegister();
-					},
-					'onError': function( message ){
-						alert(message);
-					},
-					'always': function(){
-						loading.removeSelf();
-					}
+						},
+						'onError': function( message ){
+							alert(message);
+						},
+						'always': function(){
+							loading.removeSelf();
+						}
+					});
 				});
 			},
 			'onError': function(error){

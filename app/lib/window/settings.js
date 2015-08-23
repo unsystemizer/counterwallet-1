@@ -66,18 +66,19 @@ exports.run = function(){
 			var inputText = (OS_ANDROID)?dialog.androidField.getValue():e.text;
 			if( e.index == 1 ){
 				if( inputText.length > 0 && inputText !== info.user_name ){
-					_requires['auth'].check(win, { title: L('text_confirmsend'), callback: function(e){
+					_requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
 						if( e.success ){
 							var loading = _requires['util'].showLoading(box_user_name, { width: Ti.UI.FILL, height: Ti.UI.FILL});
 							_requires['network'].connect({
 								'method': 'dbUpdate',
 								'post': {
 									id: _requires['cache'].data.id,
-									type: 'user_name',
-									value: inputText
+									data: JSON.stringify( [
+										{ column: 'user_name', value: inputText }
+									])
 								},
 								'callback': function( result ){
-									globals.user_name_top.text = label_user_name.text = globals.user_name = result.value;
+									globals.user_name_top.text = label_user_name.text = globals.user_name = inputText;
 								},
 								'onError': function(error){
 									alert(error);
@@ -186,7 +187,7 @@ exports.run = function(){
 				easyInput.open();
 			}
 			
-			_requires['auth'].check(win, { title: L('label_easypass'), callback: function(e){
+			_requires['auth'].check({ title: L('label_easypass'), callback: function(e){
 				if( e.success ) setEasyPass();
 				else{
 					if( slider.is ) slider.off();
@@ -195,7 +196,7 @@ exports.run = function(){
 			}});
 		},
 		off: function(){
-			_requires['auth'].check(win, { callback: function(e){
+			_requires['auth'].check({ callback: function(e){
 				if( e.success ){
 					_requires['cache'].data.easypass = null;
 					is_save = true;
@@ -341,22 +342,28 @@ exports.run = function(){
 		});
 		dialog.addEventListener('click', function(e){
 			if( e.index == 1 ){
-				var dialog2 = _requires['util'].createDialog({
-					title: 'Passphrase',
-					message: _requires['cache'].data.passphrase,
-					buttonNames: [L('label_close'), L('label_copy')]
-				});
-				dialog2.addEventListener('click', function(e){
-					if( e.index == 1 ){
-						Ti.UI.Clipboard.setText( _requires['cache'].data.passphrase );
-						_requires['util'].createDialog({
-							title: L('label_copied'),
-							message: L('text_copied'),
-							buttonNames: [L('label_close')]
-						}).show();
+				_requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
+					if( e.success ){
+						setTimeout(function(){
+							var dialog2 = _requires['util'].createDialog({
+								title: 'Passphrase',
+								message: _requires['cache'].data.passphrase,
+								buttonNames: [L('label_close'), L('label_copy')]
+							});
+							dialog2.addEventListener('click', function(e){
+								if( e.index == 1 ){
+									Ti.UI.Clipboard.setText( _requires['cache'].data.passphrase );
+									_requires['util'].createDialog({
+										title: L('label_copied'),
+										message: L('text_copied'),
+										buttonNames: [L('label_close')]
+									}).show();
+								}
+							});
+							dialog2.show();
+						}, 1000);
 					}
-				});
-				dialog2.show();
+				}});
 			}
 		});
 		dialog.show();

@@ -159,7 +159,7 @@ exports.run = function( params ){
 				currentprice.text = L('label_price') + '：' + current;
 				
 				currentcurrency.text = '';
-				if( !isNaN(current) ){
+				if( !isNaN(current) && params.price_asset === 'XCP' ){
 					_requires['tiker'].getTiker({
 						'callback': function(){
 							currentcurrency.text = '(' + _requires['tiker'].to('XCP', current, _requires['cache'].data.currncy) + ')';
@@ -278,16 +278,15 @@ exports.run = function( params ){
 					});
 					dialog.addEventListener('click', function(e){
 						if( e.index == 1 ){
-							_requires['auth'].check(win, { title: L('label_confirmorder'), callback: function(e){
+							_requires['auth'].check({ title: L('label_confirmorder'), callback: function(e){
 								if( e.success ){
 									var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL});
 									
-									var md5 = require('crypt/md5');
 									_requires['network'].connect({
 										'method': 'doOrder',
 										'post': {
 											id: _requires['cache'].data.id,
-											code: md5.MD5_hexhash(_requires['cache'].data.password),
+											code: _requires['cache'].data.pass_hash,
 											type: type,
 											price_asset: params.price_asset,
 											price_quantity: total_amount,

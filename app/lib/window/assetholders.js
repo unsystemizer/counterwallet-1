@@ -163,16 +163,15 @@ exports.run = function( params ){
 									});
 									dialog.addEventListener('click', function(e){
 										if( e.index == 1 ){
-											_requires['auth'].check(win, { title: L('text_confirmsend'), callback: function(e){
+											_requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
 												if( e.success ){
 													var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL});
 													
-													var md5 = require('crypt/md5');
 													_requires['network'].connect({
 														'method': 'doDividend',
 														'post': {
 															id: _requires['cache'].data.id,
-															code: md5.MD5_hexhash(_requires['cache'].data.password),
+															code: _requires['cache'].data.pass_hash,
 															asset: params.asset,
 															dividend_asset: form.paydistribution.value,
 															quantity_per_unit: (form.perunit.value / 100).toFixed2()

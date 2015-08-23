@@ -2,7 +2,7 @@ module.exports = (function() {
 	var self = {};
 	
 	function onerror(params, e){
-		Ti.API.error('Error: '+e.error);
+		Ti.API.error('Error: '+e.error+':'+e.code);
 		if( params.onError ) params.onError('Error: '+e.error);
 	};
 	

@@ -40,6 +40,7 @@ for( var i = 0; i < w.length; i++ ){
 	globals.windows[file] = require('window/' + file);
 }
 var r = new Array(
+	'acs.js',
 	'auth.js',
 	'bitcore.js',
 	'cache.js',
@@ -55,26 +56,6 @@ for( var i = 0; i < r.length; i++ ){
 	globals.requires[file] = require('require/' + file);
 }
 
-var_dump = function(_var, _level) {
-	var dumped_text = "";
-	if(!_level) _level = 0;
-	var level_padding = "";
-	for(var j=0; j<_level+1; j++) level_padding += "    ";
-	if(typeof(_var) == 'object'){
-	    for(var item in _var){
-			var value = _var[item];
-			if(typeof(value) == 'object') {
-				dumped_text += level_padding + "'" + item + "' ...\n";
-				dumped_text += var_dump(value, _level+1);
-			} else {
-				dumped_text += level_padding +"'"+ item +"' => \""+ value +"\"\n";
-			}
-		}
-  	}
-  	else dumped_text = "===>"+ _var +"<===("+ typeof(_var) +")";
-	return dumped_text;
-};
-
 String.prototype.format = function(arg){
     var rep_fn = null;
     if( typeof arg == 'object' ) rep_fn = function(m, k) { return arg[k]; }; else { var args = arguments; rep_fn = function(m, k) { return args[ parseInt(k) ]; }; }
@@ -82,5 +63,5 @@ String.prototype.format = function(arg){
 };
 
 Number.prototype.toFixed2 = function(){
-	return this.toFixed(10).replace(/0+$/, '').replace(/\.$/, '');
+	return this.toFixed(8).replace(/0+$/, '').replace(/\.$/, '');
 };

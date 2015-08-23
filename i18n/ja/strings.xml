@@ -117,12 +117,10 @@
 	<string name="label_reload">再読み込み</string>
 	
 	<string name="label_passphrase">パスフレーズ</string>
-	<string name="text_passphrase">下記を大切に保管して下さい\n{passphrase}\n</string>
+	<string name="label_passphrase_title">下記を大切に保管して下さい</string>
+	<string name="text_passphrase">"{passphrase}"</string>
 	
 	<string name="label_passphrase_ok">記録しました</string>
-	<string name="text_passphrase_re">とても重要なパスフレーズです。本当に記録しましたか？</string>
-	<string name="label_passphrase_re">もう一度見る</string>
-	<string name="label_passphrase_continue">間違いなく記録しました</string>
 	
 	<string name="label_historytype_send">送金</string>
 	<string name="label_historytype_receive">受取</string>
@@ -177,5 +175,12 @@
 	<string name="label_edit">編集</string>
 	
 	<string name="text_doedit">完了</string>
+	
+	
+	
 	<string name="text_webfailed">読み込みに失敗しました...。</string>
+	<string name="label_signout">サインアウト</string>
+	<string name="text_signout">サインアウトの前に、12パスフレーズをメモすることを強くお奨めします。このままサインアウトしても良いですか？</string>
+	<string name="label_reorganisation">申し訳ありません...</string>
+	<string name="text_reorganisation">現在Blockchainを再編成しています。しばらくお待ち下さい。</string>
 </resources>

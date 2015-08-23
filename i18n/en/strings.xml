@@ -6,7 +6,7 @@
 	<string name="label_about">About</string>
 	
 	<string name="label_holdAssets">Asset Balance</string>
-	<string name="label_ownAssets">Assests Created</string>
+	<string name="label_ownAssets">Created Assets</string>
 	<string name="label_qrcode">Show QR Code</string>
 	<string name="label_histories">Transaction History</string>
 	<string name="label_createtoken">Create a Token</string>
@@ -31,13 +31,13 @@
 	<string name="label_confirm">Confirm</string>
 	<string name="label_close">Close</string>
 	<string name="label_login">Login</string>
-	<string name="label_bitcoinaddress">Your Bitcoin Address</string>
+	<string name="label_bitcoinaddress">My Bitcoin Address</string>
 	<string name="label_destination">Receipient</string>
 	<string name="label_fee">Miner's fee</string>
 	<string name="label_create">Create</string>
 	<string name="label_back">Go Back</string>
 	<string name="label_delete">Erase</string>
-	<string name="text_reconfirm">Input Again for Confirmation</string>
+	<string name="text_reconfirm">Please confirm your passcode</string>
 	<string name="label_done">Done</string>
 	<string name="label_search">Search</string>
 	
@@ -61,10 +61,10 @@
 	<string name="text_comfirmorder">Place a {type} Order for {quantity}{main_asset} with {price}{price_asset}</string>
 	<string name="text_necessarycost">You need {total} {price_asset}</string>
 	<string name="text_canget"> With order matched, you get {total}{price_asset}</string>
-	<string name="text_createnewwallet">Create New Wallet</string>
+	<string name="text_createnewwallet">Create A New Wallet</string>
 	<string name="text_loginasuser">Already have an account?</string>
 	<string name="text_descript_password">DO NOT forget your password</string>
-	<string name="text_newcommer">For the first time user</string>
+	<string name="text_newcommer">First time user</string>
 	<string name="text_copied">Copied</string>
 	<string name="text_copied_message">Address copied on clipboard</string>
 	<string name="text_use_line">Send thru Line</string>
@@ -86,13 +86,13 @@
 	<string name="text_history_get_dividend">Received {quantity_per_unit}% {dividend_asset} dividends for {asset} holders</string>
 	
 	<string name="label_easypass">Quick Passcode</string>
-	<string name="text_easypass"> Do you want to set up a 4 digit passcode for easier access</string>
+	<string name="text_easypass">Would you like to set up a 4 digit passcode for easier access?</string>
 	<string name="label_fingerprint">Touch ID</string>
-	<string name="text_fingerprint">Do you want to set up Touch ID for easier access</string>
+	<string name="text_fingerprint">Would you like to set up Touch ID for easier access?</string>
 	<string name="label_adminerror">Authentication error</string>
 	<string name="text_adminerror">Authentication failed</string>
 	<string name="label_privecypolicy">Privacy Policy & Terms of Service</string>
-	<string name="label_privecypolicy2"> Agree and press Create New</string>
+	<string name="label_privecypolicy2">By pressing 'Create' I agree to the above</string>
 	<string name="text_withmessage">Message attached</string>
 	<string name="text_unreadable">Could not recognize a valid address</string>
 	<string name="text_noregisted"> Not registered</string>
@@ -103,26 +103,24 @@
 	<string name="text_identifier">ID that identifies your wallet</string>
 	<string name="label_copy">Copy</string>
 	<string name="label_copied">Copied</string>
-	<string name="text_copied">Paste anywehere you want!</string>
+	<string name="text_copied">Paste anywhere you want!</string>
 	<string name="text_inputverify_number">Input {name}with numbers</string>
 	<string name="text_inputverify_equal">{name} doesn't match</string>
 	<string name="text_inputverify_empty">Enter {name}</string>
 	<string name="text_inputverify_more">{name} requires more than {over} letters</string>
 	<string name="text_inputverify_shouldvalue">{name} is invalid</string>
 	<string name="text_inputpass">Enter your password</string>
-	<string name="text_wrongpass">Wrong password</string>
+	<string name="text_wrongpass">Password Incorrect</string>
 	<string name="text_pleasefingerprint"> Require Touch ID to continue</string>
 	<string name="text_initialize">Initializing...</string>
 	
 	<string name="label_reload">Reloading</string>
 	
 	<string name="label_passphrase">Passphrase</string>
-	<string name="text_passphrase">Please record the following.\n"{passphrase}"</string>
+	<string name="label_passphrase_title">Write down this recovery passphrase</string>
+	<string name="text_passphrase">"{passphrase}"</string>
 	
-	<string name="label_passphrase_ok">Recorded!</string>
-	<string name="text_passphrase_re">This is really important. Are you sure you recorded the passphrase?</string>
-	<string name="label_passphrase_re"> Look again</string>
-	<string name="label_passphrase_continue">I recorded for sure</string>
+	<string name="label_passphrase_ok">I wrote it down</string>
 	
 	<string name="label_historytype_send">Send</string>
 	<string name="label_historytype_receive">Receive</string>
@@ -144,8 +142,8 @@
 	<string name="text_nohistory"> No history</string>
 	<string name="text_history_error">Could not retrieve history</string>
 	
-	<string name="warning_insufficientfunds">Are you sure you have sufficient fund?</string>
-	<string name="text_assetinfo_error"> The asset might not exist or yet to be confirmed</string>
+	<string name="warning_insufficientfunds">Are you sure you have sufficient funds?</string>
+	<string name="text_assetinfo_error"> The asset might not exist or is yet to be confirmed</string>
 	<string name="text_sendconfirmation">Send \n {amount} to {address}</string>
 	<string name="label_issue_supply">Total supply {supply}</string>
 	<string name="label_issue_balance">Balance {balance}</string>
@@ -175,6 +173,12 @@
 	<string name="label_edit">Edit</string> 
 	<string name="text_doedit">Done</string>
 	
-	<string name="text_webfailed">Failed to read...</string>
 	
+	
+	
+	<string name="text_webfailed">Failed to read...</string>
+	<string name="label_signout">Sign out</string>
+	<string name="text_signout">Are you sure you want to sign out?</string> 
+	<string name="label_reorganisation">Apologies</string>
+	<string name="text_reorganisation">Please wait while the Blockchain is being re-synced...</string>
 </resources>
