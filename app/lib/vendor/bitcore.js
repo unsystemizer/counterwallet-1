@@ -44029,7 +44029,7 @@ module.exports={
 		xhr.send();
 	};
 	
-	bitcore.signrawtransaction = function(raw_tx, privkey, callback){
+	bitcore.signrawtransaction = function(raw_tx, privkey, callback, fail){
 		var _requires = globals.requires;
 		var address = privkey.toAddress().toString();
 		
@@ -44041,7 +44041,6 @@ module.exports={
 			},
 			'callback': function( result ){
 				var decoded_tx = result.decoded_tx;
-				
 				var utxos = new Array();
 				for(var i = 0; i < decoded_tx.vin.length; i++){
 					var vin = decoded_tx.vin[i];
@@ -44087,7 +44086,15 @@ module.exports={
 					}
 				}
 				tx.sign(privkey);
-				if( callback != null ) callback(tx.serialize());
+				if( callback != null ){
+					try{
+						var serialized = tx.serialize();
+						callback(serialized);
+					}
+					catch(e){
+						if( fail != null ) fail();
+					}
+				}
 			},
 			'onError': function(error){
 				alert(error);

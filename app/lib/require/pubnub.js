@@ -221,7 +221,7 @@ function generate_channel_group_list(channel_groups, nopresence) {
 function ready() { timeout( function() {
     if (READY) return;
     READY = 1;
-    each( READY_BUFFER, function(connect) { connect() } );
+    each( READY_BUFFER, function(connect) { connect(); } );
 }, SECOND ); }
 
 function PNmessage(args) {
@@ -939,7 +939,7 @@ function PN_API(setup) {
                 success  : function(response) {
                     _invoke_callback(response, callback, err);
                 },
-                fail     : function() { callback([ 0, 'Disconnected' ]) },
+                fail     : function() { callback([ 0, 'Disconnected' ]); },
                 url      : url,
                 data     : _get_url_params(data)
             });
@@ -959,7 +959,7 @@ function PN_API(setup) {
         'time' : function(callback) {
             var jsonp = jsonp_cb();
 
-            var data = { 'uuid' : UUID, 'auth' : AUTH_KEY }
+            var data = { 'uuid' : UUID, 'auth' : AUTH_KEY };
 
             if (USE_INSTANCEID) data['instanceid'] = INSTANCEID;
 
@@ -968,8 +968,8 @@ function PN_API(setup) {
                 data     : _get_url_params(data),
                 timeout  : SECOND * 5,
                 url      : [STD_ORIGIN, 'time', jsonp],
-                success  : function(response) { callback(response[0]) },
-                fail     : function() { callback(0) }
+                success  : function(response) { callback(response[0]); },
+                fail     : function() { callback(0); }
             });
         },
 
@@ -995,7 +995,7 @@ function PN_API(setup) {
             ,   params
             ,   url;
 
-            if (args['prepend']) add_msg = 'unshift'
+            if (args['prepend']) add_msg = 'unshift';
 
             if (!channel)       return error('Missing Channel');
             if (!PUBLISH_KEY)   return error('Missing Publish Key');
@@ -1016,9 +1016,9 @@ function PN_API(setup) {
                 jsonp, encode(msg)
             ];
 
-            params = { 'uuid' : UUID, 'auth' : auth_key }
+            params = { 'uuid' : UUID, 'auth' : auth_key };
 
-            if (!store) params['store'] ="0"
+            if (!store) params['store'] ="0";
 
             if (USE_INSTANCEID) params['instanceid'] = INSTANCEID;
 
@@ -1438,7 +1438,7 @@ function PN_API(setup) {
                                         Array(messages[0].length)
                                         .join(',').split(','),
                                         function() { return chan; }
-                                    ) }).join(',');
+                                    ); }).join(',');
                             }
 
                             var list  = channels.split(',');
@@ -1627,14 +1627,14 @@ function PN_API(setup) {
                     'sub-key', SUBSCRIBE_KEY,
                     'channel', channel,
                     'uuid', uuid, 'data'
-                ]
+                ];
             } else {
                 url      = [
                     STD_ORIGIN, 'v2', 'presence',
                     'sub-key', SUBSCRIBE_KEY,
                     'channel', channel,
                     'uuid', encode(uuid)
-                ]
+                ];
             }
 
             xdr({
@@ -1707,7 +1707,7 @@ function PN_API(setup) {
 
             if (auth_key) data['auth'] = auth_key;
 
-            data = _get_url_params(data)
+            data = _get_url_params(data);
 
             if (!auth_key) delete data['auth'];
 
@@ -1889,8 +1889,8 @@ function PN_API(setup) {
             return generate_channel_list(CHANNELS, true);
         },
         'presence_heartbeat' : function(args) {
-            var callback = args['callback'] || function() {}
-            var err      = args['error']    || function() {}
+            var callback = args['callback'] || function() {};
+            var err      = args['error']    || function() {};
             var jsonp    = jsonp_cb();
             var data     = { 'uuid' : UUID, 'auth' : AUTH_KEY };
 
@@ -1940,7 +1940,7 @@ function PN_API(setup) {
         'each-channel'  : each_channel,
         'grep'          : grep,
         'offline'       : function(){ _reset_offline(
-            1, { "message" : "Offline. Please check your network settings." })
+            1, { "message" : "Offline. Please check your network settings." });
         },
         'supplant'      : supplant,
         'now'           : rnow,
@@ -2232,8 +2232,8 @@ function xdr_tcp(setup) {
         } );
     }
 
-    try      { sock.connect() }
-    catch(k) { return fail()  }
+    try      { sock.connect(); }
+    catch(k) { return fail();  }
 }
 
 /**
@@ -2264,7 +2264,7 @@ function xdr_http_client( setup ) {
         }
     ,   complete = 0
     ,   loaded   = 0
-    ,   timer    = timeout( function(){done(1)}, XHRTME )
+    ,   timer    = timeout( function(){done(1);}, XHRTME )
     ,   fail     = setup.fail    || function(){}
     ,   success  = setup.success || function(){}
     ,   done     = function(failed) {
@@ -2285,7 +2285,7 @@ function xdr_http_client( setup ) {
     // Send
     try {
         xhr         = Ti.Network.createHTTPClient();
-        xhr.onerror = function(){ done(1) };
+        xhr.onerror = function(){ done(1); };
         xhr.onload  = finished;
         xhr.timeout = XHRTME;
 
@@ -2358,14 +2358,14 @@ var log = function(){};
  */
 var events = {
     'list'   : {},
-    'unbind' : function( name ) { events.list[name] = [] },
+    'unbind' : function( name ) { events.list[name] = []; },
     'bind'   : function( name, fun ) {
         (events.list[name] = events.list[name] || []).push(fun);
     },
     'fire' : function( name, data ) {
         each(
             events.list[name] || [],
-            function(fun) { fun(data) }
+            function(fun) { fun(data); }
         );
     }
 };
@@ -2380,14 +2380,14 @@ function CREATE_PUBNUB(setup) {
 
 
     setup['db'] = db;
-    setup['xdr'] = setup['native_tcp_socket'] ? xdr_tcp : xdr_http_client
+    setup['xdr'] = setup['native_tcp_socket'] ? xdr_tcp : xdr_http_client;
     setup['crypto_obj'] = crypto_obj();
-    setup['params']      = { 'pnsdk' : PNSDK }
+    setup['params']      = { 'pnsdk' : PNSDK };
 
 
     SELF = function(setup) {
         return CREATE_PUBNUB(setup);
-    }
+    };
     var PN = PN_API(setup);
     for (var prop in PN) {
         if (PN.hasOwnProperty(prop)) {

@@ -35,7 +35,7 @@ module.exports = (function() {
 								])
 							},
 							'callback': function( result ){
-								//
+								Ti.API.info('Update done.');
 							},
 							'onError': function(error){
 								alert(error);
@@ -48,7 +48,6 @@ module.exports = (function() {
 		function deviceTokenError(e) {
 			Ti.API.info('Failed to register for push notifications! ' + e.error);
 		}
-		
 		if( OS_IOS ){
 			if (Ti.Platform.name == 'iPhone OS' && parseInt(Ti.Platform.version.split('.')[0]) >= 8) {
 				Ti.App.iOS.addEventListener('usernotificationsettings', function registerForPush() {
@@ -112,7 +111,7 @@ module.exports = (function() {
 					}
 					else{
 						if( e.message.indexOf('Username is already taken') > 0 ){
-							getDeviceToken({ id: params.id, isFirst: false });
+							getDeviceToken({ id: params.id, isFirst: true });
 						}
 					}
 				});

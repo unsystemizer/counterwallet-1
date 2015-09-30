@@ -4,12 +4,12 @@ module.exports = (function() {
 	
 	self.createWindow = function(){
 		var win = {};
-		win.origin = Ti.UI.createWindow(
-			{
+		win.origin = Ti.UI.createWindow({
 				orientationModes: [Ti.UI.PORTRAIT],
 				navBarHidden: true
 			}
 		);
+		if( OS_IOS ) win.origin.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;
 		if( OS_ANDROID ) win.origin.windowSoftInputMode = Ti.UI.Android.SOFT_INPUT_ADJUST_PAN;
 		
 		win.view = Ti.UI.createView({ backgroundColor:'#ffffff', width: Ti.UI.FILL, height: Ti.UI.FILL });
@@ -69,7 +69,7 @@ module.exports = (function() {
 				if( L('language') === 'en' ) back_button.txt_back.left = 80;
 				back_button.addEventListener('click', function(){
 					if( params.callback ) params.callback();
-					win.close({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+					win.close({transition:Ti.UI.iPhone.AnimationStyle.NONE});
 				});
 				frame.bottom.add(back_button);
 			}

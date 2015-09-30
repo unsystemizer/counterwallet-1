@@ -3,15 +3,19 @@ exports.run = function(){
 	var _requires = globals.requires;
 	
 	var win = _requires['layer'].createWindow();
-	var frame = _requires['layer'].drawFrame(win);
-	frame.view.backgroundColor = '#ffc07f';
+	var main_view = Ti.UI.createView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
+	win.origin.add(main_view);
 	
 	var view = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,
 		height: Ti.UI.FILL,
 		scrollType: 'vertical',
 	});
-	frame.view.add(view);
+	main_view.add(view);
+	
+	var top_bar = Ti.UI.createView({ backgroundColor:'#e54353', width: Ti.UI.FILL, height: 20 });
+	top_bar.top = 0;
+	win.origin.add(top_bar);
 	
 	function createBox( color ){
 		var box = _requires['util'].group();
@@ -22,7 +26,7 @@ exports.run = function(){
 		return box;
 	}
 	
-	var create = createBox('#ff8200');
+	var create = createBox('#e54353');
 	create.add(
 		_requires['util'].makeLabel({
 		    text: L('label_create'),
@@ -47,7 +51,7 @@ exports.run = function(){
 	});
 	policy.top = 10;
 	policy.addEventListener('click', function(){
-		_windows['webview'].run({ path: 'privacypolicy.php?isDownload=false' });
+		_windows['webview'].run({ path: 'terms' });
 	});
 	
 	var close = createBox('#a6a8ab');
@@ -66,7 +70,7 @@ exports.run = function(){
 	var create_group = _requires['util'].group({
 		'logo': _requires['util'].makeImage({
 		    image: '/images/icon_logo.png',
-		    width: 70,
+		    width: 100,
 		    top: 0,
 		}),
 		'title': _requires['util'].makeLabel({
@@ -77,20 +81,24 @@ exports.run = function(){
 		'password': _requires['util'].makeTextField({
 			color: '#333300',
 			hintText: L('label_hinttext_password'),
-			borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+			border: 'hidden',
 			height: 35,
 			width: 250,
 			top: 10,
+			font:{fontFamily:'Helvetica Neue', fontSize:15, fontWeight:'normal'},
+			paddingLeft:5, 
 			backgroundColor: '#ffffff',
 			passwordMask: true
 		}),
 		'password_confirm': _requires['util'].makeTextField({
 			color: '#333300',
 			hintText: L('label_hinttext_password_confirm'),
-			borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+			border: 'hidden',
 			height: 35,
 			width: 250,
 			top: 10,
+			font:{fontFamily:'Helvetica Neue', fontSize:15, fontWeight:'normal'},
+			paddingLeft:5, 
 			backgroundColor: '#ffffff',
 			passwordMask: true
 		}),
@@ -104,7 +112,7 @@ exports.run = function(){
 		'create': create,
 		'close': close
 	}, 'vertical');
-	frame.view.add(create_group);
+	main_view.add(create_group);
 	
 	var total = '';
 	var crypto = require('vendor/crypto');
@@ -152,6 +160,6 @@ exports.run = function(){
 			result.target.focus();
 		}
 	});
-	
+	Ti.API.new_wallet_win = win;
 	win.open({transition:Ti.UI.iPhone.AnimationStyle.FLIP_FROM_RIGHT});
 };

@@ -1,24 +1,46 @@
+var theWindow =  Ti.UI.createWindow({
+	title:L('label_tab_4'),
+	backgroundColor:'#ececec',
+	orientationModes: [Ti.UI.PORTRAIT],
+	navBarHidden: true
+});
+if( OS_IOS ) theWindow.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;
+
 exports.run = function(){
-	var _requires = globals.requires;
+
+	var _windows = globals.windows;
+    var _requires = globals.requires;
+    
+    var main_view = Ti.UI.createScrollView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
+	main_view.top = 15;
+	theWindow.add(main_view);
 	
-	var win = _requires['layer'].createWindow();
-	var frame = _requires['layer'].drawFrame(win, { back: true, callback: function(){
-		if( current_currency !== _requires['cache'].data.currncy ){
-			is_save = true;
-			globals.loadBalance();
-		}
-		if( is_save ) _requires['cache'].save();
-	}});
+	var top_bar = Ti.UI.createView({ backgroundColor:'#e54353', width: Ti.UI.FILL, height: 55 });
+	top_bar.top = 0;
+	theWindow.add(top_bar);
+	
+	
+	var settings_title_center = _requires['util'].makeLabel({
+		text:L('label_tab_4'),
+		color:"white",
+		font:{fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'normal'},
+		textAlign: 'center',
+		top: 25, center: 0
+	});
+	top_bar.add( settings_title_center );
+
+	
+	var view = _requires['util'].group(null, 'vertical');
+	main_view.add(view);
 	
 	var info = globals.datas;
-	var view = _requires['util'].group(null, 'vertical');
-	frame.view.add(view);
 	
 	var is_save = false;
 	
 	function createDescBox(){
 		var box = _requires['util'].group();
 		box.width = '95%';
+		box.left = 5;
 		
 		return box;
 	}
@@ -40,14 +62,14 @@ exports.run = function(){
 		}
 		
 		box.height = params.height;
-		box.width = '95%';
-		box.backgroundColor = '#ffc07f';
+		box.width = '100%';
+		box.backgroundColor = 'white';
 		
 		return box;
 	}
 	
-	var box_user_name = createBox({ icon: 'icon_noimage.png', height: 80 });
-	box_user_name.top = 10;
+	var box_user_name = createBox({ icon: 'icon_noimage.png', height: 40 });
+	box_user_name.top = 50;
 	var label_user_name = _requires['util'].makeLabel({
 		text: globals.user_name || L('text_noregisted'),
 		font:{ fontSize: 15 },
@@ -78,7 +100,7 @@ exports.run = function(){
 									])
 								},
 								'callback': function( result ){
-									globals.user_name_top.text = label_user_name.text = globals.user_name = inputText;
+									label_user_name.text = globals.user_name = inputText;
 								},
 								'onError': function(error){
 									alert(error);
@@ -173,7 +195,7 @@ exports.run = function(){
 		on: function(){
 			function setEasyPass( secound_password ){
 	  			var easyInput = _requires['util'].createEasyInput({
-					win: win.origin,
+					win: theWindow.origin,
 					type: 'reconfirm',
 					callback: function( number ){
 						_requires['cache'].data.easypass = number;
@@ -223,7 +245,7 @@ exports.run = function(){
 	box_desc_easypass.add(label_desc_easypass);
 	view.add(box_desc_easypass);
 	
-	var box_hidden = Ti.UI.createView({ backgroundColor: '#ffc07f', opacity: 0.8, width: Ti.UI.FILL, height: Ti.UI.FILL });
+	var box_hidden = Ti.UI.createView({ backgroundColor: 'white', opacity: 0.8, width: Ti.UI.FILL, height: Ti.UI.FILL });
 	function easy_box_hide(){
 		box_desc_easypass.setOpacity(0.3);
 		box_easypass.add(box_hidden);
@@ -234,8 +256,67 @@ exports.run = function(){
 	}
 	if( _requires['cache'].data.isTouchId != null ) easy_box_hide();
 	
+	var box_currency = createBox({ icon: 'icon_settings_currency.png', height: 45 });
+	box_currency.top = 10;
+	view.add(box_currency);
+	
+	var current_currency = _requires['cache'].data.currncy;
+	var label_current = _requires['util'].makeLabel({
+		text: current_currency,
+		font:{ fontSize: 15 },
+		left: 60
+	});
+	box_currency.add(label_current);
+	
+	var picker = null;
+	box_currency.addEventListener('click', function(){
+		var data = []; var tikers = globals.tiker;
+		data.push( Ti.UI.createPickerRow( { 'title': _requires['cache'].data.currncy } ));
+		if( OS_IOS ){
+			if( picker == null ){
+				picker = Ti.UI.createPicker({ width: 150, left: 60, backgroundColor: 'transparent' });
+				for( key in tikers ){
+					if( key !== 'XCP' && key !== _requires['cache'].data.currncy ) data.push( Ti.UI.createPickerRow( { 'title': key } ));
+				}
+				picker.add(data);
+				
+				picker.addEventListener('change',function(e){
+					label_current.text = _requires['cache'].data.currncy = e.selectedValue[0];
+					globals.loadBalance();
+					if( globals.getOrders != null ) globals.getOrders();
+					_requires['cache'].save();
+				});
+				box_currency.add(picker);
+			}
+			else{
+				box_currency.remove(picker);
+				picker = null;
+			}
+		}
+		else{
+			data.push( L('label_cancel') );
+			for( key in tikers ){
+				if( key !== 'XCP' && key !== _requires['cache'].data.currncy ) data.push( key );
+			}
+			
+			var dialog = Ti.UI.createOptionDialog();
+			dialog.setOptions(data);
+			dialog.setCancel(1);
+			dialog.addEventListener('click',function(e){
+				if(e.index >= 2){
+					label_current.text = _requires['cache'].data.currncy = data[e.index];
+					globals.loadBalance();
+					if( globals.getOrders != null ) globals.getOrders();
+					_requires['cache'].save();
+				}
+			});
+			dialog.show();
+		}
+	});
+	if( _requires['cache'].data.isTouchId ) easy_box_hide();
+	
 	var box_identifier = createBox({ icon: 'icon_settings_identifier.png', height: 50 });
-	box_identifier.top = 20;
+	box_identifier.top = 15;
 	view.add(box_identifier);
 	
 	var identifier_group = _requires['util'].group();
@@ -268,59 +349,8 @@ exports.run = function(){
 		dialog.show();
 	});
 	
-	var box_currency = createBox({ icon: 'icon_settings_currency.png', height: 50 });
-	box_currency.top = 20;
-	view.add(box_currency);
-	
-	var current_currency = _requires['cache'].data.currncy;
-	var label_current = _requires['util'].makeLabel({
-		text: current_currency,
-		font:{ fontSize: 15 },
-		left: 60
-	});
-	box_currency.add(label_current);
-	
-	var picker = null;
-	box_currency.addEventListener('click', function(){
-		var data = []; var tikers = globals.tiker;
-		data.push( Ti.UI.createPickerRow( { 'title': _requires['cache'].data.currncy } ));
-		if( OS_IOS ){
-			if( picker == null ){
-				picker = Ti.UI.createPicker({ width: 150, left: 60, backgroundColor: 'transparent' });
-				for( key in tikers ){
-					if( key !== 'XCP' && key !== _requires['cache'].data.currncy ) data.push( Ti.UI.createPickerRow( { 'title': key } ));
-				}
-				picker.add(data);
-				
-				picker.addEventListener('change',function(e){
-					label_current.text = _requires['cache'].data.currncy = e.selectedValue[0];
-				});
-				box_currency.add(picker);
-			}
-			else{
-				box_currency.remove(picker);
-				picker = null;
-			}
-		}
-		else{
-			data.push( L('label_cancel') );
-			for( key in tikers ){
-				if( key !== 'XCP' && key !== _requires['cache'].data.currncy ) data.push( key );
-			}
-			
-			var dialog = Ti.UI.createOptionDialog();
-			dialog.setOptions(data);
-			dialog.setCancel(1);
-			dialog.addEventListener('click',function(e){
-				if(e.index >= 2) label_current.text = _requires['cache'].data.currncy = data[e.index];
-			});
-			dialog.show();
-		}
-	});
-	if( _requires['cache'].data.isTouchId ) easy_box_hide();
-	
-	var box_passphrase = createBox({ icon: 'icon_settings_password.png', height: 50 });
-	box_passphrase.top = 20;
+	var box_passphrase = createBox({ icon: 'icon_settings_password.png', height: 45 });
+	box_passphrase.top = 10;
 	view.add(box_passphrase);
 	
 	var passphrase_group = _requires['util'].group();
@@ -369,6 +399,71 @@ exports.run = function(){
 		dialog.show();
 	});
 	
-	win.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_DOWN});
-	return win.origin;
+	var box_about = createBox({ icon: 'icon_settings_about.png', height: 45 });
+	box_about.top = 10;
+	var label_about = _requires['util'].makeLabel({
+			text: L('label_about'),
+			font:{ fontSize: 14 },
+			left: 60
+		});
+		box_about.add(label_about);
+	view.add(box_about);
+	box_about.addEventListener('click', function(){
+	
+		var dialog = _requires['util'].createDialog({
+			title: L('appname'),
+			message: 'ver' + Ti.App.version + '\n\n' + globals.copyright,
+			buttonNames: [L('label_close')]
+		}).show();
+	
+	});
+	
+	var box_signout = createBox({ icon: 'icon_settings_signout.png', height: 45 });
+	box_signout.top = 10;
+	var label_signout = _requires['util'].makeLabel({
+		text: L('label_signout'),
+		font:{ fontSize: 14 },
+		left: 60
+	});
+	box_signout.add(label_signout);
+	view.add(box_signout);
+	box_signout.addEventListener('click', function(){
+		
+		var dialog = _requires['util'].createDialog({
+			title: L('label_signout'),
+			message: L('text_signout'),
+			buttonNames: [L('label_cancel'), L('label_ok')]
+		});
+		dialog.addEventListener('click', function(e){
+			if( e.index == 1 ){
+				_requires['cache'].init();
+				_windows['login'].run();
+				globals.tabGroup.closeAllTab();
+			}
+		});
+		dialog.show();
+	});
+	
+	var box_cooperation = createBox({ icon: 'icon_settings_linkage.png', height: 45 });
+	box_cooperation.top = 10;
+	var label_cooperation = _requires['util'].makeLabel({
+		text: L('label_cooperation'),
+		font:{ fontSize: 14 },
+		left: 60
+	});
+	box_cooperation.add( label_cooperation );
+	view.add( box_cooperation );
+	box_cooperation.addEventListener('click', function(){
+		
+		_requires['util'].openScanner({
+			'callback': function(e){
+				var str = e.barcode;
+				globals._parseArguments(str, true);
+			}
+		});
+		
+	});
+	
+	Ti.API.settingsLoad = 'YES';
 };
+Ti.API.win4 = theWindow;

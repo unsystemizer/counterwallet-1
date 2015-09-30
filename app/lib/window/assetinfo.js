@@ -3,12 +3,45 @@ exports.run = function( params ){
 	var _requires = globals.requires;
 	
 	var win = _requires['layer'].createWindow();
-	var frame = _requires['layer'].drawFrame(win, { back: true});
+	
+	
+	var main_view = Ti.UI.createView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
+	win.origin.add(main_view);
+	
+	var top_bar = Ti.UI.createView({ backgroundColor:'#e54353', width: Ti.UI.FILL, height: 55 });
+	top_bar.top = 0;
+	win.origin.add(top_bar);
+	
+	var back_home = _requires['util'].makeLabel({
+		text:L('label_tab_1'),
+		color:"white",
+		font:{fontFamily:'HelveticaNeue-Light', fontSize:15, fontWeight:'normal'},
+		textAlign: 'right',
+		top: 25, left:10
+	});
+	top_bar.add( back_home );
+	
+	back_home.addEventListener('click', function(){
+		win.close();
+	});
+	
+	
+	
+	var settings_title_center = _requires['util'].makeLabel({
+		text:L('label_asset_info'),
+		color:"white",
+		font:{fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'normal'},
+		textAlign: 'center',
+		top: 25, center: 0
+	});
+	top_bar.add(  settings_title_center );
+	
 	
 	var view = _requires['util'].group(null, 'vertical');
-	frame.view.add(view);
+	view.top = 50;
+	main_view.add(view);
 		
-	var loading = _requires['util'].showLoading(frame.view, { width: Ti.UI.FILL, height: Ti.UI.FILL});
+	var loading = _requires['util'].showLoading(main_view, { width: Ti.UI.FILL, height: Ti.UI.FILL});
 	_requires['network'].connect({
 		'method': 'getAssetInfo',
 		'post': {
@@ -34,8 +67,8 @@ exports.run = function( params ){
 							keyboardType: Ti.UI.KEYBOARD_DECIMAL_PAD,
 						})
 					}, 'vertical');
-					box.width = '95%';
-					box.backgroundColor = '#ffe8d1';
+					box.width = '100%';
+					box.backgroundColor = 'white';
 					view.add(box);
 					
 					return box;
@@ -43,16 +76,17 @@ exports.run = function( params ){
 				
 				function createBox(){
 					var box = _requires['util'].group({
-						title: _requires['util'].makeLabel({
+						'title': _requires['util'].makeLabel({
 							text: '',
 							left: 10,
 							font:{ fontSize: 15 },
 							color: '#a6a8ab'
 						})
 					});
-					box.width = '95%';
+					box.top = 0;
+					box.width = '100%';
 					box.height = 35;
-					box.backgroundColor = '#ffe8d1';
+					box.backgroundColor = 'white';
 					view.add(box);
 					
 					return box;
@@ -123,123 +157,20 @@ exports.run = function( params ){
 				box_locked.add(is_locked.origin);
 				is_locked.editable = false;
 				
-				var menus = new Array(
-					{ icon: 'icon_review.png', title: L('label_holders') }
-				);
-				if( !readonly ){
-					if( !result.locked ) menus.push({ icon: 'icon_review.png', title: L('label_reissue') });
-				}
-				var menu_height = menus.length * 50;
-				var menuScreen = _requires['util'].createUpScreen({
-					'win': win,
-					'width': 240, 'height': menu_height,
-					'right': 5,
-					'backgroundColor': '#ffc07f',
-					'open': function( view ){
-						var menuTable = _requires['util'].createTableList({
-							width: 240, height: menu_height,
-							backgroundColor: '#ffffff',
-							top: 0,
-							rowHeight: 50
-						});
-						menuTable.setRowDesign(menus, function(row, val){
-							row.add(_requires['util'].makeImage({
-							    image: '/images/' + val.icon,
-							    width: 40,
-							    left: 10
-							}));
-							
-							row.add(_requires['util'].makeLabel({
-								text: val.title,
-								font: { fontSize: 15 },
-								color: '#2b4771',
-								left: 55
-							}));
-							
-							return row;
-						});
-						menuTable.addEventListener('click', function(e){
-							menuScreen.close();
-							if( e.row.children[1].text === menus[0].title ){
-								_windows['assetholders'].run( { 'asset': params.asset } );
-							}
-							else if( e.row.children[1].text === menus[1].title ){
-								var dialog = _requires['util'].createInputDialog({
-									title: L('label_reissue'),
-									message: L('text_reissue'),
-									value: '',
-									buttonNames: [L('label_close'), L('label_ok')]
-								});
-								dialog.origin.addEventListener('click', function(e){
-									var inputText = (OS_ANDROID)?dialog.androidField.getValue():e.text;
-									if( e.index == 1 ){
-										if( inputText.length > 0 ){
-											_requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
-												if( e.success ){
-													var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL});
-													
-													_requires['network'].connect({
-														'method': 'doIssue',
-														'post': {
-															id: _requires['cache'].data.id,
-															code: _requires['cache'].data.pass_hash,
-															token: result.asset,
-															quantity: inputText
-														},
-														'callback': function( result ){
-															_requires['bitcore'].sign(result, function(signed_tx){
-																_requires['network'].connect({
-																	'method': 'sendrawtransaction',
-																	'post': {
-																		tx: signed_tx
-																	},
-																	'callback': function( result ){
-																		var dialog = _requires['util'].createDialog({
-																			message: L('text_reissued'),
-																			buttonNames: [L('label_close')]
-																		});
-																		dialog.show();
-																	},
-																	'onError': function(error){
-																		alert(error);
-																	},
-																	'always': function(){
-																		loading.removeSelf();
-																	}
-																});
-															});
-														},
-														'onError': function(error){
-															alert(error);
-															loading.removeSelf();
-														}
-													});
-												}
-											}});
-										}
-									}
-								});
-								dialog.origin.show();
-							}
-						});
-						view.add(menuTable);
-					}
+				var button_holders = Ti.UI.createButton({
+		    	    backgroundColor : '#e54353',
+		      	 	title : L('label_holders'),
+		        	color:'white',
+		        	top : 10,
+		       		width : '90%',	
+		        	height : 32,
+		        	font:{fontFamily:'Helvetica Neue', fontSize:15, fontWeight:'normal'},
+		       		borderRadius:5
+		  		});
+		  		button_holders.addEventListener('click', function() {
+			   		 _windows['assetholders'].run( { 'asset': params.asset } );
 				});
-				
-				var img_menu = _requires['util'].makeImageButton({
-					    image: '/images/img_menu.png',
-					    height: 50,
-					    bottom: 0,
-					    right: 10,
-					    listener: function(self){
-							if( !menuScreen.isVisible ) menuScreen.open();
-							else menuScreen.close();
-						}
-					}
-				);
-				menuScreen.icon = img_menu;
-				frame.bottom.add(img_menu);
-				
+		  		view.add(button_holders);
 				loading.removeSelf();
 			}
 			
@@ -256,7 +187,7 @@ exports.run = function( params ){
 			alert(L('text_assetinfo_error'));
 		}
 	});
-	win.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_DOWN});
+	Ti.API.tab1.open(win.origin,{animated:true});
 	
 	return win.origin;
 };

@@ -2,14 +2,14 @@
 <resources>
 	<string name="language">en</string>
 	
-	<string name="appname">CounterWallet</string>
+	<string name="appname">IndieSquare Wallet</string>
 	<string name="label_about">About</string>
-	
+	<string name="label_load_tokens">polishing tokens...</string>
 	<string name="label_holdAssets">Asset Balance</string>
 	<string name="label_ownAssets">Created Assets</string>
 	<string name="label_qrcode">Show QR Code</string>
 	<string name="label_histories">Transaction History</string>
-	<string name="label_createtoken">Create a Token</string>
+	<string name="label_createtoken">create a token</string>
 	<string name="label_tokenname">Choose Your Token Name</string>
 	<string name="label_numeric">Free Token</string>
 	<string name="label_description">Description</string>
@@ -18,22 +18,24 @@
 	<string name="label_quantity_send">Amount to Send</string>
 	<string name="label_cancel">Cancel</string>
 	<string name="label_ok">OK</string>
-	<string name="label_hinttext_password">Password(at least 6 letters)</string>
-	<string name="label_password">Password</string>
+	<string name="label_hinttext_password">password(at least 6 letters)</string>
+	<string name="label_password">password</string>
 	<string name="label_passphrase">12 word passphrase</string>
-	<string name="label_send">Send</string>
-	<string name="label_showinfo">Asset Info</string>
+	<string name="label_send">send</string>
+	<string name="label_showinfo">asset info</string>
 	<string name="label_order">Order</string>
 	<string name="label_price">Price</string>
-	<string name="label_buy">Buy</string>
-	<string name="label_sell">Sell</string>
+	<string name="label_quantity">Quantity</string>
+	<string name="label_buy">buy</string>
+	<string name="label_sell">sell</string>
 	<string name="label_noprice">No Price</string>
+	<string name="text_gocustom">please create a custom order</string>
 	<string name="label_confirm">Confirm</string>
 	<string name="label_close">Close</string>
 	<string name="label_login">Login</string>
 	<string name="label_bitcoinaddress">My Bitcoin Address</string>
-	<string name="label_destination">Receipient</string>
-	<string name="label_fee">Miner's fee</string>
+	<string name="label_destination">to address</string>
+	<string name="label_fee">fee</string>
 	<string name="label_create">Create</string>
 	<string name="label_back">Go Back</string>
 	<string name="label_delete">Erase</string>
@@ -41,11 +43,14 @@
 	<string name="label_done">Done</string>
 	<string name="label_search">Search</string>
 	
+	<string name="label_gocustom_noprice">There is no market price, please create a custom order.</string>
+	<string name="text_choose">Please select your buy/sell token combination.</string>
+	
 	<string name="text_createnewwallet">Create a New Wallet</string>
-	<string name="text_createToken">Create a Token</string>
+	<string name="text_createToken">create a token</string>
 	<string name="text_confirmIssuance">Issue{quantity}units of {token}</string>
 	
-	<string name="text_confirmorder"> Confirm Order</string>
+	<string name="label_confirmorder">Confirm Order</string>
 	<string name="text_confirmsend">Confirm Send</string>
 	
 	<string name="text_issuance_done">Created {asset}</string>
@@ -53,12 +58,12 @@
 	<string name="text_sent">Sent</string>
 	
 	<string name="text_doissuance">Issue</string>
-	<string name="text_dosend">Send</string>
+	<string name="text_dosend">SEND</string>
 	
 	<string name="text_makedivisible">Make Divisible</string>
 	<string name="text_hold">You Own {balance}Units of {asset}</string>
 	<string name="text_totalcost">{asset}の合計 {amount}</string>
-	<string name="text_comfirmorder">Place a {type} Order for {quantity}{main_asset} with {price}{price_asset}</string>
+	<string name="text_confirmorder">Place an order for {quantity}{main_asset} at {price}{price_asset}</string>
 	<string name="text_necessarycost">You need {total} {price_asset}</string>
 	<string name="text_canget"> With order matched, you get {total}{price_asset}</string>
 	<string name="text_createnewwallet">Create A New Wallet</string>
@@ -66,7 +71,37 @@
 	<string name="text_descript_password">DO NOT forget your password</string>
 	<string name="text_newcommer">First time user</string>
 	<string name="text_copied">Copied</string>
-	<string name="text_copied_message">Address copied on clipboard</string>
+	<string name="text_copied_message">Address copied to clipboard</string>
+	<string name="label_exchange_basic">simple order</string>
+	<string name="label_exchange_advanced">custom order</string>
+	<string name="label_exchange_getting_tokens">getting tokens...</string>
+	<string name="label_exchange_search_limit">enter at least 3 characters</string>
+	<string name="label_exchange_how_many">how many</string>
+	<string name="label_exchange_like_to_buy">would you like to get?</string>
+	<string name="label_exchange_like_to_spend">would you like to spend?</string>
+	<string name="label_exchange_buy_large">BUY</string>
+	<string name="label_exchange_sell_large">SELL</string>
+	<string name="label_exchange_place_order">Place order</string>
+	<string name="label_exchange_custom_order">custom order</string>
+	<string name="label_exchange_create_custom_order">Create custom order</string>
+	<string name="label_exchange_open_orders">open orders</string>
+	<string name="label_exchange_price">price</string>
+	<string name="label_exchange_amount">amount</string>
+	<string name="label_exchange_closed_orders">closed orders</string>
+	<string name="label_exchange_no_orders_message">there are no orders for these tokens</string>
+	<string name="label_exchange_too_much">there are not enough open orders to satisfy this request</string>
+	<string name="label_exchange_calculate">confirm</string>
+	<string name="label_approx">approx</string>
+    <string name="label_tab_1">tokens</string>
+	<string name="label_tab_2">exchange</string>
+	<string name="label_tab_3">history</string>
+	<string name="label_tab_4">settings</string>
+	<string name="label_tab_receive">receive</string>
+	<string name="label_asset_info">asset info</string>
+	<string name="label_send">send</string>
+	<string name="label_exchange_will_buy">get </string>
+	<string name="label_exchange_will_spend">cost </string>
+	<string name="label_exchange_disclaimer">(You can change the price by creating a custom order.)</string>
 	<string name="text_use_line">Send thru Line</string>
 	<string name="text_use_mail">Email your Bitcoin address</string>
 	
@@ -74,9 +109,10 @@
 	<string name="label_transferownership">Transfer the ownership</string>
 	<string name="label_locktoken">Lock</string>
 	<string name="label_changedescription">Change the description</string>
-	<string name="label_noorders">No orders</string>
+	<string name="label_noorders">no open orders</string>
+	<string name="label_noorders_closed">no closed orders</string>
 	<string name="text_holdcount">{count}people own this asset</string>
-	<string name="label_holders">Assetholders</string>
+	<string name="label_holders">Show Assetholders</string>
 	
 	<string name="text_history_order">Sold {give_quantity} {give_asset} for {get_quantity} {get_asset}</string>
 	<string name="text_history_send">Sent {quantity}{asset} to {target}</string>
@@ -116,11 +152,15 @@
 	
 	<string name="label_reload">Reloading</string>
 	
-	<string name="label_passphrase">Passphrase</string>
+	<string name="label_passphrase">passphrase</string>
+	<string name="label_getting_price">getting price...</string>
 	<string name="label_passphrase_title">Write down this recovery passphrase</string>
 	<string name="text_passphrase">"{passphrase}"</string>
 	
 	<string name="label_passphrase_ok">I wrote it down</string>
+	<string name="text_passphrase_re">You can see passphrase at settings.</string>
+	<string name="label_passphrase_re"> Look again</string>
+	<string name="label_passphrase_continue">I definitely wrote it down</string>
 	
 	<string name="label_historytype_send">Send</string>
 	<string name="label_historytype_receive">Receive</string>
@@ -138,13 +178,13 @@
 	<string name="label_order_status_filled">Complete</string>
 	<string name="label_order_status_expired">Incomplete</string>
 	<string name="label_order_status_canceled">Cancel</string>
-	<string name="label_hinttext_password_confirm"> Confirm password</string>
+	<string name="label_hinttext_password_confirm">confirm password</string>
 	<string name="text_nohistory"> No history</string>
 	<string name="text_history_error">Could not retrieve history</string>
 	
 	<string name="warning_insufficientfunds">Are you sure you have sufficient funds?</string>
 	<string name="text_assetinfo_error"> The asset might not exist or is yet to be confirmed</string>
-	<string name="text_sendconfirmation">Send \n {amount} to {address}</string>
+	<string name="text_sendconfirmation">Send \n {amount} {token} to {address}</string>
 	<string name="label_issue_supply">Total supply {supply}</string>
 	<string name="label_issue_balance">Balance {balance}</string>
 	
@@ -173,12 +213,12 @@
 	<string name="label_edit">Edit</string> 
 	<string name="text_doedit">Done</string>
 	
-	
-	
-	
 	<string name="text_webfailed">Failed to read...</string>
 	<string name="label_signout">Sign out</string>
 	<string name="text_signout">Are you sure you want to sign out?</string> 
 	<string name="label_reorganisation">Apologies</string>
 	<string name="text_reorganisation">Please wait while the Blockchain is being re-synced...</string>
+	
+	<string name="label_cooperation">System linkage(β)</string>
+	<string name="text_signerror">Could not be signed...</string>
 </resources>

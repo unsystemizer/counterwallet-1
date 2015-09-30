@@ -40,10 +40,10 @@ module.exports = (function() {
 		return account.privateKey;
 	};
 	
-	self.sign = function( raw_tx, callback ){
+	self.sign = function( raw_tx, callback, fail ){
 		if( globals.DEMO ) callback('signed_tx');
 		if( account == null ) return null;
-		bitcore.signrawtransaction(raw_tx, account.privateKey, callback);
+		bitcore.signrawtransaction(raw_tx, account.privateKey, callback, fail);
 	};
 	
 	self.getPublicKey = function( passphrase, bool ){

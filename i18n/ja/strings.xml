@@ -2,9 +2,9 @@
 <resources>
 	<string name="language">ja</string>
 	
-	<string name="appname">カウンターお財布</string>
+	<string name="appname">IndieSquare Wallet</string>
 	<string name="label_about">このアプリについて</string>
-	
+	<string name="label_load_tokens">読み込み中。。。</string>
 	<string name="label_holdAssets">保有アセット</string>
 	<string name="label_ownAssets">発行アセット</string>
 	<string name="label_qrcode">QRコードを表示</string>
@@ -25,9 +25,11 @@
 	<string name="label_showinfo">情報を見る</string>
 	<string name="label_order">注文</string>
 	<string name="label_price">価格</string>
+	<string name="label_quantity">注文する量</string>
 	<string name="label_buy">買い</string>
 	<string name="label_sell">売り</string>
 	<string name="label_noprice">価格なし</string>
+	<string name="text_gocustom">カスタム注文をして下さい</string>
 	<string name="label_confirm">確認</string>
 	<string name="label_close">閉じる</string>
 	<string name="label_login">ログイン</string>
@@ -41,11 +43,14 @@
 	<string name="label_done">完了</string>
 	<string name="label_search">検索</string>
 	
+	<string name="label_gocustom_noprice">まだ取引がありません。カスタム注文で価格を入力できます。</string>
+	<string name="text_choose">上から取引の組み合わせを選んで下さい</string>
+	
 	<string name="text_createnewwallet">新しいウォレットを作ります</string>
 	<string name="text_createToken">トークンを発行します</string>
 	<string name="text_confirmIssuance">{token}を{quantity}発行します</string>
 	
-	<string name="text_confirmorder">注文を出します</string>
+	<string name="label_confirmorder">注文の確認</string>
 	<string name="text_confirmsend">送信します</string>
 	
 	<string name="text_issuance_done">{asset}を発行しました</string>
@@ -58,7 +63,7 @@
 	<string name="text_makedivisible">Satoshi単位を許可</string>
 	<string name="text_hold">{asset}を{balance}持っています</string>
 	<string name="text_totalcost">{asset}の合計 {amount}</string>
-	<string name="text_comfirmorder">{price}{price_asset}の価格で{quantity}{main_asset}の{type}注文を出します</string>
+	<string name="text_confirmorder">{price}{price_asset}の価格で{quantity}{main_asset}の注文を出します</string>
 	<string name="text_necessarycost">{price_asset}が{total}必要です</string>
 	<string name="text_canget">成立すると{price_asset}を{total}入手できます</string>
 	<string name="text_createnewwallet">新しいウォレットを作る</string>
@@ -69,14 +74,45 @@
 	<string name="text_copied_message">アドレスをクリップボードにコピーしました</string>
 	<string name="text_use_line">LINEで伝える</string>
 	<string name="text_use_mail">メールで伝える</string>
-	
+	<string name="label_exchange_basic">簡単注文</string>
+	<string name="label_exchange_advanced">カスタム注文</string>
+	<string name="label_exchange_too_much">この注文をするのに必要なオープン注文が足りません</string>
+	<string name="label_exchange_how_many">いくつ</string>
+	<string name="label_exchange_like_to_buy">を注文しますか？</string>
+	<string name="label_exchange_like_to_spend">を消費しますか？</string>
+	<string name="label_exchange_buy_large">買い</string>
+	<string name="label_exchange_sell_large">売り</string>
+	<string name="label_exchange_place_order">注文する</string>
+	<string name="label_exchange_custom_order">カスタム注文</string>
+	<string name="label_exchange_create_custom_order">カスタム注文をする</string>
+	<string name="label_exchange_getting_tokens">検索中...</string>
+	<string name="label_exchange_search_limit">3文字以上必要です</string>
+	<string name="label_exchange_disclaimer">(価格は、カスタム注文で変更できます)</string>
+	<string name="label_exchange_open_orders">オープン注文</string>
+	<string name="label_exchange_closed_orders">過去注文</string>
+	<string name="label_exchange_calculate">確認</string>
+	<string name="label_exchange_price">価格</string>
+	<string name="label_exchange_amount">注文量</string>
+	<string name="label_approx">概算</string>
+	<string name="label_tab_1">トップ</string>
+	<string name="label_tab_2">取引所</string>
+	<string name="label_tab_3">履歴</string>
+	<string name="label_tab_4">設定</string>
+	<string name="label_tab_receive">受取り</string>
+	<string name="label_getting_price">価格計算中...</string>
+	<string name="label_asset_info">アセット情報</string>
+	<string name="label_send">送信</string>
+	<string name="label_exchange_will_buy">注文量 </string>
+	<string name="label_exchange_will_spend">必要額 </string>
+	<string name="label_exchange_no_orders_message">このトークンにはオープン注文はありません</string>
 	<string name="label_issueadditional">追加発行</string>
 	<string name="label_transferownership">所有権を移動させる</string>
 	<string name="label_locktoken">ロックする</string>
 	<string name="label_changedescription">説明を変更する</string>
 	<string name="label_noorders">注文がありません</string>
+	<string name="label_noorders_closed">注文がありません</string>
 	<string name="text_holdcount">{count}人が保有しています</string>
-	<string name="label_holders">保有者一覧</string>
+	<string name="label_holders">保有者を見る</string>
 	
 	<string name="text_history_order">{give_quantity} {give_asset} で {get_quantity} {get_asset}を入手します</string>
 	<string name="text_history_send">{quantity}{asset}を{target}へ送りました</string>
@@ -117,10 +153,11 @@
 	<string name="label_reload">再読み込み</string>
 	
 	<string name="label_passphrase">パスフレーズ</string>
-	<string name="label_passphrase_title">下記を大切に保管して下さい</string>
-	<string name="text_passphrase">"{passphrase}"</string>
+	<string name="label_passphrase_title">パスフレーズ</string>
+	<string name="text_passphrase">下記を大切に保管して下さい\n{passphrase}\n</string>
 	
 	<string name="label_passphrase_ok">記録しました</string>
+	<string name="text_passphrase_re">パスフレーズは、設定からも見ることが出来ます。</string>
 	
 	<string name="label_historytype_send">送金</string>
 	<string name="label_historytype_receive">受取</string>
@@ -144,12 +181,13 @@
 	
 	<string name="warning_insufficientfunds">残高が未承認の可能性があります</string>
 	<string name="text_assetinfo_error">トークンが存在しないか、まだ未承認です</string>
-	<string name="text_sendconfirmation">{address}へ\n{amount}送ります。</string>
+	<string name="text_sendconfirmation">{address}へ\n{amount}{token} 送ります。</string>
 	<string name="label_issue_supply">総発行数 {supply}</string>
 	<string name="label_issue_balance">保有数 {balance}</string>
 	
 	<string name="label_exchange">取引所</string>
 	<string name="label_dividend">配当</string>
+	
 	
 	<string name="label_dividend_token">支払いトークン</string>
 	<string name="text_dividend_description">{asset}の保有者に対して配当をします</string>
@@ -176,11 +214,12 @@
 	
 	<string name="text_doedit">完了</string>
 	
-	
-	
 	<string name="text_webfailed">読み込みに失敗しました...。</string>
 	<string name="label_signout">サインアウト</string>
 	<string name="text_signout">サインアウトの前に、12パスフレーズをメモすることを強くお奨めします。このままサインアウトしても良いですか？</string>
 	<string name="label_reorganisation">申し訳ありません...</string>
 	<string name="text_reorganisation">現在Blockchainを再編成しています。しばらくお待ち下さい。</string>
+	
+	<string name="label_cooperation">連携(β版)</string>
+	<string name="text_signerror">署名できませんでした...</string>
 </resources>

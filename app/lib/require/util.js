@@ -43,7 +43,6 @@ module.exports = (function() {
 				params.listener(image);
 			});
 		}
-		
 		return image;
 	};
 	
@@ -119,12 +118,20 @@ module.exports = (function() {
 			if( OS_ANDROID ) params.keyboardType = Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION;
 		}
 		
+		if( params.height != null ){
+			if( OS_ANDROID ) params.height += 5;
+		}
+		
 		var field = Ti.UI.createTextField( merge(basic, params) );
 		if( params.keyboardType == Ti.UI.KEYBOARD_DECIMAL_PAD ){
 			if( OS_IOS ){
-				var doneBtn = Ti.UI.createButton({ title : L('label_close'), width : 67, height : 32 });
-				doneBtn.addEventListener('click', function(e){ field.blur(); });
-				field.keyboardToolbar = [doneBtn];
+				var flexSpace = Ti.UI.createButton({ systemButton:Ti.UI.iPhone.SystemButton.FLEXIBLE_SPACE });
+				var doneButton = Ti.UI.createButton({ title : L('label_close'), width : 67, height : 32 });
+				doneButton.addEventListener('click', function(e){
+					field.blur();
+				});
+				field.keyboardToolbar = [flexSpace, flexSpace, doneButton];
+				field.keyboardToolbarHeight = 30;
 			}
 		}
 		return field;
@@ -371,7 +378,7 @@ module.exports = (function() {
 				}),
 				text: self.makeLabel({
 					text: sign,
-					color: '#ff8200',
+					color: '#e54353',
 					font:{ fontSize: font },
 				}),
 			});
@@ -502,9 +509,9 @@ module.exports = (function() {
 			logos: logos,
 			text: self.makeLabel({
 				text: L('text_inputpass'),
-				color: '#ff8200',
+				color: '#e54353',
 				font:{ fontSize: 12 },
-				top: 55
+				top: 95
 			}),
 			marks: marks,
 			buttons: buttons
@@ -567,7 +574,7 @@ module.exports = (function() {
 				}),
 				text: self.makeLabel({
 					text: sign,
-					color: '#ff8200',
+					color: '#e54353',
 					font:{ fontSize: font },
 				}),
 			});
@@ -631,8 +638,7 @@ module.exports = (function() {
 		
 		return inputView;
 	};
-	
-	self.showLoading = function(parent,  params ){
+		self.showLoading = function(parent,  params ){
 		params.font = getFont( params );
 		if( params.width == Ti.UI.FILL && params.height == Ti.UI.FILL ){
 			params.backgroundColor = '#ffffff';
@@ -645,6 +651,42 @@ module.exports = (function() {
 				if( params.style === 'dark' ) style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
 			}
 			params.style = style;
+		}
+		if( OS_ANDROID ) delete params['style'];
+		
+		var act = Ti.UI.createActivityIndicator( params );
+		if( OS_ANDROID ){
+			if( params.message ) act.setMessage(params.message);
+		}
+		act.show();
+		
+		parent.add(act);
+		
+		act.removeSelf = function(){
+			parent.remove(act);
+			act = null;
+		};
+		
+		return act;
+	};
+	self.showLoadingCustom = function(parent,  params ){
+		params.font = getFont( params );
+		params.top = 30;
+		if( params.width == Ti.UI.FILL && params.height == Ti.UI.FILL ){
+			params.backgroundColor = 'transparent';
+			params.opacity = 0.7;
+			params.style = 'dark';
+		}
+		if( OS_IOS ){
+			var style = Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN;
+			if( params.style != null ){
+				if( params.style === 'dark' ) style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
+			}
+			params.style = style;
+			params.height = Ti.UI.SIZE;
+  			params.width = Ti.UI.SIZE;
+  			params.message = L('label_load_tokens');
+  			params.font = {fontFamily:'Helvetica Neue', fontSize:15, fontWeight:'normal'};
 		}
 		if( OS_ANDROID ) delete params['style'];
 		
@@ -694,7 +736,7 @@ module.exports = (function() {
 		slider.editable = params.editable || true;
 		slider.origin = Ti.UI.createView({
 			borderRadius: 2,
-			backgroundColor: params.init ? '#ff8200': '#666666',
+			backgroundColor: params.init ? '#e54353': '#666666',
 			width: 60,
 			height: 25
 		});
@@ -717,8 +759,8 @@ module.exports = (function() {
 					slider.is = false;
 				}
 				else{
-					if( OS_ANDROID ) slider.origin.backgroundColor = '#ff8200';
-					else slider.origin.animate({ backgroundColor: '#ff8200', duration: 500 });
+					if( OS_ANDROID ) slider.origin.backgroundColor = '#e54353';
+					else slider.origin.animate({ backgroundColor: '#e54353', duration: 500 });
 					swit.animate({ left: 16, duration: 300}, params.on);
 					slider.is = true;
 				}
@@ -728,7 +770,7 @@ module.exports = (function() {
 		slider.on = function(){
 			slider.is = true;
 			swit.left = 16;
-			slider.origin.backgroundColor = '#ff8200';
+			slider.origin.backgroundColor = '#e54353';
 		};
 		
 		slider.off = function(){
@@ -966,6 +1008,135 @@ module.exports = (function() {
 		};
 		
 		return menu;
+	};
+	
+	self.createDownScreen = function( params ){
+		var layer = require('require/layer');
+		var menu = {};
+		
+		menu.origin = Ti.UI.createView({ top: 0, width: Ti.UI.SIZE, height: Ti.UI.SIZE, opacity: 0.0 });
+		
+		var menuLayer = null, menuBack = null, whole_menuView = null;
+		menu.close = function(){
+			menuBack.animate({ opacity: 0.0, duration: 100 });
+			whole_menuView.animate({ bottom: params.height, duration: 500 }, function(){
+				if( layer != null ) layer.removeLayer(params.win, menuLayer);
+				menuLayer = null;
+				menu.isVisible = false;
+				menu.origin.fireEvent('close');
+			});
+			if( params.close != null ) params.close(menuLayer);
+		};
+		
+		menu.open = function(){
+			menu.origin.fireEvent('open');
+			menuLayer = layer.newLayer(params.win.origin);
+			menuBack = Ti.UI.createView({
+				width: Ti.UI.FILL,
+				height: Ti.UI.FILL,
+				backgroundColor: 'black',
+				opacity: 0.0,
+			});
+			menuLayer.add(menuBack);
+			menuBack.addEventListener('click', function(e){
+				menu.close();
+			});
+			
+			whole_menuView = Ti.UI[(OS_ANDROID)?'createView':'createScrollView']({
+				width: params.width || '100%',
+				height: params.height,
+				backgroundColor: params.backgroundColor || '#ffffff',
+				top:-50
+			});
+			menuLayer.add(whole_menuView);
+			if( params.right ) whole_menuView.right = params.right;
+			if( params.left ) whole_menuView.left = params.left;
+			
+			params.open(whole_menuView, menuLayer);
+			
+			menuBack.animate({ opacity: 0.5, duration: 100 });
+			whole_menuView.animate({ top: 35, duration: 500 });
+			
+			menu.isVisible = true;
+		};
+		
+		return menu;
+	};
+	
+	self.putTokenIcon = function( params ){
+		(function(params) {
+			if( params.info.description != null ){
+				if( /^(https?:\/\/).*\.json/.test(params.info.description) ){
+					globals.requires['network'].getjson({
+						'uri': params.info.description,
+						'callback': function(json){
+							self.checkAssetImage(params, json.image);
+						},
+						'onError': function(error){
+							self.checkAssetImage(params);
+						}
+					});
+				}
+				else self.checkAssetImage(params);
+			}
+			else self.checkAssetImage(params);
+		})(params);
+	};
+	
+	self.checkAssetImage = function( params, uri ){
+		var image_url =  uri || '';
+		
+		if( params.info.asset === 'BTC' ){
+			image_url = '/images/asset_bitcoin.png';
+		}
+		else if( params.info.asset == 'XCP' ){
+			image_url = '/images/asset_xcp.png';
+		}
+		else if( image_url.length <= 0 ){
+			image_url = 'https://counterpartychain.io/content/images/icons/'+params.info.asset.toLowerCase()+'.png';
+		}
+		
+		var asset_image = Ti.UI.createImageView({
+			image: image_url,
+			width: params.width, height: params.height,
+			top: params.top, left: params.left
+		});
+		
+		var blob = asset_image.toBlob();
+		var base64encoded = undefined;
+		if( blob != null ) base64encoded = Ti.Utils.base64encode(blob);
+		
+		var icon = asset_image;
+		if( OS_IOS && base64encoded == undefined ){
+			asset_image.image = 'https://counterpartychain.io/content/images/icons/'+params.info.asset.toLowerCase()+'.png';
+			blob = asset_image.toBlob();
+			base64encoded = Ti.Utils.base64encode(blob);
+		}
+		
+		if( blob == null || base64encoded.toString() == globals.coindaddy_default ){
+			asset_image.image = '/images/icon_default.png';
+			asset_image.setOpacity(0.8);
+			
+			icon = self.group({
+				'icon': asset_image,
+				'char': (params.info.asset != null)? self.makeLabel({
+					text: (params.info.asset == 'XCP')? '': params.info.asset.charAt(0),
+					color: '#ffffff',
+					font:{ fontFamily:'HelveticaNeue-Light', fontSize: asset_image.width * 0.5, fontWeight:'normal' },
+					textAlign: 'right'
+				}): null
+			});
+			icon.top = asset_image.top; 
+			icon.left = asset_image.left;
+			icon.bottom = asset_image.bottom;
+			icon.right = asset_image.right;
+			
+			asset_image.top = asset_image.left = asset_image.bottom = asset_image.right = 0;
+			icon.is_default = true;
+		}
+		params.parent.add(icon);
+		
+		return;
 	};
 	
 	return self;

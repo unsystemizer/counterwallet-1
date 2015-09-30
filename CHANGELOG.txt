@@ -1,3 +1,16 @@
+#ver 0.7.0(2015.9.30)
+-UI improvement
+The decentralized exchange(Dex) as well as the send and receive tokens features are now more intuitive and easier to use.
+The addition of token icons gives the app a more personalized experience.
+
+-Display of fiat values
+Fiat values displayed more extensively in-app for sending, receiving and trading of tokens.
+You can now get a better sense of the value of your tokens in your local currency.
+
+-Performance improvement and bug fixes
+Bug fixes and all round performance and stability improvements for a better user experience.
+-----
+
 #ver 0.6.0(2015.8.24)
 - Added push-notifications, you will now receive a notification when your wallet receives new tokens.
 - Miner bug fixes.
