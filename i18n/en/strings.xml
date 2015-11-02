@@ -18,7 +18,7 @@
 	<string name="label_quantity_send">Amount to Send</string>
 	<string name="label_cancel">Cancel</string>
 	<string name="label_ok">OK</string>
-	<string name="label_hinttext_password">password(at least 6 letters)</string>
+	<string name="label_hinttext_password">password (at least 6 letters)</string>
 	<string name="label_password">password</string>
 	<string name="label_passphrase">12 word passphrase</string>
 	<string name="label_send">send</string>
