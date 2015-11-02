@@ -127,7 +127,7 @@
 	<string name="text_fingerprint">Would you like to set up Touch ID for easier access?</string>
 	<string name="label_adminerror">Authentication error</string>
 	<string name="text_adminerror">Authentication failed</string>
-	<string name="label_privecypolicy">Privacy Policy & Terms of Service</string>
+	<string name="label_privecypolicy">Privacy Policy &amp; Terms of Service</string>
 	<string name="label_privecypolicy2">By pressing 'Create' I agree to the above</string>
 	<string name="text_withmessage">Message attached</string>
 	<string name="text_unreadable">Could not recognize a valid address</string>
