@@ -62,7 +62,7 @@
 	
 	<string name="text_makedivisible">Make Divisible</string>
 	<string name="text_hold">You Own {balance}Units of {asset}</string>
-	<string name="text_totalcost">{asset}の合計 {amount}</string>
+	<string name="text_totalcost">{asset} of {amount}</string>
 	<string name="text_confirmorder">Place an order for {quantity}{main_asset} at {price}{price_asset}</string>
 	<string name="text_necessarycost">You need {total} {price_asset}</string>
 	<string name="text_canget"> With order matched, you get {total}{price_asset}</string>
