@@ -118,7 +118,7 @@
 	<string name="text_history_send">Sent {quantity}{asset} to {target}</string>
 	<string name="text_history_receive">Received {quantity}{asset} from {target}</string>
 	<string name="text_history_issuance">Issued {quantity} {asset}</string>
-	<string name="text_history_dividend">Issued {quantity_per_unit}% {dividend_asset} dividends to{asset} holders</string>
+	<string name="text_history_dividend">Issued {quantity_per_unit}% {dividend_asset} dividends to {asset} holders</string>
 	<string name="text_history_get_dividend">Received {quantity_per_unit}% {dividend_asset} dividends for {asset} holders</string>
 	
 	<string name="label_easypass">Quick Passcode</string>
