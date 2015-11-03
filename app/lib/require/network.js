@@ -11,6 +11,11 @@ module.exports = (function() {
 		if( params.onError ) params.onError( json.errorMessage );
 	};
 	
+	function reorg(params){
+		Ti.API.warn('Reorg occured...');
+		if( params.onReorg ) params.onReorg();
+	};
+	
 	self.connect = function( params ){
 		var xhr = Ti.Network.createHTTPClient();
 		xhr.open('POST', Alloy.CFG.api_uri + 'counterparty/' + globals.api_ver + '/' + params.method + '.php');
@@ -19,8 +24,13 @@ module.exports = (function() {
 			else{
 				var json = JSON.parse( this.responseText );
 				if( json.status ) params.callback( json.result );
-				else onworm(params, json);
-				
+				else{
+					if( json.errorMessage === 'reorg' ){
+						globals.reorg_occured();
+						reorg( params );
+					}
+					else onworm(params, json);
+				}
 				if( params.always != null ) params.always();
 			}
 		},
@@ -33,9 +43,17 @@ module.exports = (function() {
 	
 	self.getjson = function( params ){
 		var xhr = Ti.Network.createHTTPClient();
+		
+		if( !params.uri.match(/^https?:\/\//) ) params.uri = 'http://' + params.uri;
+		
 		xhr.open('GET', params.uri);
 		xhr.onload = function(){
-			params.callback( JSON.parse( this.responseText ) );
+			var json_data = '';
+			try{
+				json_data = JSON.parse( this.responseText );
+			}
+			catch(e){}
+			params.callback( json_data );
 		},
 		xhr.onerror = function(e){
 			onerror(params, e);

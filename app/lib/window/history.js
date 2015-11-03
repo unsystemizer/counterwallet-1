@@ -12,16 +12,15 @@ exports.run = function(){
     
     var view = Ti.UI.createView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
 	theWindow.add(view);
-
+	
 	var top_bar = Ti.UI.createView({ backgroundColor:'#e54353', width: Ti.UI.FILL, height: 55 });
 	top_bar.top = 0;
 	theWindow.add(top_bar);
 	
-	
 	var history_title_center = _requires['util'].makeLabel({
-		text: L('label_tab_3'),
+		text: L('label_tab_history'),
 		color:"white",
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'normal'},
+		font:{ fontSize:20, fontWeight:'normal'},
 		textAlign: 'center',
 		top: 25, center: 0
 	});
@@ -31,10 +30,14 @@ exports.run = function(){
 	scroll_view.top = 50;
 	view.add(scroll_view);
 	
-	var loading = null;
+	var loading = null, history_error = null;
 	function createList( result, bool ){
 		try{
 			scroll_view.removeAllChildren();
+			if( history_error != null ){
+				view.remove(history_error);
+				history_error = null;
+			}
 			if( result.transactions.length > 0 ){
 				Ti.API.historyLoad = 'YES';
 				function createBox( params ){
@@ -92,7 +95,7 @@ exports.run = function(){
 						'history': _requires['util'].makeLabel({
 							text: history,
 							top: 15, left: 60,
-							font:{fontFamily:'HelveticaNeue-Light', fontSize:12, fontWeight:'normal'},
+							font:{ fontSize:12, fontWeight:'normal'},
 							textAlign: 'left'
 						}),
 						'time': _requires['util'].makeLabel({
@@ -128,17 +131,18 @@ exports.run = function(){
 						})(address), false);
 					}
 				}
-				if( bool ){
-					_requires['layer'].addPullEvent(scroll_view, { parent: view, callback: function(l){ loadHistory(false, l); }});
-				}
-				
+				if( bool ) _requires['layer'].addPullEvent(scroll_view, { parent: view, margin_top: 70, callback: function(l){ loadHistory(false, l); }});
 			}
 			else{
-				var history = _requires['util'].makeLabel({
-					text: L('text_nohistory'),
-					font:{ fontSize: 15 }
-				});
-				view.add(history);
+				Ti.API.historyLoad = 'NO';
+				view.removeAllChildren();
+				if( history_error == null ){
+					history_error = _requires['util'].makeLabel({
+						text: L('text_nohistory'),
+						font:{ fontSize: 15 }
+					});
+					view.add(history_error);
+				}
 			}
 		}
 		catch(e){
@@ -148,7 +152,7 @@ exports.run = function(){
 	
 	function loadHistory(bool, l){
 		loading = l;
-		if( bool ) loading = _requires['util'].showLoading(view, { width: Ti.UI.FILL, height: Ti.UI.FILL});
+		if( bool ) loading = _requires['util'].showLoading(view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_history')});
 		_requires['network'].connect({
 			'method': 'getHistory',
 			'post': {
@@ -171,4 +175,4 @@ exports.run = function(){
 	}
 	loadHistory(true);
 };
-Ti.API.win3 = theWindow;
+Ti.API.history_win = theWindow;

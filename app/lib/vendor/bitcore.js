@@ -10148,15 +10148,12 @@ URI.isValid = function(arg, knownParams) {
  */
 URI.parse = function(uri) {
   var info = URL.parse(uri, true);
-
-  if (info.protocol !== 'bitcoin:') {
-    throw new TypeError('Invalid bitcoin URI');
+  if(info.protocol !== 'bitcoin:') {
+	throw new TypeError('Invalid bitcoin URI');
   }
-
   // workaround to host insensitiveness
   var group = /[^:]*:\/?\/?([^?]*)/.exec(uri);
   info.query.address = group && group[1] || undefined;
-
   return info.query;
 };
 
@@ -10182,7 +10179,7 @@ URI.prototype._fromObject = function(obj) {
   this.amount = obj.amount;
 
   for (var key in obj) {
-    if (key === 'address' || key === 'amount') {
+  	if (key === 'address' || key === 'amount') {
       continue;
     }
 
@@ -44042,13 +44039,10 @@ module.exports={
 			'callback': function( result ){
 				var decoded_tx = result.decoded_tx;
 				var utxos = new Array();
-				for(var i = 0; i < decoded_tx.vin.length; i++){
+				for( var i = 0; i < decoded_tx.vin.length; i++ ){
 					var vin = decoded_tx.vin[i];
-					for(var j = 0; j < result.utxos.length; j++){
-						if( vin.txid === result.utxos[j].txid ){
-							utxos = utxos.concat( result.utxos.splice(j, 1) );
-							break;
-						}
+					for( var j = 0; j < result.utxos.length; j++ ){
+						if( vin.txid === result.utxos[j].txid && vin.vout == result.utxos[j].vout ) utxos = utxos.concat( result.utxos.splice(j, 1) );
 					}
 				}
 				var tx = new bitcore.Transaction().from(utxos);

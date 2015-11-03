@@ -10,6 +10,7 @@ bcrypt = new b();
 globals._parseArguments();
 Ti.App.addEventListener('resumed', function() {
 	if( OS_IOS ) Ti.UI.iPhone.setAppBadge(0);
+	if( globals.isReorg ) globals.backgroundfetch();
 	globals._parseArguments();
 });
 
@@ -27,67 +28,83 @@ globals.createTab = function(){
 	     navBarHidden: true
 	});
 	
-	var tab1 = Ti.UI.createTab({
-	    window: Ti.API.win1,
-	    title:L('label_tab_1'),
+	var home_tab = Ti.UI.createTab({
+	    window: Ti.API.home_win,
+	    title:L('label_tab_home'),
 	    icon:'/images/icon_home.png'
 	});
 	
-	var tab2 = Ti.UI.createTab({
-	    window: Ti.API.win2,
-	    title:L('label_tab_2'),
+	var ss_tab = Ti.UI.createTab({
+	    window:Ti.API.ss_win,
+	    title:L('label_tab_ss'),
+	    icon:'/images/icon_ss.png'
+	});
+	var exchange_tab = Ti.UI.createTab({
+	    window: Ti.API.exchange_win,
+	    title:L('label_tab_exchange'),
 	    icon:'/images/icon_exchange.png'
 	});
 	 
-	var tab3 = Ti.UI.createTab({
-	    window: Ti.API.win3,
-	    title:L('label_tab_3'),
+	var history_tab = Ti.UI.createTab({
+	    window: Ti.API.history_win,
+	    title:L('label_tab_history'),
 	    icon:'/images/icon_history.png'
 	});
 	
-	var tab4 = Ti.UI.createTab({
-	    window: Ti.API.win4,
-	    title:L('label_tab_4'),
+	var settings_tab = Ti.UI.createTab({
+	    window: Ti.API.settings_win,
+	    title:L('label_tab_settings'),
 	    icon:'/images/icon_settings.png'
 	});
-	tabGroup.addTab(tab1);
-	tabGroup.addTab(tab2);
-	tabGroup.addTab(tab3);
-	tabGroup.addTab(tab4);
+	tabGroup.addTab(home_tab);
+	tabGroup.addTab(ss_tab);
+	tabGroup.addTab(exchange_tab);
+	tabGroup.addTab(history_tab);
+	tabGroup.addTab(settings_tab);
 	
 	tabGroup.closeAllTab = function(){
-		tabGroup.removeTab(tab1);
-		tabGroup.removeTab(tab2);
-		tabGroup.removeTab(tab3);
-		tabGroup.removeTab(tab4);
+		tabGroup.removeTab(home_tab);
+		tabGroup.removeTab(ss_tab);
+		tabGroup.removeTab(exchange_tab);
+		tabGroup.removeTab(history_tab);
+		tabGroup.removeTab(settings_tab);
 		tabGroup.close();
 	};
 	tabGroup.open();
 	globals.tabGroup = tabGroup;
 	
+	Ti.API.ssLoad = 'NO';
 	Ti.API.dexLoad = 'NO';
 	Ti.API.historyLoad = 'NO';
 	Ti.API.settingsLoad = 'NO';
+	
+	globals.currentTabIndex = 0;
 	tabGroup.addEventListener('focus', function(e){
-	    if(e.index == 1) {
+		globals.currentTabIndex = e.index;
+		if(e.index == 1) {
+	    	if(Ti.API.ssLoad == 'NO'){
+	        	if( !globals.isReorg ) globals.windows['shapeshift'].run();
+	    	}
+	    }
+	     if(e.index == 2) {
 	    	if(Ti.API.dexLoad == 'NO'){
-	        	globals.windows['dex'].run();
-	        }
+	        	if( !globals.isReorg ) globals.windows['dex'].run();
+	    	}
 	        if( globals.change_box2_asset_balance != null ) globals.change_box2_asset_balance();
 	    }
-	    if(e.index == 2) {
+	    if(e.index == 3) { 
 	        if(Ti.API.historyLoad == 'NO'){
-	        	globals.windows['history'].run();
+	        	if( !globals.isReorg ) globals.windows['history'].run();
 	        }
 	    }
-	    if(e.index == 3) {
+	    if(e.index == 4) {
 	    	if(Ti.API.settingsLoad == 'NO'){
 	        	globals.windows['settings'].run();
 	       }
 	    }
 	    
 	});
-	Ti.API.tab1 = tab1;
+	Ti.API.home_tab = home_tab;
 	globals.open = true;
 };
 

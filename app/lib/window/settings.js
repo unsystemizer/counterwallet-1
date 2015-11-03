@@ -1,5 +1,5 @@
 var theWindow =  Ti.UI.createWindow({
-	title:L('label_tab_4'),
+	title:L('label_tab_settings'),
 	backgroundColor:'#ececec',
 	orientationModes: [Ti.UI.PORTRAIT],
 	navBarHidden: true
@@ -10,7 +10,7 @@ exports.run = function(){
 
 	var _windows = globals.windows;
     var _requires = globals.requires;
-    
+    var currenciesArray = [];
     var main_view = Ti.UI.createScrollView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
 	main_view.top = 15;
 	theWindow.add(main_view);
@@ -19,28 +19,34 @@ exports.run = function(){
 	top_bar.top = 0;
 	theWindow.add(top_bar);
 	
-	
 	var settings_title_center = _requires['util'].makeLabel({
-		text:L('label_tab_4'),
+		text:L('label_tab_settings'),
 		color:"white",
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'normal'},
+		font:{ fontSize:20, fontWeight:'normal'},
 		textAlign: 'center',
 		top: 25, center: 0
 	});
 	top_bar.add( settings_title_center );
-
 	
 	var view = _requires['util'].group(null, 'vertical');
 	main_view.add(view);
 	
 	var info = globals.datas;
 	
-	var is_save = false;
-	
-	function createDescBox(){
+	function createDescBox(text){
 		var box = _requires['util'].group();
 		box.width = '95%';
+		box.top = 3;
 		box.left = 5;
+		
+		var label = _requires['util'].makeLabel({
+			text: text,
+			color: '#999999',
+			font:{ fontSize: 10 },
+			textAlign: 'left',
+			left: 0
+		});
+		box.add(label);
 		
 		return box;
 	}
@@ -68,8 +74,23 @@ exports.run = function(){
 		return box;
 	}
 	
+	function createMailDialog(){
+		var emailDialog = Ti.UI.createEmailDialog();
+		emailDialog.subject = 'To Support.';
+		emailDialog.toRecipients = ['support@indiesquare.me'];
+		emailDialog.messageBody = L('label_mail_desc') + '\n\n\<' + L('label_mail_name') + '\>\n\<' + L('label_mail_device') + '\>\n\<' + L('label_mail_id') + '\>' + _requires['cache'].data.id + '\n\<' + L('label_mail_os') + '\>' + Ti.Platform.name + ' ' + Ti.Platform.version + '\n\<' + L('label_mail_happens') + '\>';
+		emailDialog.open();
+	}
+	
+	var section = _requires['util'].makeLabel({
+		text: L('text_section_basic'),
+		font:{ fontSize: 13 },
+		top: 50
+	});
+	view.add(section);
+	
 	var box_user_name = createBox({ icon: 'icon_noimage.png', height: 40 });
-	box_user_name.top = 50;
+	box_user_name.top = 10;
 	var label_user_name = _requires['util'].makeLabel({
 		text: globals.user_name || L('text_noregisted'),
 		font:{ fontSize: 15 },
@@ -117,6 +138,164 @@ exports.run = function(){
 		dialog.origin.show();
 	});
 	view.add(box_user_name);
+	view.add(createDescBox(L('text_desc_username')));
+	
+	var display_height = _requires['util'].getDisplayHeight();
+	
+	var close = _requires['util'].makeLabel({
+		text : 'close',
+		color : 'white',
+		font : {
+			fontFamily : 'Helvetica Neue',
+			fontSize : 15,
+			fontWeight : 'bold'
+		},
+		height : 30,
+		right : 10
+	});
+	var picker_toolbar = Ti.UI.createView({
+		width: '100%',
+		height: (OS_ANDROID)? 50: 40,
+		backgroundColor: '#e54353'
+	});
+	picker_toolbar.add(close);
+	
+	var currencies = _requires['util'].createTableList({
+		backgroundColor: 'white',
+		width: '100%', height: 200,
+		top:0,
+		rowHeight: 50
+	});
+	currencies.addEventListener('click', setCurrency);
+	var picker1 = _requires['util'].group({
+		"toolbar": picker_toolbar,
+		"picker": currencies
+	}, 'vertical');
+	if(OS_ANDROID) picker1.top = display_height;
+	else picker1.bottom = -340;
+	
+	close.addEventListener('click',function() {
+		picker1.animate(slide_out);
+	});
+	
+	theWindow.add(picker1);
+	
+	function addCurrencies() {
+		var tikers = globals.tiker;
+		currenciesArray = [];
+		Titanium.API.log(tikers);
+		currencies.setRowDesign(tikers, function(row, val) { //why is key visible here?
+			if( key !== 'XCP' ) {
+				currenciesArray.push(key);
+			var label = Ti.UI.createLabel({
+				text : key,
+				font : {
+					fontFamily : 'HelveticaNeue-Light',
+					fontSize : 20,
+					fontWeight : 'normal'
+				},
+				color : 'black',
+				width : 'auto',
+				height : 'auto',
+				left :10
+			});
+			row.add(label);
+			return row;
+			}
+		});
+	};
+	
+	addCurrencies();
+	var slide_in; 
+	var slide_out;
+	if( OS_ANDROID ){
+		slide_in = Ti.UI.createAnimation({top: display_height - 350, duration:200});
+		slide_out = Ti.UI.createAnimation({top: display_height, duration:200});
+	}
+	else {
+		slide_in = Ti.UI.createAnimation({bottom: 0, duration:200});
+		slide_out = Ti.UI.createAnimation({bottom: -340, duration:200});
+	}
+
+	var box_currency = createBox({ icon: 'icon_settings_currency.png', height: 45 });
+	box_currency.top = 10;
+	view.add(box_currency);
+	view.add(createDescBox(L('text_desc_fiat')));
+	
+	var current_currency = _requires['cache'].data.currncy;
+	var label_current = _requires['util'].makeLabel({
+		text: current_currency,
+		font:{ fontSize: 15 },
+		left: 60
+	});
+	box_currency.add(label_current);
+
+	box_currency.addEventListener('click', function(){
+		addCurrencies();
+		picker1.animate(slide_in);
+	
+	});
+	
+	function setCurrency(e) {
+		var selected_currency = currenciesArray[e.index];
+		Titanium.API.log(selected_currency);
+		label_current.text = _requires['cache'].data.currncy = selected_currency;
+		globals.loadBalance();
+		if( globals.getOrders != null ) globals.getOrders();
+		_requires['cache'].save();
+		picker1.animate(slide_out);
+	}
+	var box_passphrase = createBox({ icon: 'icon_settings_password.png', height: 45 });
+	box_passphrase.top = 10;
+	view.add(box_passphrase);
+	view.add(createDescBox(L('text_desc_passphrase')));
+	
+	var passphrase_group = _requires['util'].group();
+	var label_passphrase = _requires['util'].makeLabel({
+		text: L('label_passphrase'),
+		font:{ fontSize: 14 },
+		textAlign: 'left', left: 0
+	});
+	passphrase_group.left = 60;
+	passphrase_group.width = '60%';
+	passphrase_group.add(label_passphrase);
+	
+	box_passphrase.add(passphrase_group);
+	box_passphrase.addEventListener('click', function(){
+		var dialog = _requires['util'].createDialog({
+			title: 'Passphrase',
+			message: L('text_passphrase_q'),
+			buttonNames: [L('label_close'), L('label_show')]
+		});
+		dialog.addEventListener('click', function(e){
+			if( e.index == 1 ){
+				_requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
+					if( e.success ){
+						var time = (OS_ANDROID)? 1000: 1;
+						setTimeout(function(){
+							var dialog2 = _requires['util'].createDialog({
+								title: L('label_passphrase'),
+								message: _requires['cache'].data.passphrase,
+								buttonNames: [L('label_close'), L('label_copy')]
+							});
+							dialog2.addEventListener('click', function(e){
+								if( e.index == 1 ){
+									Ti.UI.Clipboard.setText( _requires['cache'].data.passphrase );
+									_requires['util'].createDialog({
+										title: L('label_copied'),
+										message: L('text_copied'),
+										buttonNames: [L('label_close')]
+									}).show();
+								}
+							});
+							dialog2.show();
+						}, time);
+					}
+				}});
+			}
+		});
+		dialog.show();
+	});
 	
 	if( OS_IOS ){
 		var box_touchid = createBox({ icon: 'icon_settings_touchid.png', height: 50, arrow: false });
@@ -134,8 +313,8 @@ exports.run = function(){
 			on: function(){
 				function conn(){
 					_requires['cache'].data.isTouchId = true;
-					easy_box_hide();
-					is_save = true;
+					_requires['cache'].data.easypass = null;
+					_requires['cache'].save();
 				}
 				_requires['auth'].useTouchID({ callback: function(e){
 					if( e.success ) conn();
@@ -153,9 +332,20 @@ exports.run = function(){
 			off: function(){
 				_requires['auth'].useTouchID({ callback: function(e){
 					if( e.success ){
-						_requires['cache'].data.isTouchId = null;
-						easy_box_show();
-						is_save = true;
+						var easyInput = _requires['util'].createEasyInput({
+							win: theWindow.origin,
+							type: 'reconfirm',
+							callback: function( number ){
+								_requires['cache'].data.easypass = number;
+								_requires['cache'].data.isTouchId = null;
+								_requires['cache'].save();
+							},
+							cancel: function(){
+								if( slider.is ) slider.off();
+								else slider.on();
+							}
+						});
+						easyInput.open();
 					}
 					else{
 						if( t_slider.is ) t_slider.off();
@@ -168,156 +358,57 @@ exports.run = function(){
 		box_touchid.add(t_slider.origin);
 		view.add(box_touchid);
 		
-		var box_desc_touchid = createDescBox();
-		box_desc_touchid.top = 3;
-		var label_desc_touchid = _requires['util'].makeLabel({
-			text: L('text_desc_fingerprint'),
-			font:{ fontSize: 10 },
-			textAlign: 'left',
-			left: 0
-		});
-		box_desc_touchid.add(label_desc_touchid);
-		view.add(box_desc_touchid);
+		view.add(createDescBox(L('text_desc_fingerprint')));
 	}
 	
-	var box_easypass = createBox({ icon: 'icon_settings_easypass.png', height: 50, arrow: false });
-	box_easypass.top = 10;
-	
-	var label_easypass = _requires['util'].makeLabel({
-		text: L('label_easypass'),
+	var box_review = createBox({ icon: 'icon_settings_review.png', height: 45 });
+	box_review.top = 10;
+	var label_review = _requires['util'].makeLabel({
+		text: L('label_review'),
 		font:{ fontSize: 14 },
 		left: 60
 	});
-	box_easypass.add(label_easypass);
-	
-	var slider = _requires['util'].createSlider({
-		init: (info.easypass != null)? true: false,
-		on: function(){
-			function setEasyPass( secound_password ){
-	  			var easyInput = _requires['util'].createEasyInput({
-					win: theWindow.origin,
-					type: 'reconfirm',
-					callback: function( number ){
-						_requires['cache'].data.easypass = number;
-						is_save = true;
-					},
-					cancel: function(){
-						if( slider.is ) slider.off();
-						else slider.on();
+	box_review.add(label_review);
+	view.add(box_review);
+	view.add(createDescBox(L('text_desc_review')));
+	box_review.addEventListener('click', function(){
+		
+		var dialog = _requires['util'].createDialog({
+			title: L('text_support_title'),
+			message: L('text_support'),
+			buttonNames: [L('text_support_yes'), L('text_support_no'), L('text_review_no')]
+		});
+		dialog.addEventListener('click', function(e){
+			if( e.index == 0 ) createMailDialog();
+			else if( e.index == 1 ){
+				var dialog2 = _requires['util'].createDialog({
+					title: L('text_review_title'),
+					message: L('text_review'),
+					buttonNames: [L('text_review_yes'), L('text_review_no')]
+				});
+				dialog2.addEventListener('click', function(e){
+					if( e.index == 0 ){
+						var url = (OS_IOS)? 'itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=977972108': 'market://details?id=inc.lireneosoft.counterparty';
+						Ti.Platform.openURL(url);
 					}
 				});
-				easyInput.open();
+				dialog2.show();
 			}
-			
-			_requires['auth'].check({ title: L('label_easypass'), callback: function(e){
-				if( e.success ) setEasyPass();
-				else{
-					if( slider.is ) slider.off();
-					else slider.on();
-				}
-			}});
-		},
-		off: function(){
-			_requires['auth'].check({ callback: function(e){
-				if( e.success ){
-					_requires['cache'].data.easypass = null;
-					is_save = true;
-				}
-				else{
-					if( slider.is ) slider.off();
-					else slider.on();
-				}
-			}});
-		}
+		});
+		dialog.show();
 	});
-	slider.origin.right = 10;
-	box_easypass.add(slider.origin);
-	view.add(box_easypass);
 	
-	var box_desc_easypass = createDescBox();
-	box_desc_easypass.top = 3;
-	var label_desc_easypass = _requires['util'].makeLabel({
-		text: L('text_desc_easypass'),
-		font:{ fontSize: 10 },
-		textAlign: 'left',
-		left: 0
+	var section = _requires['util'].makeLabel({
+		text: L('text_section_account'),
+		font:{ fontSize: 13 },
+		top: 20
 	});
-	box_desc_easypass.add(label_desc_easypass);
-	view.add(box_desc_easypass);
-	
-	var box_hidden = Ti.UI.createView({ backgroundColor: 'white', opacity: 0.8, width: Ti.UI.FILL, height: Ti.UI.FILL });
-	function easy_box_hide(){
-		box_desc_easypass.setOpacity(0.3);
-		box_easypass.add(box_hidden);
-	}
-	function easy_box_show(){
-		box_desc_easypass.setOpacity(1.0);
-		box_easypass.remove(box_hidden);
-	}
-	if( _requires['cache'].data.isTouchId != null ) easy_box_hide();
-	
-	var box_currency = createBox({ icon: 'icon_settings_currency.png', height: 45 });
-	box_currency.top = 10;
-	view.add(box_currency);
-	
-	var current_currency = _requires['cache'].data.currncy;
-	var label_current = _requires['util'].makeLabel({
-		text: current_currency,
-		font:{ fontSize: 15 },
-		left: 60
-	});
-	box_currency.add(label_current);
-	
-	var picker = null;
-	box_currency.addEventListener('click', function(){
-		var data = []; var tikers = globals.tiker;
-		data.push( Ti.UI.createPickerRow( { 'title': _requires['cache'].data.currncy } ));
-		if( OS_IOS ){
-			if( picker == null ){
-				picker = Ti.UI.createPicker({ width: 150, left: 60, backgroundColor: 'transparent' });
-				for( key in tikers ){
-					if( key !== 'XCP' && key !== _requires['cache'].data.currncy ) data.push( Ti.UI.createPickerRow( { 'title': key } ));
-				}
-				picker.add(data);
-				
-				picker.addEventListener('change',function(e){
-					label_current.text = _requires['cache'].data.currncy = e.selectedValue[0];
-					globals.loadBalance();
-					if( globals.getOrders != null ) globals.getOrders();
-					_requires['cache'].save();
-				});
-				box_currency.add(picker);
-			}
-			else{
-				box_currency.remove(picker);
-				picker = null;
-			}
-		}
-		else{
-			data.push( L('label_cancel') );
-			for( key in tikers ){
-				if( key !== 'XCP' && key !== _requires['cache'].data.currncy ) data.push( key );
-			}
-			
-			var dialog = Ti.UI.createOptionDialog();
-			dialog.setOptions(data);
-			dialog.setCancel(1);
-			dialog.addEventListener('click',function(e){
-				if(e.index >= 2){
-					label_current.text = _requires['cache'].data.currncy = data[e.index];
-					globals.loadBalance();
-					if( globals.getOrders != null ) globals.getOrders();
-					_requires['cache'].save();
-				}
-			});
-			dialog.show();
-		}
-	});
-	if( _requires['cache'].data.isTouchId ) easy_box_hide();
+	view.add(section);
 	
 	var box_identifier = createBox({ icon: 'icon_settings_identifier.png', height: 50 });
 	box_identifier.top = 15;
 	view.add(box_identifier);
+	view.add(createDescBox(L('text_desc_identifier')));
 	
 	var identifier_group = _requires['util'].group();
 	var label_identifier = _requires['util'].makeLabel({
@@ -349,40 +440,42 @@ exports.run = function(){
 		dialog.show();
 	});
 	
-	var box_passphrase = createBox({ icon: 'icon_settings_password.png', height: 45 });
-	box_passphrase.top = 10;
-	view.add(box_passphrase);
+	var box_password = createBox({ icon: 'icon_settings_easypass.png', height: 45 });
+	box_password.top = 10;
+	view.add(box_password);
+	view.add(createDescBox(L('text_desc_password')));
 	
-	var passphrase_group = _requires['util'].group();
-	var label_passphrase = _requires['util'].makeLabel({
-		text: '- - - - - - - - - - - -',
-		font:{ fontSize: 12 },
+	var password_group = _requires['util'].group();
+	var label_password = _requires['util'].makeLabel({
+		text: L('label_password'),
+		font:{ fontSize: 14 },
 		textAlign: 'left', left: 0
 	});
-	passphrase_group.left = 60;
-	passphrase_group.width = '60%';
-	passphrase_group.add(label_passphrase);
+	password_group.left = 60;
+	password_group.width = '60%';
+	password_group.add(label_password);
 	
-	box_passphrase.add(passphrase_group);
-	box_passphrase.addEventListener('click', function(){
+	box_password.add(password_group);
+	box_password.addEventListener('click', function(){
 		var dialog = _requires['util'].createDialog({
-			title: 'Passphrase',
-			message: L('text_passphrase_q'),
+			title: L('label_password'),
+			message: L('text_password_q'),
 			buttonNames: [L('label_close'), L('label_show')]
 		});
 		dialog.addEventListener('click', function(e){
 			if( e.index == 1 ){
 				_requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
 					if( e.success ){
+						var time = (OS_ANDROID)? 1000: 1;
 						setTimeout(function(){
 							var dialog2 = _requires['util'].createDialog({
-								title: 'Passphrase',
-								message: _requires['cache'].data.passphrase,
+								title: L('label_password'),
+								message: _requires['cache'].data.password,
 								buttonNames: [L('label_close'), L('label_copy')]
 							});
 							dialog2.addEventListener('click', function(e){
 								if( e.index == 1 ){
-									Ti.UI.Clipboard.setText( _requires['cache'].data.passphrase );
+									Ti.UI.Clipboard.setText( _requires['cache'].data.password );
 									_requires['util'].createDialog({
 										title: L('label_copied'),
 										message: L('text_copied'),
@@ -391,13 +484,42 @@ exports.run = function(){
 								}
 							});
 							dialog2.show();
-						}, 1000);
+						}, time);
 					}
 				}});
 			}
 		});
 		dialog.show();
 	});
+	
+	var box_linkage = createBox({ icon: 'icon_settings_linkage.png', height: 45 });
+	box_linkage.top = 10;
+	var label_linkage = _requires['util'].makeLabel({
+		text: L('label_linkage'),
+		font:{ fontSize: 14 },
+		left: 60
+	});
+	box_linkage.add( label_linkage );
+	view.add( box_linkage );
+	view.add(createDescBox(L('text_desc_linkage')));
+	
+	box_linkage.addEventListener('click', function(){
+		
+		_requires['util'].openScanner({
+			'callback': function(e){
+				var str = e.barcode;
+				globals._parseArguments(str, true);
+			}
+		});
+		
+	});
+	
+	var section = _requires['util'].makeLabel({
+		text: L('text_section_other'),
+		font:{ fontSize: 13 },
+		top: 20
+	});
+	view.add(section);
 	
 	var box_about = createBox({ icon: 'icon_settings_about.png', height: 45 });
 	box_about.top = 10;
@@ -412,10 +534,32 @@ exports.run = function(){
 	
 		var dialog = _requires['util'].createDialog({
 			title: L('appname'),
-			message: 'ver' + Ti.App.version + '\n\n' + globals.copyright,
+			message: 'ver' + Ti.App.version + '\n\n' + globals.copyright + ((Alloy.CFG.isDevelopment)? '\nDevelopment':''),
 			buttonNames: [L('label_close')]
 		}).show();
 	
+	});
+	
+	var box_support = createBox({ icon: 'icon_settings_support.png', height: 45 });
+	box_support.top = 10;
+	var label_support = _requires['util'].makeLabel({
+		text: L('label_support'),
+		font:{ fontSize: 14 },
+		left: 60
+	});
+	box_support.add(label_support);
+	view.add(box_support);
+	box_support.addEventListener('click', function(){
+		
+		var dialog = _requires['util'].createDialog({
+			title: L('text_support_title'),
+			message: L('text_support'),
+			buttonNames: [L('text_support_yes'), L('text_review_no')]
+		});
+		dialog.addEventListener('click', function(e){
+			if( e.index == 0 ) createMailDialog();
+		});
+		dialog.show();
 	});
 	
 	var box_signout = createBox({ icon: 'icon_settings_signout.png', height: 45 });
@@ -437,33 +581,15 @@ exports.run = function(){
 		dialog.addEventListener('click', function(e){
 			if( e.index == 1 ){
 				_requires['cache'].init();
-				_windows['login'].run();
+				_requires['cache'].load();
 				globals.tabGroup.closeAllTab();
+				if( globals.timer_shapshiftupdate != null ) clearInterval(globals.timer_shapshiftupdate);
+				_windows['login'].run();
 			}
 		});
 		dialog.show();
 	});
 	
-	var box_cooperation = createBox({ icon: 'icon_settings_linkage.png', height: 45 });
-	box_cooperation.top = 10;
-	var label_cooperation = _requires['util'].makeLabel({
-		text: L('label_cooperation'),
-		font:{ fontSize: 14 },
-		left: 60
-	});
-	box_cooperation.add( label_cooperation );
-	view.add( box_cooperation );
-	box_cooperation.addEventListener('click', function(){
-		
-		_requires['util'].openScanner({
-			'callback': function(e){
-				var str = e.barcode;
-				globals._parseArguments(str, true);
-			}
-		});
-		
-	});
-	
 	Ti.API.settingsLoad = 'YES';
 };
-Ti.API.win4 = theWindow;
+Ti.API.settings_win = theWindow;

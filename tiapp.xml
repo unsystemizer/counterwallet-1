@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>inc.lireneosoft.counterparty</id>
     <name>IndieSquare Wallet</name>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
     <publisher>IndieSquare</publisher>
     <url>https://wallet.indiesquare.me</url>
     <description>Simple CounterWallet for mobile.</description>
@@ -29,7 +29,7 @@
                 <array>
                     <dict>
                         <key>CFBundleURLName</key>
-                        <string>inc.movfunds.counterparty</string>
+                        <string>inc.lireneosoft.counterparty</string>
                         <key>CFBundleURLSchemes</key>
                         <array>
                             <string>indiewallet</string>
@@ -49,19 +49,34 @@
                     <string>appicon.png</string>
                     <string>appicon@2x.png</string>
                     <string>appicon-120.png</string>
-                    <string>appicon-Small.png</string>
+                    <string>appicon-60.png</string>
+                    <string>appicon-60@2x.png</string>
+                    <string>appicon-60@3x.png</string>
+                    <string>appicon-72.png</string>
+                    <string>appicon-72@2x.png</string>
+                    <string>appicon-76.png</string>
+                    <string>appicon-76@2x.png</string>
+                    <string>appicon-Small-40.png</string>
+                    <string>appicon-Small-40@2x.png</string>
+                    <string>appicon-Small-40@3x.png</string>
                     <string>appicon-Small-50.png</string>
+                    <string>appicon-Small-50@2x.png</string>
+                    <string>appicon-Small.png</string>
                     <string>appicon-Small@2x.png</string>
+                    <string>appicon-Small@3x.png</string>
+                </array>
+                <key>UIBackgroundModes</key>
+                <array>
+                    <string>fetch</string>
                 </array>
             </dict>
         </plist>
     </ios>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest android:versionCode="25" android:versionName="0.7.0">
+        <manifest android:versionCode="31" android:versionName="0.8.0">
             <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21"/>
             <application android:theme="@style/Theme.IndiesquareTheme">
-                <activity android:alwaysRetainTaskState="true"
-                    android:launchMode="singleTask" url="index.js">
+                <activity android:alwaysRetainTaskState="true" android:launchMode="singleTask" url="index.js">
                     <intent-filter>
                         <action android:name="android.intent.action.VIEW"/>
                         <category android:name="android.intent.category.DEFAULT"/>
@@ -99,6 +114,9 @@
             <uses-permission android:name="android.permission.VIBRATE"/>
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
         </manifest>
+        <services>
+            <service type="interval" url="background/fetch.js"/>
+        </services>
     </android>
     <modules>
         <module platform="android">com.mirasense.scanditsdk</module>
@@ -113,7 +131,7 @@
         <target device="iphone">true</target>
         <target device="mobileweb">false</target>
     </deployment-targets>
-    <sdk-version>4.1.0.GA</sdk-version>
+    <sdk-version>5.0.2.GA</sdk-version>
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
     </plugins>

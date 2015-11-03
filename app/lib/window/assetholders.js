@@ -23,7 +23,6 @@ exports.run = function( params ){
 		win.close();
 	});
 	
-	
 	var settings_title_center = _requires['util'].makeLabel({
 		text:params.asset,
 		color:"white",
@@ -33,7 +32,6 @@ exports.run = function( params ){
 	});
 	top_bar.add(  settings_title_center );
 	
-	
 	var view = _requires['util'].group(null, 'vertical');
 	view.top = 50;
 	main_view.add(view);
@@ -41,7 +39,7 @@ exports.run = function( params ){
 	var info = globals.datas;
 	var total_holders = 0;
 	
-	var loading = _requires['util'].showLoading(main_view, { width: Ti.UI.FILL, height: Ti.UI.FILL});
+	var loading = _requires['util'].showLoading(main_view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_holders') });
 	_requires['network'].connect({
 		'method': 'getHolders',
 		'post': {
@@ -113,6 +111,6 @@ exports.run = function( params ){
 			loading.removeSelf();
 		}
 	});
-	Ti.API.tab1.open(win.origin,{animated:true});
+	Ti.API.home_tab.open(win.origin,{animated:true});
 	return win.origin;
 };

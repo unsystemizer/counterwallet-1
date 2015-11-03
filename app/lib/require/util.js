@@ -10,7 +10,7 @@ module.exports = (function() {
 	};
 	
 	function getFont( params ){
-		var basic_font = { fontSize: '15dp', fontFamily: 'Verdana' };
+		var basic_font = { fontSize: 15, fontFamily:'HelveticaNeue-Light' };
 		if( params.font ) basic_font = merge(basic_font, params.font);
 		
 		return basic_font;
@@ -278,7 +278,7 @@ module.exports = (function() {
 		window.open();
 	};
 	
-	self.group = function( v, layout ){
+	self.group = function( params, layout ){
 		var basic = {
 			width: Ti.UI.SIZE,
         	height: Ti.UI.SIZE
@@ -286,10 +286,24 @@ module.exports = (function() {
 		if( layout != null ) basic.layout = layout;
 		
 		var group = Ti.UI.createView(basic);
-		for( key in v ){
-			group.add(v[key]);
-			group[key] = v[key];
+		for( key in params ){
+			group.add(params[key]);
+			group[key] = params[key];
 		}
+		
+		group.addView = function( params ){
+			for( key in params ){
+				group.add(params[key]);
+				group[key] = params[key];
+			}
+		};
+		
+		group.removeView = function( params ){
+			for( key in params ){
+				group.remove(params[key]);
+				group[key] = null;
+			}
+		};
 		
 		return group;
 	};
@@ -362,7 +376,7 @@ module.exports = (function() {
 		inputView.view.add(back);
 		
 		function createButton(sign, params, callback ){
-			if( sign === L('label_close') || sign === L('label_delete') ){
+			if( sign === L('label_close') || sign === L('label_delete') || sign === L('label_reconfirm_redo') ){
 				font = 15;
 				opacity = 0.0;
 			}
@@ -405,6 +419,12 @@ module.exports = (function() {
 					numberArray.pop();
 				}
 			}
+			else if( sign === L('label_reconfirm_redo') ){
+				comp_whole.text.text = L('text_easypass_set');
+				numbers = { reconfirmed: false };
+				buttons.bc.opacity = 0.0;
+				flush();
+			}
 			else{
 				if( numberArray.length < 4 ){
 					comp_marks['m'+numberArray.length].image = '/images/img_easyinput_on.png';
@@ -436,6 +456,7 @@ module.exports = (function() {
 								comp_whole.text.text = L('text_reconfirm');
 								numbers.number = number;
 								numbers.reconfirmed = true;
+								buttons.bc.opacity = 1.0;
 								flush();
 							}
 						}
@@ -467,9 +488,10 @@ module.exports = (function() {
 			b8: createButton('8', {top: 140, left: 70}, callback),
 			b9: createButton('9', {top: 140, left: 140}, callback),
 			b0: createButton('0', {top: 210, left: 70}, callback),
-			bc: createButton(L('label_close'), {top: 210, left: -3}, callback),
+			bc: (params.type === 'reconfirm')? createButton(L('label_reconfirm_redo'), {top: 210, left: -3}, callback): createButton(L('label_close'), {top: 210, left: -3}, callback),
 			bd: createButton(L('label_delete'), {top: 210, left: 140}, callback)
 		});
+		if( params.type === 'reconfirm' ) buttons.bc.opacity = 0.0;
 		buttons.top = 120;
 		
 		var logos = self.group({
@@ -508,7 +530,7 @@ module.exports = (function() {
 		var comp_whole = {
 			logos: logos,
 			text: self.makeLabel({
-				text: L('text_inputpass'),
+				text: (params.type === 'reconfirm')? L('text_easypass_set'): L('text_easypass'),
 				color: '#e54353',
 				font:{ fontSize: 12 },
 				top: 95
@@ -638,62 +660,23 @@ module.exports = (function() {
 		
 		return inputView;
 	};
-		self.showLoading = function(parent,  params ){
+	
+	self.showLoading = function(parent,  params ){
 		params.font = getFont( params );
+		params.style = 'dark';
 		if( params.width == Ti.UI.FILL && params.height == Ti.UI.FILL ){
 			params.backgroundColor = '#ffffff';
 			params.opacity = 0.7;
-			params.style = 'dark';
+			params.font = { fontSize: 15, fontFamily: 'HelveticaNeue-Light' };
+			params.color = '#333333';
 		}
-		if( OS_IOS ){
-			var style = Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN;
-			if( params.style != null ){
-				if( params.style === 'dark' ) style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
-			}
-			params.style = style;
+		var style = ( OS_IOS )? Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN: Ti.UI.ActivityIndicatorStyle.PLAIN;
+		if( params.style != null ){
+			if( params.style === 'dark' ) style = (OS_IOS)? Ti.UI.iPhone.ActivityIndicatorStyle.DARK: Ti.UI.ActivityIndicatorStyle.DARK;
 		}
-		if( OS_ANDROID ) delete params['style'];
+		params.style = style;
 		
 		var act = Ti.UI.createActivityIndicator( params );
-		if( OS_ANDROID ){
-			if( params.message ) act.setMessage(params.message);
-		}
-		act.show();
-		
-		parent.add(act);
-		
-		act.removeSelf = function(){
-			parent.remove(act);
-			act = null;
-		};
-		
-		return act;
-	};
-	self.showLoadingCustom = function(parent,  params ){
-		params.font = getFont( params );
-		params.top = 30;
-		if( params.width == Ti.UI.FILL && params.height == Ti.UI.FILL ){
-			params.backgroundColor = 'transparent';
-			params.opacity = 0.7;
-			params.style = 'dark';
-		}
-		if( OS_IOS ){
-			var style = Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN;
-			if( params.style != null ){
-				if( params.style === 'dark' ) style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
-			}
-			params.style = style;
-			params.height = Ti.UI.SIZE;
-  			params.width = Ti.UI.SIZE;
-  			params.message = L('label_load_tokens');
-  			params.font = {fontFamily:'Helvetica Neue', fontSize:15, fontWeight:'normal'};
-		}
-		if( OS_ANDROID ) delete params['style'];
-		
-		var act = Ti.UI.createActivityIndicator( params );
-		if( OS_ANDROID ){
-			if( params.message ) act.setMessage(params.message);
-		}
 		act.show();
 		
 		parent.add(act);
@@ -709,22 +692,26 @@ module.exports = (function() {
 	self.readQRcode = function( params ){
 		self.openScanner({
 			'callback': function(e){
-				var matches = e.barcode.match(/[a-zA-Z0-9]{27,34}/);
-				
-				var vals = {};
-				vals.address = ( matches != null )?matches[0]: null;
-				
-				if( e.barcode.indexOf('&') >= 0 ){
-					vals.options = {};
-					
-					var args = e.barcode.split('&');
-					for( var i = 1; i < args.length; i++ ){
-						var a = args[i].split('=');
-						vals.options[a[0]] = a[1];
+				var uri = globals.requires['bitcore'].URI((e.barcode.indexOf('bitcoin:') >= 0)?e.barcode:'bitcoin:'+e.barcode);
+				if( uri == null ){
+					if( e.barcode.match(/^indiewallet:\/\//) ){
+						globals._parseArguments(e.barcode, true);
+					}
+					else{
+						var matches = e.barcode.match(/[a-zA-Z0-9]{27,34}/);
+						var vals = {};
+						vals.address = ( matches != null )?matches[0]: null;
+						if( e.barcode.indexOf('&') >= 0 ){
+							var args = e.barcode.split('&');
+							for( var i = 1; i < args.length; i++ ){
+								var a = args[i].split('=');
+								vals[a[0]] = a[1];
+							}
+						}
+						uri = vals;
 					}
 				}
-				
-				params.callback(vals);
+				if( uri != null ) params.callback(uri);
 			}
 		});
 	};
@@ -1066,7 +1053,7 @@ module.exports = (function() {
 	self.putTokenIcon = function( params ){
 		(function(params) {
 			if( params.info.description != null ){
-				if( /^(https?:\/\/).*\.json/.test(params.info.description) ){
+				if( /.*\.json/.test(params.info.description) ){
 					globals.requires['network'].getjson({
 						'uri': params.info.description,
 						'callback': function(json){
@@ -1122,7 +1109,7 @@ module.exports = (function() {
 				'char': (params.info.asset != null)? self.makeLabel({
 					text: (params.info.asset == 'XCP')? '': params.info.asset.charAt(0),
 					color: '#ffffff',
-					font:{ fontFamily:'HelveticaNeue-Light', fontSize: asset_image.width * 0.5, fontWeight:'normal' },
+					font:{ fontSize: asset_image.width * 0.5, fontWeight:'normal' },
 					textAlign: 'right'
 				}): null
 			});
@@ -1137,6 +1124,52 @@ module.exports = (function() {
 		params.parent.add(icon);
 		
 		return;
+	};
+	
+	self.setReorg = function(parent){
+		var params = {};
+		
+		params.width = params.height = Ti.UI.FILL;
+		params.backgroundColor = '#e54353';
+		params.opacity = 0.0;
+		
+		var view = Ti.UI.createView( params );
+		var texts = self.group({
+			'title': self.makeLabel({
+				text: L('label_reorganisation'),
+				color: '#ffffff',
+				font:{ fontSize:18 },
+				top: 0
+			}),
+			'text': self.makeLabel({
+				text: L('text_reorganisation'),
+				color: '#ffffff',
+				font:{ fontSize:15 },
+				top: 10
+			}),
+			'text2': self.makeLabel({
+				text: L('text_reorganisation2'),
+				color: '#ffffff',
+				font:{ fontSize:12 },
+				top: 10
+			})
+		}, 'vertical');
+		texts.width = '90%';
+		
+		var loading = self.showLoading(texts, {});
+		loading.top = 10;
+		
+		view.add(texts);
+		view.animate({ opacity: 0.9, duration: 300 });
+		
+		parent.add(view);
+		
+		view.removeSelf = function(){
+			parent.remove(view);
+			view = null;
+		};
+		
+		return view;
 	};
 	
 	return self;

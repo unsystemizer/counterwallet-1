@@ -1,5 +1,8 @@
 // Initiallize
 globals = Alloy.Globals;
+globals.is_scrolling = false;
+globals.Accelerometer = 0;
+globals.reorg_views = {};
 globals.windows = new Array();
 globals.requires = new Array();
 
@@ -29,11 +32,11 @@ var w = new Array(
 	'createtoken.js',
 	'history.js',
 	'login.js',
-	'newwallet.js',
 	'dex.js',
 	'home.js',
 	'settings.js',
 	'send.js',
+	'shapeshift.js',
 	'webview.js'
 );
 
@@ -123,9 +126,100 @@ Math.divide = function(value1, value2) {
 };
 
 Math.subtract = function(value1, value2) {
-    var max = Math.max(Math._getDecimalLength(value1), Math._getDecimalLength(value2)),
-        k = Math.pow(10, max);
+    var max = Math.max(Math._getDecimalLength(value1), Math._getDecimalLength(value2)), k = Math.pow(10, max);
     return (Math.multiply(value1, k) - Math.multiply(value2, k)) / k;
+};
+
+function reorg_finish(){
+	if( globals.isReorg ){
+		globals.isReorg = false;
+		globals.reorg_views['home'].removeSelf();
+		globals.reorg_views['history'].removeSelf();
+		globals.reorg_views['dex'].removeSelf();
+		globals.reorg_views['shapeshift'].removeSelf();
+		
+		if( globals.currentTabIndex == 0 ){
+			globals.loadBalance();
+		}
+		else if( globals.currentTabIndex == 1 ){
+			 if( Ti.API.ssLoad == 'NO' ) globals.windows['shapeshift'].run();
+		}
+	    else if( globals.currentTabIndex == 2 ){
+	    	if( Ti.API.dexLoad == 'NO' ){
+		    	globals.windows['dex'].run();
+		    	if( globals.change_box2_asset_balance != null ) globals.change_box2_asset_balance();
+		    }
+	    }
+	    else if( globals.currentTabIndex == 3 ){
+	    	if( Ti.API.historyLoad == 'NO' ) globals.windows['history'].run();
+	    }
+	}
+};
+
+var service = null;
+globals.backgroundfetch = function (e) {
+	globals.requires['network'].connect({
+		'method': 'check_reorg',
+		'post': {},
+		'callback': function( result ){
+			if( !result.isReorg ){
+				reorg_finish();
+				if( OS_IOS ){
+					Ti.App.iOS.removeEventListener( 'backgroundfetch', globals.backgroundfetch );
+					var notification = Ti.App.iOS.scheduleLocalNotification({
+					    alertBody: L('text_finish_reorg'),
+					    date: new Date(new Date().getTime())
+					}); 
+				}
+				else if( service != null ){
+					service.stop();
+					service = null;
+					
+					var intent = Ti.Android.createIntent({
+					    action: Ti.Android.ACTION_MAIN,
+					    className: 'inc.lireneosoft.counterparty.IndiesquareWalletActivity',
+					    packageName: 'inc.lireneosoft.counterparty'
+					});
+					intent.flags |= Ti.Android.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Ti.Android.FLAG_ACTIVITY_SINGLE_TOP;
+					intent.addCategory(Ti.Android.CATEGORY_LAUNCHER);
+					
+					var notification = Ti.Android.createNotification({
+					    contentTitle: 'IndieSquare Wallet',
+					    contentText : L('text_finish_reorg'),
+					    tickerText: L('text_finish_reorg'),
+					    contentIntent: Ti.Android.createPendingIntent({ 'intent': intent }),
+					    defaults:  Ti.Android.DEFAULT_ALL,
+			            flags: Ti.Android.FLAG_SHOW_LIGHTS,
+					    icon: Ti.App.Android.R.drawable.appicon,
+					    number: 1,
+					    when: new Date()
+					});
+					Ti.Android.NotificationManager.notify(1, notification);
+				}
+			}
+			else if( OS_IOS && e != null ) Ti.App.iOS.endBackgroundHandler(e.handlerId);
+		}
+	});
+};
+globals.reorg_occured = function(){
+	if( !globals.isReorg ){
+		globals.isReorg = true;
+		globals.reorg_views['home'] = globals.requires['util'].setReorg(Ti.API.home_win);
+		globals.reorg_views['history'] = globals.requires['util'].setReorg(Ti.API.history_win);
+		globals.reorg_views['dex'] = globals.requires['util'].setReorg(Ti.API.exchange_win);
+		globals.reorg_views['shapeshift'] = globals.requires['util'].setReorg(Ti.API.ss_win);
+		
+		if( OS_IOS ){
+			Ti.App.iOS.setMinimumBackgroundFetchInterval( Ti.App.iOS.BACKGROUNDFETCHINTERVAL_MIN );
+			Ti.App.iOS.addEventListener( 'backgroundfetch', globals.backgroundfetch );
+		}
+		else{
+			var intent = Ti.Android.createServiceIntent( { url: 'background/fetch.js' } );
+			intent.putExtra('interval', 15000);
+			service = Ti.Android.createService(intent);
+			service.start();
+		}
+	}
 };
 
 var lastUrl = null;
@@ -138,14 +232,13 @@ globals._parseArguments = function( str, is_fromQR ) {
 		    if( launchIntent.hasExtra('source') ) url = 'indiewallet://' + launchIntent.getStringExtra('source');
 		}
 	}
-	if (url && lastUrl !== url) {
+	if( url && (is_fromQR || lastUrl !== url) ) {
 		lastUrl = url;
 		if( url.match(/^indiewallet:\/\//) ){
 	    	var scheme = url.replace(/^indiewallet:\/\//, '').split('?');
 	    	
 	    	var func = scheme[0];
 	    	var params = JSON.parse(decodeURIComponent(scheme[1].split('=')[1]));
-	    	
 	    	Ti.include('require/pubnub.js');
 			var pubnub = PUBNUB({
 			    publish_key       : Alloy.CFG.pubnub_pub,
@@ -154,71 +247,112 @@ globals._parseArguments = function( str, is_fromQR ) {
 			    native_tcp_socket : true,
 			    origin            : 'pubsub.pubnub.com'
 			});
-	    	function authorization(){
-		    	globals.requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
-					if( e.success ){
-						function publish( data ){
-							if( data != null ){
+			if( func === 'screen_to' ){
+				if( params.screen === 'send' ){
+					var s = setInterval(function(){
+						if( globals.balances != null && globals.tiker != null ){
+				            clearInterval(s);
+				            var send_token = null;
+							for( var i = 0; i < globals.balances.length; i++ ){
+								if( globals.balances[i].asset === params.token ){
+									send_token = globals.balances[i];
+									break;
+								}
+							}
+							
+							if( send_token != null ){
+								var data = {
+									'asset': send_token.asset,
+									'balance': send_token.balance,
+									'fiat': globals.requires['tiker'].to(send_token.asset, send_token.balance, globals.requires['cache'].data.currncy),
+									'address': params.destination,
+									'amount': params.amount,
+									'channel': params.channel,
+									'currency': params.currency
+								};
+								globals.windows['send'].run(data);
+								globals.publich = function(data){
+									pubnub.publish({
+									    channel : params.channel,
+									    message : JSON.stringify(data),
+										callback: function(m){
+											Ti.API.info(JSON.stringify(m));
+										}
+									});
+								};
+							}
+				        }
+					}, 100);
+				}
+			}
+			else{
+				function authorization(){
+			    	globals.requires['auth'].check({ title: L('text_authentication'), callback: function(e){
+						if( e.success ){
+							function publish( data ){
+								if( data != null ){
+									pubnub.publish({
+									    channel : params.channel,
+									    message : JSON.stringify(data),
+										callback: function(m){}
+									});
+								}
+								if( !is_fromQR && params.scheme != null ){
+									if( params.scheme === 'http' ){
+										if( OS_ANDROID ){
+											var activity = Ti.Android.currentActivity;
+											activity.finish();
+										}
+									}
+									else Ti.Platform.openURL(params.scheme+'://');
+								}
+							}
+							if( func === 'signin' ){
+								var data = {
+									'id': globals.requires['cache'].data.id,
+									'cs': params.cs
+								};
+								publish( data );
+							}
+							else if( func === 'sign' ){
+								pubnub.subscribe({
+								    channel  : params.channel + 'receive',
+								    callback : function(unsignd_hex) {
+								    	globals.requires['bitcore'].sign(unsignd_hex,
+											function(signed_tx){
+												var data = {
+													'signed_tx': signed_tx
+												};
+												publish( data );
+											},
+											function(){
+												globals.requires['util'].createDialog({
+													message: L('text_signerror'),
+													buttonNames: [L('label_close')]
+												}).show();
+											}
+										);
+								    }
+								});
 								pubnub.publish({
 								    channel : params.channel,
-								    message : JSON.stringify(data),
+								    message : JSON.stringify({
+								    	'connect': true
+								    }),
 									callback: function(m){}
 								});
 							}
-							if( !is_fromQR && params.scheme != null ){
-								if( params.scheme === 'http' ){
-									if( OS_ANDROID ){
-										var activity = Ti.Android.currentActivity;
-										activity.finish();
-									}
-								}
-								else Ti.Platform.openURL(params.scheme+'://');
-							}
 						}
-						if( func === 'signin' ){
-							var data = {
-								'id': globals.requires['cache'].data.id,
-								'cs': params.cs
-							};
-							publish( data );
-						}
-						else if( func === 'sign' ){
-							pubnub.subscribe({
-							    channel  : params.channel + 'receive',
-							    callback : function(message) {
-							    	globals.requires['bitcore'].sign(message,
-										function(signed_tx){
-											var data = {
-												'signed_tx': signed_tx
-											};
-											publish( data );
-										},
-										function(){
-											globals.requires['util'].createDialog({
-												message: L('text_signerror'),
-												buttonNames: [L('label_close')]
-											}).show();
-										}
-									);
-							    }
-							});
-							pubnub.publish({
-							    channel : params.channel,
-							    message : JSON.stringify({
-							    	'connect': true
-							    }),
-								callback: function(m){}
-							});
-						}
-					}
-				}});
+					}});
+				}
+				var s = setInterval(function(){
+					if( globals.open ){
+			            clearInterval(s);
+			            authorization();
+			        }
+				}, 100);
 			}
-			var s = setInterval(function(){
-				if( globals.open ){
-		            clearInterval(s);
-		            authorization();
-		        }
-			}, 100);
+	    	
 		}
     }
 };

@@ -1,7 +1,4 @@
 exports.run = function( params ){
-	var checkval = params.balance.indexOf('(');
-	if( checkval > 0 ) params.balance = params.balance.substr(0, checkval);
-	
 	var _requires = globals.requires;
 	
 	var win = _requires['layer'].createWindow();
@@ -13,9 +10,9 @@ exports.run = function( params ){
 	win.origin.add(top_bar);
 	
 	var back_home = _requires['util'].makeLabel({
-		text:L('label_tab_1'),
+		text:L('label_tab_home'),
 		color:"white",
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:15, fontWeight:'normal'},
+		font:{ fontSize:15, fontWeight:'normal'},
 		textAlign: 'right',
 		top: 25, left:10
 	});
@@ -28,11 +25,10 @@ exports.run = function( params ){
 	var settings_title_center = _requires['util'].makeLabel({
 		text:L('label_send'),
 		color:"white",
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'normal'},
-		textAlign: 'center',
+		font:{ fontFamily: 'HelveticaNeue-Light', fontSize: 20, fontWeight:'normal' },
 		top: 25, center: 0
 	});
-	top_bar.add(  settings_title_center );
+	top_bar.add( settings_title_center );
 	
 	var view = Ti.UI.createScrollView({
 		width: Ti.UI.FILL,
@@ -42,19 +38,38 @@ exports.run = function( params ){
 	main_view.add(view);
 	
 	var send_amount = '';
-	var is_fiatvalue = ( params.fiat.length > 0 )? true: false;
+	var is_fiatvalue = ( params.fiat != null && params.fiat.length > 0 )? true: false;
 	
-	var token_amount_field = Ti.UI.createLabel({
+	var token_amount_field = _requires['util'].makeLabel({
 		text:'0 '+params.asset,
 		width: '80%',
-		height: 50,
-		top:60,
-		textAlign:'center',
-		color:'white',
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:40, fontWeight:'normal'}
+		top: 60,
+		color: 'white',
+		font:{ fontSize: 40 }
 	});
+	top_bar.add( token_amount_field );
 	
-	top_bar.add(token_amount_field);
+	var atrib = Ti.UI.createAttributedString({
+	 	text: token_amount_field.text,
+		attributes: [{
+			 type: Ti.UI.ATTRIBUTE_FONT,	
+			 value: { fontSize:20, fontWeight:'bold'},
+			 range: [token_amount_field.text.indexOf(' '+params.asset), (' '+params.asset).length]
+		}]
+	});
+	token_amount_field.attributedString = atrib;
+	
+	var fiat_amount_field = _requires['util'].makeLabel({
+		text: _requires['tiker'].to('XCP', 0, _requires['cache'].data.currncy),
+		width: '80%',
+		top: 110,
+		color:'white',
+		font:{ fontSize: 20 }
+	});
+	if( !is_fiatvalue ) fiat_amount_field.opacity = 0.3;
+	top_bar.add(fiat_amount_field);
+	
+	var top_field = token_amount_field;
 	
 	var toGetSymbol = _requires['tiker'].to('XCP', 0, _requires['cache'].data.currncy);
 		toGetSymbol = toGetSymbol.replace('0','');
@@ -62,120 +77,72 @@ exports.run = function( params ){
 	var available_balance_text = params.balance + ' ' + params.asset;
 	
 	if(params.fiat != null){
-		fiat_value = params.fiat.replace(toGetSymbol,'');
+		fiat_value = params.fiat.replace(toGetSymbol,'') / params.balance;
 	}
-	fiat_value = fiat_value / params.balance;
 		
 	if( params.fiat != null ) available_balance_text = params.balance + ' ' + params.asset + ' (' + params.fiat +')';
 	if(fiat_value == 0) available_balance_text = params.balance + ' ' + params.asset;
-	var available_balance = Ti.UI.createLabel({
-		text:available_balance_text,
+	var available_balance = _requires['util'].makeLabel({
+		text: available_balance_text,
 		width: '80%',
-		height: 50,
 		top: 140,
-		textAlign:'center',
 		color:'white',
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:12, fontWeight:'normal'}
+		font:{ fontSize:12, fontWeight:'normal'}
 	});
 	
 	top_bar.add(available_balance);
-	
-	var atrib = Ti.UI.createAttributedString({
-	 	text:token_amount_field.text,
-		attributes: [{
-			 type: Ti.UI.ATTRIBUTE_FONT,	
-			 value: {fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'bold'},
-			 range: [token_amount_field.text.indexOf(' '+params.asset), (' '+params.asset).length]
-		}]
-	});
-	
-	token_amount_field.attributedString = atrib;
 	
 	var switch_image = _requires['util'].makeImage({
 	    image: '/images/icon_switch.png',
 	    height: 30,
 	    top:100, right: 10
 	});
-			
 	top_bar.add( switch_image );
 	
-	var fiat_amount_field = Ti.UI.createLabel({
-		text: _requires['tiker'].to('XCP', 0, _requires['cache'].data.currncy),
-		width: '80%',
-		height: 50,
-		top:110,
-		textAlign:'center',
-		color:'white',
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:30, fontWeight:'normal'}
-	});
-	if( !is_fiatvalue ){
-		fiat_amount_field.setOpacity(0.3);
+	function switch_inputs(){
+		if( top_field == token_amount_field ){
+			top_field = fiat_amount_field;
+			
+			token_amount_field.font = { fontSize:20, fontWeight:'normal' };
+			fiat_amount_field.font = { fontSize:40, fontWeight:'normal' };
+			
+			token_amount_field.top = 110;
+			fiat_amount_field.top = 60;
+		}
+		else{
+			top_field = token_amount_field;
+			
+			token_amount_field.font = { fontSize:40, fontWeight:'normal' };
+			fiat_amount_field.font = { fontSize:20, fontWeight:'normal' };
+			
+			token_amount_field.top = 60;
+			fiat_amount_field.top = 110;
+		}
+		updateFields(null);
 	}
-	
-	top_bar.add(fiat_amount_field);
-	var top_field = token_amount_field;
-	
 	if( !is_fiatvalue ) switch_image.setOpacity(0.3);
 	else{
-		switch_image.addEventListener('touchstart', function(){
-			send_amount = '0';
-			var old_pos = token_amount_field.top;
-			//token_amount_field.top = fiat_amount_field.top;
-			//	fiat_amount_field.top = old_pos;
-			
-			if(top_field == token_amount_field){
-				token_amount_field.top = 110;
-				fiat_amount_field.top = 60;
-				var new_text = send_amount + ' ' + params.asset;
-				token_amount_field.font = {fontFamily:'HelveticaNeue-Light', fontSize:25, fontWeight:'normal'};
-				var atrib = Ti.UI.createAttributedString({
-	   				text:new_text,
-	    				attributes: [{
-	           				 type: Ti.UI.ATTRIBUTE_FONT,	
-	           				 value: {fontFamily:'HelveticaNeue-Light', fontSize:10, fontWeight:'bold'},
-	            			 range: [new_text.indexOf(' '+params.asset), (' '+params.asset).length]
-	        			}]
-					});
-				token_amount_field.text = '';
-				token_amount_field.attributedString = atrib;
-				
-				fiat_amount_field.text =  _requires['tiker'].to('XCP', 0, _requires['cache'].data.currncy);
-				fiat_amount_field.font = {fontFamily:'HelveticaNeue-Light', fontSize:40, fontWeight:'normal'};
-				top_field = fiat_amount_field;
-				updateFields(0);
-			}else{
-				token_amount_field.top = 60;
-				fiat_amount_field.top = 110;
-				var new_text = send_amount + ' ' + params.asset;
-				token_amount_field.font = {fontFamily:'HelveticaNeue-Light', fontSize:40, fontWeight:'normal'};
-				var atrib = Ti.UI.createAttributedString({
-	   				text:new_text,
-	    			attributes: [{
-           				 type: Ti.UI.ATTRIBUTE_FONT,	
-           				 value: {fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'bold'},
-            			 range: [new_text.indexOf(' '+params.asset), (' '+params.asset).length]
-	        		}]
-				});
-					
-				fiat_amount_field.text =  _requires['tiker'].to('XCP', 0, _requires['cache'].data.currncy);
-				fiat_amount_field.font = {fontFamily:'HelveticaNeue-Light', fontSize:25, fontWeight:'normal'};
-				token_amount_field.text = '';
-				token_amount_field.attributedString = atrib;
-				top_field = token_amount_field;
-			}
-		});
+		switch_image.addEventListener('touchstart', switch_inputs);
 	}
 	
+	function addCommas(nStr) {
+   		 nStr += '';
+   		 x = nStr.split('.');
+   		 x1 = x[0];
+   		 x2 = x.length > 1 ? '.' + x[1] : '';
+    	 var rgx = /(\d+)(\d{3})/;
+    	 while (rgx.test(x1)) x1 = x1.replace(rgx, '$1' + ',' + '$2');
+   		 return x1 + x2;
+	}
 	function updateFields( value ){
-		if(value === 'del'){
+		if( value == null ) send_amount = '';
+		else if(value === 'del'){
 			if(send_amount.length > 0){
 				send_amount = send_amount.slice(0, send_amount.length - 1);
 			}
 		}
 		else if(value === '.'){
-			if(send_amount.indexOf(".") > -1){
-			
-			}else{
+			if(send_amount.indexOf(".") <= -1){
 				send_amount = '' + send_amount + value;
 			}
 		}
@@ -187,62 +154,60 @@ exports.run = function( params ){
 			}
 		}
 		
-		if(send_amount.length == 0){
-			send_amount = '0';
-		}
+		if(send_amount.length == 0) send_amount = '0';
 		var toGetSymbol = _requires['tiker'].to('XCP', 0, _requires['cache'].data.currncy);
 			toGetSymbol = toGetSymbol.replace('0', '');
 		
 		var fiat_value = null;
 		if( is_fiatvalue ){
-			var fiat_value = params.fiat.replace(toGetSymbol,'');
-				fiat_value = fiat_value / params.balance;
+			fiat_value = params.fiat.replace(toGetSymbol,'') / params.balance;
 		}
 		
 		if(top_field == token_amount_field){
-			var new_text = send_amount +' '+params.asset;
+			var new_text = addCommas(send_amount) + ' ' + params.asset;
 			
-			if( fiat_value != null ){
+			if( is_fiatvalue ){
 				var val = (send_amount * fiat_value).toFixed2(2);
-				if(fiat_value == 0){
-					val = 0;
-				}
+				if( fiat_value == 0 ) val = 0;
 				fiat_amount_field.text = val;
-				fiat_amount_field.text = toGetSymbol+val;
+				fiat_amount_field.text = toGetSymbol + addCommas(val);
 			}
 			
 			var atrib = Ti.UI.createAttributedString({
    				text:new_text,
 				attributes: [{
        				 type: Ti.UI.ATTRIBUTE_FONT,	
-       				 value: {fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'bold'},
+       				 value: { fontSize:20 },
         			range: [new_text.indexOf(' '+params.asset), (' '+params.asset).length]
     			}]
 			});
+			token_amount_field.text = '';
 			token_amount_field.attributedString = atrib;
 		}else{
-	
-			fiat_amount_field.text = toGetSymbol + send_amount;
-			var val = (send_amount / fiat_value).toFixed2(8);
-			if(fiat_value == 0){
-				val = 0;
-			}
-			var new_text = val +' '+ params.asset;
+			fiat_amount_field.text = toGetSymbol + addCommas(send_amount);
+			var fiat_val = _requires['tiker'].to(params.asset.toUpperCase(), 1, _requires['cache'].data.currncy);
 			
+			fiat_val = fiat_val.replace(toGetSymbol,'');
+			fiat_val = fiat_val.replace(',','');
+			
+			var val = addCommas((send_amount / fiat_val).toFixed2(8));
+			if( fiat_val == 0 ) val = 0;
+			var new_text = val +' '+ params.asset;
 			var atrib = Ti.UI.createAttributedString({
-   				text:new_text,
+   				text: new_text,
 				attributes: [{
-       				 type: Ti.UI.ATTRIBUTE_FONT,	
-       				 value: {fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'bold'},
-        			range: [new_text.indexOf(' '+params.asset), (' '+params.asset).length]
+       				type: Ti.UI.ATTRIBUTE_FONT,	
+       				value: { fontSize: 10 },
+        			range: [ new_text.indexOf(' '+params.asset), (' '+params.asset).length ]
     			}]
 			});
+			token_amount_field.text = '';
 			token_amount_field.attributedString = atrib;
 		}
 	}
 	
 	var recipient = _requires['util'].makeTextField({
-		hintText:L('label_destination'),
+		hintText: L('label_destination'),
 		width: Ti.UI.FILL,
 		height: 40,
 		paddingLeft:7,    
@@ -250,220 +215,229 @@ exports.run = function( params ){
 		autocorrect:false,
 		textAlign:'left',
 		backgroundColor:"white",
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:12, fontWeight:'normal'},
+		font:{ fontSize:12, fontWeight:'normal'},
 		border: 'hidden',
 		top:185
 	});
 	view.add(recipient);
 	
+	var first_row = Ti.UI.createView({ backgroundColor:'transparent', width: Ti.UI.FILL, height: "20%" });
+	var second_row = Ti.UI.createView({ backgroundColor:'transparent', width: Ti.UI.FILL, height: "20%" });
+	var third_row = Ti.UI.createView({ backgroundColor:'transparent', width: Ti.UI.FILL, height: "20%" });
+	var fourth_row = Ti.UI.createView({ backgroundColor:'transparent', width: Ti.UI.FILL, height: "20%" });
+	var fith_row = Ti.UI.createView({ backgroundColor:'transparent', width: Ti.UI.FILL, height: "20%" });
+	
 	var qr_button = Ti.UI.createButton({
-        backgroundColor : "transparent",
-        title : '',
-        backgroundImage : '/images/img_qrcode.png',
-        color:'#e54353',
-        top : 240,
-        left:30,
-        width : 50,
-        height : 50,
+        backgroundColor: 'transparent',
+        title: '',
+        backgroundImage: '/images/img_qrcode.png',
+        color: '#e54353',
+        left: 30,
+        width: 50, height: 50,
         font:{fontFamily:'GillSans-Light', fontSize:20, fontWeight:'light'}
     });
 	qr_button.addEventListener('touchstart', function(){
 		readQR();
 	});
-	view.add(qr_button);
+	first_row.add(qr_button);
 	
 	var send_button = Ti.UI.createButton({
         backgroundColor : "transparent",
         title : L('text_dosend'),
         color:'#e54353',
         right:0,
-        top : 240,
-        width : "33.3%",
-        height : 50,
+        width :"33.3%",
+        height : "100%",
         font:{fontFamily:'Gill Sans', fontSize:20, fontWeight:'light'}
     });
-	
-	view.add(send_button);
-	
+	first_row.add(send_button);
 	
 	var one_button = Ti.UI.createButton({
         backgroundColor : "transparent",
         title : '1',
         color:'#e54353',
-        top :295,
+        top :0,
         left:0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	one_button.addEventListener('touchstart', function(){
 		updateFields(1);
 	});
-	view.add(one_button);
+	second_row.add(one_button);
 	
 	var two_button = Ti.UI.createButton({
          backgroundColor : "transparent",
         title : '2',
         color:'#e54353',
-        top : 295,
+        top : 0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	two_button.addEventListener('touchstart', function(){
 		updateFields(2);
 	});
-	view.add(two_button);
+	second_row.add(two_button);
 	
 	var three_button = Ti.UI.createButton({
          backgroundColor : "transparent",
         title : '3',
         color:'#e54353',
         right:0,
-        top : 295,
-        width : "33.3%",
-        height : 50,
+        top : 0,
+       width : "33.3%",
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
     three_button.addEventListener('touchstart', function(){
 		updateFields(3);
 	});
-    view.add(three_button);
+    second_row.add(three_button);
     
     var four_button = Ti.UI.createButton({
-         backgroundColor : "transparent",
+        backgroundColor : "transparent",
         title : '4',
         color:'#e54353',
-        top : 345,
+        top : 0,
         left:0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	four_button.addEventListener('touchstart', function(){
 		updateFields(4);
 	});
-	view.add(four_button);
+	third_row.add(four_button);
 	
 	var five_button = Ti.UI.createButton({
         backgroundColor : "transparent",
         title : '5',
         color:'#e54353',
-        top : 345,
+        top : 0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	five_button.addEventListener('touchstart', function(){
 		updateFields(5);
 	});
-	view.add(five_button);
+	third_row.add(five_button);
 	
 	var six_button = Ti.UI.createButton({
         backgroundColor : "transparent",
         title : '6',
         color:'#e54353',
         right:0,
-        top : 345,
+        top : 0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	six_button.addEventListener('touchstart', function(){
 		updateFields(6);
 	});
-	view.add(six_button); 
+	third_row.add(six_button); 
 	
 	 var seven_button = Ti.UI.createButton({
         backgroundColor : "transparent",
         title : '7',
         color:'#e54353',
-        top : 395,
+        top : 0,
         left:0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	seven_button.addEventListener('touchstart', function(){
 		updateFields(7);
 	});
-	view.add(seven_button);
+	fourth_row.add(seven_button);
 	
 	var eight_button = Ti.UI.createButton({
         backgroundColor : "transparent",
         title : '8',
         color:'#e54353',
-        top : 395,
+        top : 0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	eight_button.addEventListener('touchstart', function(){
 		updateFields(8);
 	});
-	view.add(eight_button);
+	fourth_row.add(eight_button);
 	
 	var nine_button = Ti.UI.createButton({
          backgroundColor : "transparent",
         title : '9',
         color:'#e54353',
         right:0,
-        top : 395,
+        top : 0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	nine_button.addEventListener('touchstart', function(){
 		updateFields(9);
 	});
-	view.add(nine_button);
+	fourth_row.add(nine_button);
 	
 	var dot_button = Ti.UI.createButton({
         backgroundColor : "transparent",
         title : '.',
         color:'#e54353',
-        top : 445,
+        top : 0,
         left:0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	dot_button.addEventListener('touchstart', function(){
 		updateFields('.');
 	});
-	view.add(dot_button);
+	fith_row.add(dot_button);
 	
 	var zero_button = Ti.UI.createButton({
         backgroundColor : "transparent",
         title : '0',
         color:'#e54353',
-        top : 445,
+        top : 0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:40, fontWeight:'light'}
     });
 	zero_button.addEventListener('touchstart', function(){
 		updateFields(0);
 	});
-	view.add(zero_button);
+	fith_row.add(zero_button);
 	
 	var back_button = Ti.UI.createButton({
          backgroundColor : "transparent",
         title : 'DEL',
         color:'#e54353',
         right:0,
-        top : 445,
+        top : 0,
         width : "33.3%",
-        height : 50,
+        height : "100%",
         font:{fontFamily:'GillSans-Light', fontSize:20, fontWeight:'light'}
     });
 	back_button.addEventListener('touchstart', function(){
 		updateFields('del');
 	});
-	view.add(back_button);
+	fith_row.add(back_button);
 	
-	
-	
+	var keypad_view = _requires['util'].group({
+		'firstrow':first_row,
+		'secondrow':second_row,
+		'thirdrow':third_row,
+		'fouthrow':fourth_row,
+		'fithrow':fith_row,
+	},'vertical');
+	view.add(keypad_view);
+	keypad_view.height = Ti.UI.FILL;
+	keypad_view.top = 230;
 	
 	var text_balances = _requires['util'].group({
 		asset: _requires['util'].makeLabel({
@@ -483,7 +457,6 @@ exports.run = function( params ){
 		})
 	});
 	text_balances.top = 70;
-	//view.add(text_balances);
 	
 	var details = _requires['util'].group({
 		'txt_dust': _requires['util'].makeLabel({
@@ -500,14 +473,13 @@ exports.run = function( params ){
 		})
 	});
 	
-	
 	var box_amount = _requires['util'].group({
 		'amount': _requires['util'].makeTextField({
 			hintText: L('label_quantity_send'),
 			width: Ti.UI.FILL,
 			height: 50,
 			textAlign:'center',
-			font:{fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'normal'},
+			font:{ fontSize:20, fontWeight:'normal'},
 			border: 'hidden',
 			keyboardType: Ti.UI.KEYBOARD_DECIMAL_PAD,
 		})
@@ -524,14 +496,12 @@ exports.run = function( params ){
 		else text_balances.after.text = '';
 	});
 	
-	
 	var box_amount_fiat = _requires['util'].group({
 		'amount': _requires['util'].makeTextField({
 			hintText: L('label_quantity_send'),
 			width: Ti.UI.FILL,
-			height: 50,
 			textAlign:'center',
-			font:{fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'normal'},
+			font:{ fontSize:20, fontWeight:'normal'},
 			border: 'hidden',
 			keyboardType: Ti.UI.KEYBOARD_DECIMAL_PAD,
 		})
@@ -548,11 +518,7 @@ exports.run = function( params ){
 		else text_balances.after.text = '';
 	});
 	
-	
-	
-	
 	if( params.asset === 'BTC' ) details.txt_dust.text = '';
-	
 	var param = {
 	    backgroundImage:'/images/img_qrcode.png',
 	    width: 30,
@@ -580,26 +546,49 @@ exports.run = function( params ){
 	box_desc_address.top = 130;
 	box_desc_address.width = '100%';
 	
+	function setValues( vals ){
+		if( vals.currency != null ){
+			vals.extras = { 'currency': vals.currency };
+		}
+		
+		if( vals.address != null ){
+			if( vals.message != null ){
+				_requires['util'].createDialog({
+					title: L('text_withmessage'),
+					message: vals.message,
+					buttonNames: [L('label_close')]
+				}).show();
+			}
+			recipient.value = vals.address.toString();
+			
+			if( vals.extras != null && vals.extras.currency != null ){
+				if( is_fiatvalue && _requires['tiker'].isAvailable(vals.extras.currency) ){
+					if( top_field == token_amount_field ) switch_inputs();
+					if( _requires['cache'].data.currncy != vals.extras.currency ){
+						vals.amount = _requires['tiker'].swapCurrency({
+							'from': vals.extras.currency,
+							'to': _requires['cache'].data.currncy,
+							'amount': vals.amount
+						});
+					}
+				}
+				else vals.amount = 0;
+			}
+			else{
+				if( top_field != token_amount_field ) switch_inputs();
+			}
+			
+			if( vals.amount != null ){
+				updateFields( null );
+				updateFields( vals.amount );
+			}
+		}
+	}
+	setValues(params);
+	
 	function readQR(){
 		_requires['util'].readQRcode({
-			callback: function( vals ){
-				if( vals.address != null ){
-					if( vals.options != null && vals.options.message != null ){
-						_requires['util'].createDialog({
-							title: L('text_withmessage'),
-							message: vals.options.message,
-							buttonNames: [L('label_close')]
-						}).show();
-					}
-					recipient.value = vals.address;
-				}
-				else{
-					_requires['util'].createDialog({
-						message: L('text_unreadable'),
-						buttonNames: [L('label_close')]
-					}).show();
-				}
-			}
+			callback: setValues
 		});
 	}
 	
@@ -632,7 +621,7 @@ exports.run = function( params ){
 					_requires['auth'].check({ title: L('text_confirmsend'), callback: function(e){
 						if( e.success ){
 							
-							var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL});
+							var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_send')});
 							_requires['network'].connect({
 								'method': 'doSend',
 								'post': {
@@ -643,47 +632,55 @@ exports.run = function( params ){
 									quantity: temp_field.value
 								},
 								'callback': function( result ){
-									_requires['bitcore'].sign(result, function(signed_tx){
-										_requires['network'].connect({
-											'method': 'sendrawtransaction',
-											'post': {
-												tx: signed_tx
-											},
-											'callback': function( result ){
-												var dialog = _requires['util'].createDialog({
-													message: L('text_sent'),
-													buttonNames: [L('label_close')]
-												});
-												dialog.addEventListener('click', function(e){
-													win.close();
-												});
-												dialog.show();
-												
-												_requires['network'].connect({
-													'method': 'acs_push',
-													'post': {
-														id: _requires['cache'].data.id,
-														acs_key: Alloy.CFG.acs_key,
-														type: 'send',
-														asset: params.asset,
-														destination: recipient.value,
-														quantity:temp_field.value
-													},
-													'callback': function( result ){
-														//
-													},
-													'onError': function(error){
-														alert(error);
-													}
-												});
-											},
-											'onError': function(error){
-												alert(error);
-											},
-											'always': function(){
-												loading.removeSelf();
-											}
-										});
+									_requires['bitcore'].sign(result, {
+										'callback': function(signed_tx){
+											_requires['network'].connect({
+												'method': 'sendrawtransaction',
+												'post': {
+													tx: signed_tx
+												},
+												'callback': function( result ){
+													if( params.channel != null ) globals.publich({'status': true});
+													
+													var dialog = _requires['util'].createDialog({
+														message: L('text_sent'),
+														buttonNames: [L('label_close')]
+													});
+													dialog.addEventListener('click', function(e){
+														win.close();
+													});
+													dialog.show();
+													
+													_requires['network'].connect({
+														'method': 'acs_push',
+														'post': {
+															id: _requires['cache'].data.id,
+															acs_key: Alloy.CFG.acs_key,
+															type: 'send',
+															asset: params.asset,
+															destination: recipient.value,
+															quantity:temp_field.value
+														},
+														'callback': function( result ){
+															Ti.API.info(JSON.stringify(result));
+														},
+														'onError': function(error){
+															Ti.API.info(error);
+														}
+													});
+												},
+												'onError': function(error){
+													alert(error);
+												},
+												'always': function(){
+													loading.removeSelf();
+												}
+											});
+										},
+										'fail': function(){
+											alert(L('text_error_serierize'));
+											loading.removeSelf();
+										}
 									});
 								},
 								'onError': function(error){
@@ -709,7 +706,6 @@ exports.run = function( params ){
 		}
 	});
 	
-	Ti.API.tab1.open(win.origin,{animated:true});
-	
+	Ti.API.home_tab.open(win.origin,{ animated:true });
 	return win.origin;
 };

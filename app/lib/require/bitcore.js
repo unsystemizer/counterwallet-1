@@ -40,16 +40,25 @@ module.exports = (function() {
 		return account.privateKey;
 	};
 	
-	self.sign = function( raw_tx, callback, fail ){
+	self.sign = function( raw_tx, params ){
 		if( globals.DEMO ) callback('signed_tx');
 		if( account == null ) return null;
-		bitcore.signrawtransaction(raw_tx, account.privateKey, callback, fail);
+		bitcore.signrawtransaction(raw_tx, account.privateKey, params.callback, params.fail);
 	};
 	
 	self.getPublicKey = function( passphrase, bool ){
 		if( bool ) self.init(passphrase);
 		if( account == null ) return null;
 		return account.publicKey.toString();
+	};
+	
+	self.URI = function( uri ){
+		if( bitcore.URI.isValid(uri) ){
+			var uri = new bitcore.URI(uri);
+			if( uri.amount != null ) uri.amount /= 100000000;
+			return uri;
+		}
+		else return null;	
 	};
 	
     return self;

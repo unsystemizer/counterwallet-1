@@ -3,19 +3,21 @@ exports.run = function( params ){
 	var _requires = globals.requires;
 	
 	var win = _requires['layer'].createWindow();
-	var main_view = Ti.UI.createView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
+	var main_view = Ti.UI.createScrollView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
 	win.origin.add(main_view);
 	
 	var top_bar = Ti.UI.createView({ backgroundColor:'#e54353', width: Ti.UI.FILL, height: 55 });
 	top_bar.top = 0;
 	win.origin.add(top_bar);
 	
+	var xcp_balance = globals.balances[1].balance;
+	
 	var back_home = _requires['util'].makeLabel({
 		text:"tokens",
 		color:"white",
-		font:{fontFamily:'Helvetica Neue', fontSize:10, fontWeight:'normal'},
+		font:{fontFamily:'Helvetica Neue', fontSize:14, fontWeight:'normal'},
 		textAlign: 'right',
-		top: 35, left:10
+		top: 30, left:10
 	});
 	top_bar.add( back_home );
 	
@@ -223,66 +225,85 @@ exports.run = function( params ){
 			});
 			dialog.addEventListener('click', function(e){
 				if( e.index == 1 ){
-					_requires['auth'].check({ title: L('text_createToken'), callback: function(e){
-						if( e.success ){
-							var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL});
-							
-							_requires['network'].connect({
-								'method': 'makeEnhancedInfo',
-								'post': {
-									asset: token,
-									media: blobImage,
-									description: box_description.field.value,
-									website: box_website.field.value,
-									pgpsig: box_pgpsig.field.value,
-								},
-								'callback': function( url ){
-									
-									_requires['network'].connect({
-										'method': 'doIssue',
-										'post': {
-											id: _requires['cache'].data.id,
-											code: _requires['cache'].data.pass_hash,
-											asset: token,
-											description: url,
-											quantity: box_quantity.field.value,
-											divisible: sl_divisible.is
-										},
-										'callback': function( result ){
-											_requires['bitcore'].sign(result, function(signed_tx){
-												_requires['network'].connect({
-													'method': 'sendrawtransaction',
-													'post': {
-														tx: signed_tx
+					if( token.charAt(0) != 'A' && xcp_balance < 0.5 ){
+						var dialog = _requires['util'].createDialog({
+							message: L('label_get_xcp'),
+							buttonNames: [L('label_close'),L('label_buy_xcp')]
+						});
+						dialog.addEventListener('click', function(e){
+							if( e.index == 1 ){
+								globals.tabGroup.setActiveTab(globals.tabGroup.tabs[1]);
+								win.close();
+							}
+						});
+						dialog.show();
+					}
+					else{
+						_requires['auth'].check({ title: L('text_createToken'), callback: function(e){
+							if( e.success ){
+								var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_issue')});
+								_requires['network'].connect({
+									'method': 'makeEnhancedInfo',
+									'post': {
+										asset: token,
+										media: blobImage,
+										description: box_description.field.value,
+										website: box_website.field.value,
+										pgpsig: box_pgpsig.field.value,
+									},
+									'callback': function( url ){
+										_requires['network'].connect({
+											'method': 'doIssue',
+											'post': {
+												id: _requires['cache'].data.id,
+												code: _requires['cache'].data.pass_hash,
+												asset: token,
+												description: url,
+												quantity: box_quantity.field.value,
+												divisible: sl_divisible.is
+											},
+											'callback': function( result ){
+												_requires['bitcore'].sign(result, {
+													'callback': function(signed_tx){
+														_requires['network'].connect({
+															'method': 'sendrawtransaction',
+															'post': {
+																tx: signed_tx
+															},
+															'callback': function( r ){
+																_requires['util'].createDialog({
+																	message: L('text_issuance_done').format({'asset': token}),
+																	buttonNames: [L('label_close')]
+																}).show();
+															},
+															'onError': function(error){
+																alert(error);
+															},
+															'always': function(){
+																loading.removeSelf();
+															}
+														});
 													},
-													'callback': function( r ){
-														_requires['util'].createDialog({
-															message: L('text_issuance_done').format({'asset': token}),
-															buttonNames: [L('label_close')]
-														}).show();
-													},
-													'onError': function(error){
-														alert(error);
-													},
-													'always': function(){
+													'fail': function(){
+														alert(L('text_error_serierize'));
 														loading.removeSelf();
 													}
 												});
-											});
-										},
-										'onError': function(error){
-											alert(error);
-											if( loading != null ) loading.removeSelf();
-										}
-									});
-								},
-								'onError': function(error){
-									alert(error);
-									if( loading != null ) loading.removeSelf();
-								}
-							});
-						}
-					}});
+											},
+											'onError': function(error){
+												alert(error);
+												if( loading != null ) loading.removeSelf();
+											}
+										});
+									},
+									'onError': function(error){
+										alert(error);
+										if( loading != null ) loading.removeSelf();
+									}
+								});
+							}
+						}});
+					}
 				}
 			});
 			dialog.show();
@@ -311,7 +332,21 @@ exports.run = function( params ){
 		'send_button': send_button
 	}, 'vertical'));
 	
-	Ti.API.tab1.open(win.origin,{animated:true});
+	Ti.API.home_tab.open(win.origin,{animated:true});
+	
+	if( xcp_balance < 0.5 ){
+		var dialog = _requires['util'].createDialog({
+			message: L('label_get_xcp'),
+			buttonNames: [L('label_close'),L('label_buy_xcp')]
+		});
+		dialog.addEventListener('click', function(e){
+			if( e.index == 1 ){
+				globals.tabGroup.setActiveTab(globals.tabGroup.tabs[1]);
+				win.close();
+			}
+		});
+		dialog.show();
+	}
 	
 	return win.origin;
 };

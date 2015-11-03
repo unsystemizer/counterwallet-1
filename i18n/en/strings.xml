@@ -19,8 +19,7 @@
 	<string name="label_cancel">Cancel</string>
 	<string name="label_ok">OK</string>
 	<string name="label_hinttext_password">password(at least 6 letters)</string>
-	<string name="label_password">password</string>
-	<string name="label_passphrase">12 word passphrase</string>
+	<string name="label_password">Password</string>
 	<string name="label_send">send</string>
 	<string name="label_showinfo">asset info</string>
 	<string name="label_order">Order</string>
@@ -34,11 +33,15 @@
 	<string name="label_close">Close</string>
 	<string name="label_login">Login</string>
 	<string name="label_bitcoinaddress">My Bitcoin Address</string>
+	<string name="label_qrcopy">(tap to copy)</string>
 	<string name="label_destination">to address</string>
 	<string name="label_fee">fee</string>
 	<string name="label_create">Create</string>
 	<string name="label_back">Go Back</string>
+	<string name="label_login_back">BACK</string>
+	<string name="label_login_cancel"> CANCEL </string>
 	<string name="label_delete">Erase</string>
+	<string name="label_reconfirm_redo">Redo</string>
 	<string name="text_reconfirm">Please confirm your passcode</string>
 	<string name="label_done">Done</string>
 	<string name="label_search">Search</string>
@@ -46,9 +49,8 @@
 	<string name="label_gocustom_noprice">There is no market price, please create a custom order.</string>
 	<string name="text_choose">Please select your buy/sell token combination.</string>
 	
-	<string name="text_createnewwallet">Create a New Wallet</string>
 	<string name="text_createToken">create a token</string>
-	<string name="text_confirmIssuance">Issue{quantity}units of {token}</string>
+	<string name="text_confirmIssuance">Issue {quantity} units of {token}</string>
 	
 	<string name="label_confirmorder">Confirm Order</string>
 	<string name="text_confirmsend">Confirm Send</string>
@@ -56,20 +58,28 @@
 	<string name="text_issuance_done">Created {asset}</string>
 	<string name="text_orderd">Placed an Order</string>
 	<string name="text_sent">Sent</string>
-	
+	<string name="text_sent_shape_shift">Your funds have been deposited with ShapeShift,\nonce appoved your tokens will be visible in the app's wallet.</string>
+	<string name="shape_shift_instruction">how much {asset} do you want to buy?</string>
+	<string name="shape_shift_instruction2">enter amount below</string>
+	<string name="shape_shift_get">you will get {amount}</string>
+	<string name="shape_shift_spend">you will spend {amount}</string>
+	<string name="shape_shift_disclaimer">*having trouble? contact support@indiesquare.me</string>
+	<string name="shape_shift_norate">rate not loaded, try again</string>
 	<string name="text_doissuance">Issue</string>
 	<string name="text_dosend">SEND</string>
-	
+	<string name="label_get_xcp">You need at least 0.5 XCP to create a token, you can get XCP by visiting the shapeshift tab</string>
+	<string name="label_buy_xcp">Buy XCP</string>
 	<string name="text_makedivisible">Make Divisible</string>
-	<string name="text_hold">You Own {balance}Units of {asset}</string>
-	<string name="text_totalcost">{asset}の合計 {amount}</string>
-	<string name="text_confirmorder">Place an order for {quantity}{main_asset} at {price}{price_asset}</string>
+	<string name="text_hold">You Own {balance} Units of {asset}</string>
+	<string name="text_totalcost">Total {amount} {asset}</string>
+	<string name="text_confirmorder">Place an order for {quantity} {main_asset} at {price} {price_asset}</string>
 	<string name="text_necessarycost">You need {total} {price_asset}</string>
-	<string name="text_canget"> With order matched, you get {total}{price_asset}</string>
-	<string name="text_createnewwallet">Create A New Wallet</string>
-	<string name="text_loginasuser">Already have an account?</string>
-	<string name="text_descript_password">DO NOT forget your password</string>
-	<string name="text_newcommer">First time user</string>
+	<string name="text_canget"> With order matched, you get {total} {price_asset}</string>
+	
+	<string name="label_newwallet">Create a New Wallet</string>
+	<string name="label_signin">Sign In</string>
+	<string name="text_loginasuser">Already have a passphrase?</string>
+	
 	<string name="text_copied">Copied</string>
 	<string name="text_copied_message">Address copied to clipboard</string>
 	<string name="label_exchange_basic">simple order</string>
@@ -92,10 +102,11 @@
 	<string name="label_exchange_too_much">there are not enough open orders to satisfy this request</string>
 	<string name="label_exchange_calculate">confirm</string>
 	<string name="label_approx">approx</string>
-    <string name="label_tab_1">tokens</string>
-	<string name="label_tab_2">exchange</string>
-	<string name="label_tab_3">history</string>
-	<string name="label_tab_4">settings</string>
+    <string name="label_tab_home">tokens</string>
+    <string name="label_tab_ss">shapeshift</string>
+	<string name="label_tab_exchange">exchange</string>
+	<string name="label_tab_history">history</string>
+	<string name="label_tab_settings">settings</string>
 	<string name="label_tab_receive">receive</string>
 	<string name="label_asset_info">asset info</string>
 	<string name="label_send">send</string>
@@ -115,27 +126,40 @@
 	<string name="label_holders">Show Assetholders</string>
 	
 	<string name="text_history_order">Sold {give_quantity} {give_asset} for {get_quantity} {get_asset}</string>
-	<string name="text_history_send">Sent {quantity}{asset} to {target}</string>
-	<string name="text_history_receive">Received {quantity}{asset} from {target}</string>
+	<string name="text_history_send">Sent {quantity} {asset} to {target}</string>
+	<string name="text_history_receive">Received {quantity} {asset} from {target}</string>
 	<string name="text_history_issuance">Issued {quantity} {asset}</string>
-	<string name="text_history_dividend">Issued {quantity_per_unit}% {dividend_asset} dividends to{asset} holders</string>
+	<string name="text_history_dividend">Issued {quantity_per_unit}% {dividend_asset} dividends to {asset} holders</string>
 	<string name="text_history_get_dividend">Received {quantity_per_unit}% {dividend_asset} dividends for {asset} holders</string>
-	
+	<string name="shapeshift_sell">sell</string>
+	<string name="shapeshift_get">get</string>
 	<string name="label_easypass">Quick Passcode</string>
-	<string name="text_easypass">Would you like to set up a 4 digit passcode for easier access?</string>
+	<string name="text_easypass">Please input a 4 digit passcode.</string>
+	<string name="text_easypass_set">Please set up a 4 digit passcode.</string>
 	<string name="label_fingerprint">Touch ID</string>
 	<string name="text_fingerprint">Would you like to set up Touch ID for easier access?</string>
 	<string name="label_adminerror">Authentication error</string>
 	<string name="text_adminerror">Authentication failed</string>
 	<string name="label_privecypolicy">Privacy Policy & Terms of Service</string>
-	<string name="label_privecypolicy2">By pressing 'Create' I agree to the above</string>
+	<string name="label_privecypolicy2">By using this app I agree to the above.</string>
 	<string name="text_withmessage">Message attached</string>
 	<string name="text_unreadable">Could not recognize a valid address</string>
 	<string name="text_noregisted"> Not registered</string>
 	<string name="label_rename">Change name</string>
 	<string name="text_rename">You can change your account name</string>
-	<string name="text_desc_fingerprint">You will be able to send tokens and more with your fingerprint</string>
-	<string name="text_desc_easypass">You will be able to send tokens and more with 4 digit PIN</string>
+	
+	<string name="text_section_basic">Basic Information</string>
+	<string name="text_section_account">About Account</string>
+	<string name="text_section_other">Other</string>
+	
+	<string name="text_desc_username">Change your name</string>
+	<string name="text_desc_fiat">Choose your preferred currency</string>
+	<string name="text_desc_passphrase">Check your passphrase</string>
+	<string name="text_desc_fingerprint">Authorize transactions using your fingerprint</string>
+	<string name="text_desc_identifier">The ID identifies your account</string>
+	<string name="text_desc_password">The password for this account</string>
+	<string name="text_desc_linkage">A function to be used in the Dashboard. It will be available after the release.</string>
+	
 	<string name="text_identifier">ID that identifies your wallet</string>
 	<string name="label_copy">Copy</string>
 	<string name="label_copied">Copied</string>
@@ -152,7 +176,7 @@
 	
 	<string name="label_reload">Reloading</string>
 	
-	<string name="label_passphrase">passphrase</string>
+	<string name="label_passphrase">Passphrase</string>
 	<string name="label_getting_price">getting price...</string>
 	<string name="label_passphrase_title">Write down this recovery passphrase</string>
 	<string name="text_passphrase">"{passphrase}"</string>
@@ -185,6 +209,11 @@
 	<string name="warning_insufficientfunds">Are you sure you have sufficient funds?</string>
 	<string name="text_assetinfo_error"> The asset might not exist or is yet to be confirmed</string>
 	<string name="text_sendconfirmation">Send \n {amount} {token} to {address}</string>
+	<string name="text_sendconfirmation_shape_shift">Sending (approx) \n {amount} {token} to ShapeShift. \n you will get (approx) {amount2} {token2}  </string>
+	<string name="text_shape_shift_how_to">Instantly convert between BTC and XCP \n \nJust select which you\'d like to buy and which you\'d like to sell  \n \nThe tokens will be automatically sent from and deposited to this device\'s wallet!</string>
+	<string name="text_dont_show">Don't show me again</string>
+	<string name="shape_shift_accept">Send</string>
+	<string name="shape_shift_view_terms">View Terms</string>
 	<string name="label_issue_supply">Total supply {supply}</string>
 	<string name="label_issue_balance">Balance {balance}</string>
 	
@@ -201,8 +230,11 @@
 	<string name="text_imageupload">Asset Image</string>
 	<string name="label_website">Website</string>
 	<string name="label_pgpsig">pgp signature</string>
+	<string name="text_shapeshift_more">please spend more than {amount}{asset}</string>
+	<string name="text_shapeshift_less">please spend less than {amount}{asset}</string>
 	
 	<string name="text_passphrase_q">Show the passphrase?</string>
+	<string name="text_password_q">Show the password?</string>
 	<string name="label_show">Show!</string>
 	<string name="label_reissue">Issue more units</string>
 	<string name="text_reissue">How many units to issue?</string>
@@ -215,10 +247,57 @@
 	
 	<string name="text_webfailed">Failed to read...</string>
 	<string name="label_signout">Sign out</string>
-	<string name="text_signout">Are you sure you want to sign out?</string> 
-	<string name="label_reorganisation">Apologies</string>
-	<string name="text_reorganisation">Please wait while the Blockchain is being re-synced...</string>
+	<string name="text_signout">Are you sure you want to sign out?</string>
+	 
+	<string name="label_reorganisation">Blockchain reorganisation</string>
+	<string name="text_reorganisation">Apologies, please wait while the service is being re-synced...</string>
+	<string name="text_reorganisation2">(May take upto 30 minutes.)</string>
 	
-	<string name="label_cooperation">System linkage(β)</string>
+	<string name="label_linkage">System linkage(β)</string>
 	<string name="text_signerror">Could not be signed...</string>
+	<string name="text_authentication">Authentication</string>
+	
+	<string name="draw_explain">Generate a new passphrase. \nPlease rub the screen until the progress bar is filled.</string>
+	<string name="text_inputbyeach">INPUT WORD BY WORD</string>
+	<string name="text_word_num">WORD {num}</string>
+	<string name="text_inputbyeach_next">NEXT</string>
+	<string name="text_inputbyeach_prev">PREV</string>
+	
+	<string name="label_loading">Now Initializing...</string>
+	
+	<string name="label_review">Review ★★★★★</string>
+	<string name="label_support">Support</string>
+	
+	<string name="text_support_title">Thank you for using the app</string>
+	<string name="text_support">Are you having any trouble?\nPlease contact us</string>
+	<string name="text_support_yes">Contact</string>
+	<string name="text_support_no">I like this app!</string>
+	
+	<string name="text_review_title">Thank you!</string>
+	<string name="text_review">We would appreciate it if you could write a review</string>
+	<string name="text_review_yes">Review now!</string>
+	<string name="text_review_no">Later</string>
+	<string name="text_desc_review">Are you enjoying this app? please rate!</string>
+	
+	<string name="text_finish_reorg">Reorganization has completed!</string>
+	
+	<string name="label_setting_completed">Completed.</string>
+	<string name="text_setting_completed">Enjoy the world of tokens!</string>
+	<string name="label_start">START</string>
+	
+	<string name="loading_holders">Reading holders...</string>
+	<string name="loading_assetinfo">Reading information...</string>
+	<string name="loading_issue">Creating...</string>
+	<string name="loading_history">Reading history...</string>
+	<string name="loading_createaccount">Now loading...</string>
+	<string name="loading_send">Sending...</string>
+	
+	<string name="label_mail_desc">Thank you for contacting us!\nWe would appreciate if you could give us the following information.</string>
+	<string name="label_mail_name">Name</string>
+	<string name="label_mail_device">Your device</string>
+	<string name="label_mail_id">User ID</string>
+	<string name="label_mail_os">OS</string>
+	<string name="label_mail_happens">What happened?</string>
+	
+	<string name="text_error_serierize">Failed to sign the transaction. Please try again later.</string>
 </resources>

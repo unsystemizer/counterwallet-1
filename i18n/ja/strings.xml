@@ -4,7 +4,7 @@
 	
 	<string name="appname">IndieSquare Wallet</string>
 	<string name="label_about">このアプリについて</string>
-	<string name="label_load_tokens">読み込み中。。。</string>
+	<string name="label_load_tokens">読み込み中...</string>
 	<string name="label_holdAssets">保有アセット</string>
 	<string name="label_ownAssets">発行アセット</string>
 	<string name="label_qrcode">QRコードを表示</string>
@@ -18,9 +18,7 @@
 	<string name="label_quantity_send">送金数</string>
 	<string name="label_cancel">キャンセル</string>
 	<string name="label_ok">はい</string>
-	<string name="label_hinttext_password">パスワード(6文字以上)</string>
 	<string name="label_password">パスワード</string>
-	<string name="label_passphrase">12パスフレーズ</string>
 	<string name="label_send">送る</string>
 	<string name="label_showinfo">情報を見る</string>
 	<string name="label_order">注文</string>
@@ -34,11 +32,15 @@
 	<string name="label_close">閉じる</string>
 	<string name="label_login">ログイン</string>
 	<string name="label_bitcoinaddress">ビットコインアドレス</string>
+	<string name="label_qrcopy">タッチでコピーできます</string>
 	<string name="label_destination">送り先</string>
 	<string name="label_fee">手数料</string>
 	<string name="label_create">新規作成</string>
 	<string name="label_back">戻る</string>
+	<string name="label_login_back">やめる</string>
+	<string name="label_login_cancel"> やめる </string>
 	<string name="label_delete">削除</string>
+	<string name="label_reconfirm_redo">再設定</string>
 	<string name="text_reconfirm">確認のためもう一度入力して下さい</string>
 	<string name="label_done">完了</string>
 	<string name="label_search">検索</string>
@@ -46,30 +48,39 @@
 	<string name="label_gocustom_noprice">まだ取引がありません。カスタム注文で価格を入力できます。</string>
 	<string name="text_choose">上から取引の組み合わせを選んで下さい</string>
 	
-	<string name="text_createnewwallet">新しいウォレットを作ります</string>
 	<string name="text_createToken">トークンを発行します</string>
 	<string name="text_confirmIssuance">{token}を{quantity}発行します</string>
 	
 	<string name="label_confirmorder">注文の確認</string>
 	<string name="text_confirmsend">送信します</string>
+	<string name="text_shapeshift_more">{amount}{asset}以上の金額を送ってください。</string>
+	<string name="text_shapeshift_less">{amount}{asset}以下の金額を送ってください。</string>
 	
 	<string name="text_issuance_done">{asset}を発行しました</string>
 	<string name="text_orderd">注文を出しました</string>
 	<string name="text_sent">送りました</string>
-	
+	<string name="text_sent_shape_shift">資金は一度Shapeshift.ioへデポジットされます。承認されると、アプリ上で確認することができます。</string>
+	<string name="shape_shift_instruction">いくつ {asset} を買いますか?</string>
+	<string name="shape_shift_instruction2">下から入力して下さい。</string>
+	<string name="shape_shift_get">{amount} を購入します。</string>
+	<string name="shape_shift_spend">{amount} を支払います。</string>
+	<string name="shape_shift_disclaimer">問題が発生した場合は、support@indiesquare.meへご連絡下さい。</string>
+	<string name="shape_shift_norate">レートが取得できませんでした。</string>
 	<string name="text_doissuance">発行</string>
 	<string name="text_dosend">送信</string>
 	
-	<string name="text_makedivisible">Satoshi単位を許可</string>
+	<string name="text_makedivisible">小数単位を許可</string>
 	<string name="text_hold">{asset}を{balance}持っています</string>
+	
 	<string name="text_totalcost">{asset}の合計 {amount}</string>
-	<string name="text_confirmorder">{price}{price_asset}の価格で{quantity}{main_asset}の注文を出します</string>
+	<string name="text_confirmorder">{price} {price_asset}の価格で {quantity} {main_asset}の注文を出します</string>
 	<string name="text_necessarycost">{price_asset}が{total}必要です</string>
 	<string name="text_canget">成立すると{price_asset}を{total}入手できます</string>
-	<string name="text_createnewwallet">新しいウォレットを作る</string>
-	<string name="text_loginasuser">アカウントをお持ちの方</string>
-	<string name="text_descript_password">パスワードは絶対に忘れないで下さい</string>
-	<string name="text_newcommer">はじめての方</string>
+	
+	<string name="label_newwallet">新しくウォレットを作る</string>
+	<string name="label_signin">サインインする</string>
+	<string name="text_loginasuser">パスフレーズを持っている</string>
+	
 	<string name="text_copied">コピーしました</string>
 	<string name="text_copied_message">アドレスをクリップボードにコピーしました</string>
 	<string name="text_use_line">LINEで伝える</string>
@@ -94,11 +105,16 @@
 	<string name="label_exchange_price">価格</string>
 	<string name="label_exchange_amount">注文量</string>
 	<string name="label_approx">概算</string>
-	<string name="label_tab_1">トップ</string>
-	<string name="label_tab_2">取引所</string>
-	<string name="label_tab_3">履歴</string>
-	<string name="label_tab_4">設定</string>
+	<string name="label_tab_home">トップ</string>
+	<string name="label_tab_ss">shapeshift</string>
+	<string name="label_get_xcp">トークンの作成には、0.5XCPが必要です。ShapeShiftページからXCPを購入することができます。</string>
+	<string name="label_buy_xcp">XCPを購入</string>
+	<string name="label_tab_exchange">取引所</string>
+	<string name="label_tab_history">履歴</string>
+	<string name="label_tab_settings">設定</string>
 	<string name="label_tab_receive">受取り</string>
+	<string name="shapeshift_sell">sell</string>
+	<string name="shapeshift_get">get</string>
 	<string name="label_getting_price">価格計算中...</string>
 	<string name="label_asset_info">アセット情報</string>
 	<string name="label_send">送信</string>
@@ -115,27 +131,39 @@
 	<string name="label_holders">保有者を見る</string>
 	
 	<string name="text_history_order">{give_quantity} {give_asset} で {get_quantity} {get_asset}を入手します</string>
-	<string name="text_history_send">{quantity}{asset}を{target}へ送りました</string>
-	<string name="text_history_receive">{quantity}{asset}を{target}から受け取りました</string>
+	<string name="text_history_send">{quantity} {asset}を{target}へ送りました</string>
+	<string name="text_history_receive">{quantity} {asset}を{target}から受け取りました</string>
 	<string name="text_history_issuance">{asset}を{quantity}発行しました。</string>
 	<string name="text_history_dividend">{asset}保有者に対して保有数の{quantity_per_unit}%を{dividend_asset}で配当しました。</string>
 	<string name="text_history_get_dividend">{asset}の保有数の{quantity_per_unit}%の配当を{dividend_asset}で受けました。</string>
 	
-	<string name="label_easypass">簡単パスワード</string>
-	<string name="text_easypass">4桁のパスワードを設定して、簡単に操作できるようにしますか？</string>
+	<string name="label_easypass">パスコードの設定</string>
+	<string name="text_easypass">4桁のパスコードを入力して下さい。</string>
+	<string name="text_easypass_set">4桁のパスコードを設定して下さい。</string>
 	<string name="label_fingerprint">指紋認証</string>
 	<string name="text_fingerprint">送金などの操作を指紋認証で行うように設定しますか？</string>
 	<string name="label_adminerror">認証エラー</string>
 	<string name="text_adminerror">認証できませんでした</string>
 	<string name="label_privecypolicy">プライバシーポリシー＆利用規約</string>
-	<string name="label_privecypolicy2">に同意し「新規作成」をタップ</string>
+	<string name="label_privecypolicy2">ご利用を開始した時点で、同意したものとさせて頂きます</string>
 	<string name="text_withmessage">メッセージが添付されています</string>
-	<string name="text_unreadable">ウォレットアドレスを認識できませんでした…。</string>
+	<string name="text_unreadable">ウォレットアドレスを認識できませんでした...</string>
 	<string name="text_noregisted">登録されていません</string>
 	<string name="label_rename">名前変更</string>
 	<string name="text_rename">名前を変更できます</string>
+	
+	<string name="text_section_basic">基本情報</string>
+	<string name="text_section_account">アカウント情報</string>
+	<string name="text_section_other">その他</string>
+	
+	<string name="text_desc_username">お好きな名前で登録できます</string>
+	<string name="text_desc_fiat">通貨情報を選ぶことが出来ます</string>
+	<string name="text_desc_passphrase">復元用のパスフレーズを確認することができます</string>
 	<string name="text_desc_fingerprint">タッチIDを使った指紋認証で送金等を行えるようになります</string>
-	<string name="text_desc_easypass">４桁のパスワードで送金等を行えるようになります</string>
+	<string name="text_desc_identifier">このアカウントを識別するIDです</string>
+	<string name="text_desc_password">このアカウントのパスワードです</string>
+	<string name="text_desc_linkage">Dashboardで利用する機能です。リリース後利用可能になります</string>
+	
 	<string name="text_identifier">ウォレットを識別するIDです</string>
 	<string name="label_copy">コピー</string>
 	<string name="label_copied">コピーしました</string>
@@ -152,12 +180,12 @@
 	
 	<string name="label_reload">再読み込み</string>
 	
-	<string name="label_passphrase">パスフレーズ</string>
-	<string name="label_passphrase_title">パスフレーズ</string>
+	<string name="label_passphrase">復元パスフレーズ</string>
+	<string name="label_passphrase_title">復元パスフレーズ</string>
 	<string name="text_passphrase">下記を大切に保管して下さい\n{passphrase}\n</string>
 	
 	<string name="label_passphrase_ok">記録しました</string>
-	<string name="text_passphrase_re">パスフレーズは、設定からも見ることが出来ます。</string>
+	<string name="text_passphrase_re">復元パスフレーズは、設定からも見ることが出来ます。</string>
 	
 	<string name="label_historytype_send">送金</string>
 	<string name="label_historytype_receive">受取</string>
@@ -181,7 +209,14 @@
 	
 	<string name="warning_insufficientfunds">残高が未承認の可能性があります</string>
 	<string name="text_assetinfo_error">トークンが存在しないか、まだ未承認です</string>
+	<string name="text_sendconfirmation">{address}へ\n{amount} {token} 送ります。</string>
 	<string name="text_sendconfirmation">{address}へ\n{amount}{token} 送ります。</string>
+	<string name="text_sendconfirmation_shape_shift">shapeshiftへ\n{amount}{token} 送ります。(概算)\n{amount2}{token2}を貰います(概算) </string>
+	
+	<string name="text_shape_shift_how_to">BTCとXCPを瞬時に交換しよう！ \n \n単純に買いたいコイン、売りたいコインと金額を指定するだけ。 \n \n購入したコインは自動的にこのウォレットにチャージされます。</string>
+	<string name="text_dont_show">次からは表示しない</string>
+	<string name="shape_shift_accept">同意して送信</string>
+	<string name="shape_shift_view_terms">利用規約</string>
 	<string name="label_issue_supply">総発行数 {supply}</string>
 	<string name="label_issue_balance">保有数 {balance}</string>
 	
@@ -200,7 +235,8 @@
 	<string name="label_website">ウェブサイト</string>
 	<string name="label_pgpsig">pgp シグネチャ</string>
 	
-	<string name="text_passphrase_q">パスフレーズを表示しますか？</string>
+	<string name="text_passphrase_q">復元パスフレーズを表示しますか？</string>
+	<string name="text_password_q">パスワードを表示しますか？</string>
 	<string name="label_show">表示する！</string>
 	
 	<string name="label_reissue">追加発行</string>
@@ -214,12 +250,59 @@
 	
 	<string name="text_doedit">完了</string>
 	
-	<string name="text_webfailed">読み込みに失敗しました...。</string>
+	<string name="text_webfailed">読み込みに失敗しました...</string>
 	<string name="label_signout">サインアウト</string>
-	<string name="text_signout">サインアウトの前に、12パスフレーズをメモすることを強くお奨めします。このままサインアウトしても良いですか？</string>
-	<string name="label_reorganisation">申し訳ありません...</string>
-	<string name="text_reorganisation">現在Blockchainを再編成しています。しばらくお待ち下さい。</string>
+	<string name="text_signout">サインアウトの前に、復元パスフレーズをメモすることを強くお奨めします。このままサインアウトしても良いですか？</string>
 	
-	<string name="label_cooperation">連携(β版)</string>
+	<string name="label_reorganisation">ブロックチェーン再編成</string>
+	<string name="text_reorganisation">申し訳ありませんが、再編成が完了するまで\nしばらくお待ち下さい...</string>
+	<string name="text_reorganisation2">(30分程かかる場合があります)</string>
+	
+	<string name="label_linkage">連携(β版)</string>
 	<string name="text_signerror">署名できませんでした...</string>
+	<string name="text_authentication">認証してください</string>
+	
+	<string name="draw_explain">復元パスフレーズを生成します。\nメーターが一杯になるまで、画面をなぞって下さい。</string>
+	<string name="text_inputbyeach">単語毎に入力する</string>
+	<string name="text_word_num">{num} 語目</string>
+	<string name="text_inputbyeach_next">次へ</string>
+	<string name="text_inputbyeach_prev">前へ</string>
+	
+	<string name="label_loading">初期化しています...</string>
+	
+	<string name="label_review">アプリを評価する</string>
+	<string name="label_support">サポートへ連絡する</string>
+	
+	<string name="text_support_title">ご利用ありがとうございます！</string>
+	<string name="text_support">ウォレットの利用でお困りの事はありませんか？\n是非サポートへご連絡下さい！</string>
+	<string name="text_support_yes">連絡する</string>
+	<string name="text_support_no">気に入っている！</string>
+	
+	<string name="text_review_title">ありがとうございます！</string>
+	<string name="text_review">５つ星評価を入れて頂けると大変嬉しいです！今後ともIndieSquare Walletを宜しくお願いします！</string>
+	<string name="text_review_yes">５つ星レビューをする</string>
+	<string name="text_review_no">また今度</string>
+	<string name="text_desc_review">気に入っていただけましたか？</string>
+	
+	<string name="text_finish_reorg">お待たせしました、再編成が完了しました！</string>
+	
+	<string name="label_setting_completed">完了しました</string>
+	<string name="text_setting_completed">トークンをお楽しみ下さい！</string>
+	<string name="label_start">はじめる</string>
+	
+	<string name="loading_holders">保有者を読み込んでいます...</string>
+	<string name="loading_assetinfo">情報を読み込んでいます...</string>
+	<string name="loading_issue">発行しています...</string>
+	<string name="loading_history">履歴を読み込んでいます...</string>
+	<string name="loading_createaccount">作成中です...</string>
+	<string name="loading_send">送信しています...</string>
+	
+	<string name="label_mail_desc">ご連絡ありがとうございます！\n宜しければ下記情報をいただけますと幸いです。</string>
+	<string name="label_mail_name">お名前</string>
+	<string name="label_mail_device">お使いの機種</string>
+	<string name="label_mail_id">ユーザーID</string>
+	<string name="label_mail_os">OS</string>
+	<string name="label_mail_happens">お困りの内容</string>
+	
+	<string name="text_error_serierize">署名に失敗しました。しばらくしてからまたお試し下さい。</string>
 </resources>

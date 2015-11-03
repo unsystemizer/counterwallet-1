@@ -116,7 +116,7 @@ function initRNG( packages ) {
     };
     
     // Initialize the pool with junk if needed.
-    var pool_init= function () {
+    var pool_init = function () {
     	var t;
 		/*
 		    if ( navigator.appName == "Netscape" && navigator.appVersion < "5" && window.crypto ) {
@@ -133,28 +133,22 @@ function initRNG( packages ) {
 	    }
 	    rng_pptr = 0;
 	    rng_seed_time();
-	    //rng_seed_int(window.screenX);
-	    //rng_seed_int(window.screenY);
-    };
+	};
     
     var rng_get_byte= function (seed) {
 	    if ( rng_state == null ) {
-	    	rng_seed_int(seed);
-			//rng_seed_time();
-			// rng_state = Arcfour.prng_newstate();
+	    	rng_seed_int(seed + globals.Accelerometer);
 			rng_state = Arcfour.create();
 			rng_state.init( rng_pool );
 			for(rng_pptr = 0; rng_pptr < rng_pool.length; ++rng_pptr) rng_pool[rng_pptr] = 0;
 			rng_pptr = 0;
-			//rng_pool = null;
-	    }
-    	// TODO: allow reseeding after first request
+		}
     	return rng_state.next();
     };
     
     var SecureRandom = function () { };
     SecureRandom.prototype.nextBytes = function (ba, seed) {
-    	for ( var i = 0; i < ba.length; ++i ) ba[i] = rng_get_byte(seed);
+    	for( var i = 0; i < ba.length; ++i ) ba[i] = rng_get_byte(seed);
     };
 
     // initialize

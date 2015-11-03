@@ -97,19 +97,23 @@ module.exports = (function() {
 	};
 	
 	self.addPullEvent = function( view, params ){
-		var a = view.children[0].convertPointToView({
-			x: view.children[0].rect.x,
-			y: view.children[0].rect.y
-		}, params.parent);
+		var a = null;
+		if( OS_ANDROID ){
+			a = view.children[0].convertPointToView({
+				x: view.children[0].rect.x,
+				y: view.children[0].rect.y
+			}, params.parent);
+		}
 		
 		var reload = util.makeImageButton({
 		    image: '/images/icon_reload_off.png',
-		    width: 30, top: util.convert_y(a.y), opacity: 0.0
+		    width: 30, top: (a != null)? util.convert_y(a.y): params.margin_top, opacity: 0.0
 		});
 		params.parent.add(reload);
 		
 		var s = 0, s_total = 0, top = view.children[0].top;
 		function scroll( y ){
+			globals.is_scrolling = true;
 			if(y > -60){
 				reload.opacity = (y / -60);
 				reload.image = '/images/icon_reload_off.png';
@@ -123,6 +127,7 @@ module.exports = (function() {
 			reload.transform = t.rotate(90 - (90 * reload.opacity)).scale(reload.opacity, reload.opacity);
 		}
 		function release( y ){
+			globals.is_scrolling = false;
 			if( y < -60 ){
 				if( OS_ANDROID ){
 					view.children[0].top = y;
@@ -131,7 +136,7 @@ module.exports = (function() {
 				else if( OS_IOS ){
 					view.children[0].animate({ top: 60, duration: 100 });
 				}
-				var loading = util.showLoading(params.parent, { width: Ti.UI.FILL, height: 25, top: util.convert_y(a.y) });
+				var loading = util.showLoading(params.parent, { width: Ti.UI.FILL, height: 25, top: (a != null)? util.convert_y(a.y): params.margin_top });
 				params.callback(loading);
 			}
 			else if( OS_IOS && view.contentOffset.y == 0 ){

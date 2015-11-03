@@ -13,9 +13,9 @@ exports.run = function( params ){
 	win.origin.add(top_bar);
 	
 	var back_home = _requires['util'].makeLabel({
-		text:L('label_tab_1'),
+		text:L('label_tab_home'),
 		color:"white",
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:15, fontWeight:'normal'},
+		font:{ fontSize:15, fontWeight:'normal'},
 		textAlign: 'right',
 		top: 25, left:10
 	});
@@ -25,12 +25,10 @@ exports.run = function( params ){
 		win.close();
 	});
 	
-	
-	
 	var settings_title_center = _requires['util'].makeLabel({
 		text:L('label_asset_info'),
 		color:"white",
-		font:{fontFamily:'HelveticaNeue-Light', fontSize:20, fontWeight:'normal'},
+		font:{ fontSize:20, fontWeight:'normal'},
 		textAlign: 'center',
 		top: 25, center: 0
 	});
@@ -41,7 +39,7 @@ exports.run = function( params ){
 	view.top = 50;
 	main_view.add(view);
 		
-	var loading = _requires['util'].showLoading(main_view, { width: Ti.UI.FILL, height: Ti.UI.FILL});
+	var loading = _requires['util'].showLoading(main_view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_assetinfo')});
 	_requires['network'].connect({
 		'method': 'getAssetInfo',
 		'post': {
@@ -173,8 +171,7 @@ exports.run = function( params ){
 		  		view.add(button_holders);
 				loading.removeSelf();
 			}
-			
-			if( /^(https?:\/\/).*\.json/.test(result.description) ){
+			if( /.*\.json/.test(result.description) ){
 				_requires['network'].getjson({
 					uri: result.description,
 					callback: function(json){ createInfo(json); },
@@ -187,7 +184,7 @@ exports.run = function( params ){
 			alert(L('text_assetinfo_error'));
 		}
 	});
-	Ti.API.tab1.open(win.origin,{animated:true});
+	Ti.API.home_tab.open(win.origin,{animated:true});
 	
 	return win.origin;
 };

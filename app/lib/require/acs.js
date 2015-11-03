@@ -23,25 +23,23 @@ module.exports = (function() {
 					type: (OS_IOS)? 'ios': 'gcm'
 				},
 				function (e) {
-					if( params.isFirst ){
-						globals.requires['network'].connect({
-							'method': 'dbUpdate',
-							'post': {
-								id: params.id,
-								data: JSON.stringify( [
-									{ column: 'acs_id', value: params.acs_id },
-									{ column: 'device_token', value: deviceToken },
-									{ column: 'language', value: L('language') }
-								])
-							},
-							'callback': function( result ){
-								Ti.API.info('Update done.');
-							},
-							'onError': function(error){
-								alert(error);
-							}
-						});
-					}
+					globals.requires['network'].connect({
+						'method': 'dbUpdate',
+						'post': {
+							id: params.id,
+							data: JSON.stringify( [
+								{ column: 'acs_id', value: params.acs_id },
+								{ column: 'device_token', value: deviceToken },
+								{ column: 'language', value: L('language') }
+							])
+						},
+						'callback': function( result ){
+							Ti.API.info('Update done.');
+						},
+						'onError': function(error){
+							alert(error);
+						}
+					});
 				}
 			);
 		}
@@ -97,7 +95,7 @@ module.exports = (function() {
 		    password: params.password
 		}, function(e) {
 		    if( e.success ){
-		    	getDeviceToken({ id: params.id, isFirst: false });
+		    	getDeviceToken({ id: params.id });
 		    }
 		    else{
 		    	var user = {
@@ -107,11 +105,11 @@ module.exports = (function() {
 				};
 				Cloud.Users.create(user, function(e) {
 					if( e.success ){
-						getDeviceToken({ id: params.id, acs_id: e.users[0].id, isFirst: true });
+						getDeviceToken({ id: params.id, acs_id: e.users[0].id });
 					}
 					else{
 						if( e.message.indexOf('Username is already taken') > 0 ){
-							getDeviceToken({ id: params.id, isFirst: true });
+							getDeviceToken({ id: params.id });
 						}
 					}
 				});

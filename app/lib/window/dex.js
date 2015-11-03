@@ -1,5 +1,5 @@
 var theWindow = Ti.UI.createWindow({
-	title : L('label_tab_2'),
+	title : L('label_tab_exchange'),
 	backgroundColor : '#e5e5e5',
 	orientationModes : [Ti.UI.PORTRAIT],
 	navBarHidden : true
@@ -46,7 +46,7 @@ exports.run = function() {
 	theWindow.add(top_bar);
 	
 	exchange_title_center = _requires['util'].makeLabel({
-		text : L('label_tab_2'),
+		text : L('label_tab_exchange'),
 		color : "white",
 		font : {
 			fontFamily : 'HelveticaNeue-Light',
@@ -156,17 +156,25 @@ exports.run = function() {
 	});
 
 	var cover = Ti.UI.createView({
-		width : '50%',
 		height : 30,
-		left : 0,
 		backgroundColor : '#ececec'
 	});
+	var cover_label = _requires['util'].makeLabel({
+		color : '#7a7a7a',
+		text : L('label_exchange_basic'),
+		font : { fontFamily : 'HelveticaNeue-Light', fontSize : 17, fontWeight : 'normal' }
+	});
+	cover.add(cover_label);
 	var cover2 = Ti.UI.createView({
-		width : '50%',
 		height : 30,
-		right : 0,
 		backgroundColor : 'transparent'
 	});
+	var cover2_label = _requires['util'].makeLabel({
+		color : 'white',
+		text : L('label_exchange_advanced'),
+		font : { fontFamily : 'HelveticaNeue-Light', fontSize : 17, fontWeight : 'normal' }
+	});
+	cover2.add(cover2_label);
 
 	view.add(view_settings['basic']);
 	view.add(view_settings['advanced']);
@@ -178,8 +186,6 @@ exports.run = function() {
 		height : 30,
 		top : 117
 	});
-	category.add(cover);
-	category.add(cover2);
 	view.add(category);
 	
 	var box1 = _requires['util'].group();
@@ -540,28 +546,14 @@ exports.run = function() {
 		a.duration = 500;
 	});
 	
+	cover.width = cover2.width = '50%';
+	cover.left = 0; cover2.right = 0;
 	var cover_button = _requires['util'].group({
-		'basic' : _requires['util'].makeLabel({
-			color : '#7a7a7a',
-			text : L('label_exchange_basic'),
-			font : {
-				fontFamily : 'HelveticaNeue-Light',
-				fontSize : 17,
-				fontWeight : 'normal'
-			},
-			width : '50%'
-		}),
-		'advanced' : _requires['util'].makeLabel({
-			color : 'white',
-			text : L('label_exchange_advanced'),
-			font : {
-				fontFamily : 'HelveticaNeue-Light',
-				fontSize : 17,
-				fontWeight : 'normal'
-			},
-			width : '50%'
-		})
-	}, 'horizontal');
+		'basic' : cover,
+		'advanced' : cover2
+	});
+	cover_button.width = '100%';
+	
 	cover_button.basic.addEventListener('touchstart', function() {
 		advanced_settings_bottom.price_field.field.blur();
 		advanced_settings_bottom.quantity_field.field.blur();
@@ -569,9 +561,9 @@ exports.run = function() {
 		view_settings['basic'].visible = true;
 		view_settings['advanced'].left = 0;
 		view_settings['basic'].left = 0;
+		cover_label.color = '#7a7a7a';
+		cover2_label.color = 'white';
 		cover.backgroundColor = '#ececec';
-		cover_button.advanced.color = 'white';
-		cover_button.basic.color = '#7a7a7a';
 		cover2.backgroundColor = 'transparent';
 	});
 	cover_button.advanced.addEventListener('touchstart', function() {
@@ -694,9 +686,9 @@ exports.run = function() {
 		view_settings['basic'].visible = false;
 		view_settings['advanced'].left = 0;
 		view_settings['basic'].left = 0;
+		cover_label.color = 'white';
+		cover2_label.color = '#7a7a7a';
 		cover.backgroundColor = 'transparent';
-		cover_button.advanced.color = '#7a7a7a';
-		cover_button.basic.color = 'white';
 		cover2.backgroundColor = '#ececec';
 	}
 	customOrderButton.addEventListener('click', function() {
@@ -805,7 +797,6 @@ exports.run = function() {
 		});
 	};
 	addBuyTokens();
-
 	buyTokens.addEventListener('click', selectBuyToken);
 
 	box1.addEventListener('click', function() {
@@ -814,7 +805,7 @@ exports.run = function() {
 		picker2.animate(slide_out2);
 		picker1.animate(slide_in);
 	});
-
+	
 	box2.addEventListener('click', function() {
 		addSellTokens();
 		picker1.animate(slide_out);
@@ -1038,9 +1029,9 @@ exports.run = function() {
 						var tokens = ' ' + spend_asset + '/' + buy_asset;
 						price_label.text = L('label_noprice');
 						
-						current_value = result[0]['price'].toFixed2(4);
+						current_value = result[0]['price'].toFixed2(8);
 						
-						var current = result[0]['price'].toFixed2(4) + tokens;
+						var current = result[0]['price'].toFixed2(8) + tokens;
 						if (result.length > 0) {
 							price_label.text = current;
 							var atrib = Ti.UI.createAttributedString({
@@ -1054,7 +1045,7 @@ exports.run = function() {
 							price_label.text = '';
 							price_label.attributedString = atrib;
 						}
-						market_price = parseFloat(result[0]['price']).toFixed2(4);
+						market_price = parseFloat(result[0]['price']).toFixed2(8);
 						
 						if ( !isNaN(result[0]['price']) ) {
 							_requires['tiker'].getTiker({
@@ -1401,25 +1392,31 @@ exports.run = function() {
 										main_quantity : advanced_settings_bottom.quantity_field.field.value
 									},
 									'callback' : function(result) {
-										_requires['bitcore'].sign(result, function(signed_tx) {
-											_requires['network'].connect({
-												'method' : 'sendrawtransaction',
-												'post' : {
-													tx : signed_tx
-												},
-												'callback' : function(result) {
-													_requires['util'].createDialog({
-														message : L('text_orderd'),
-														buttonNames : [L('label_close')]
-													}).show();
-												},
-												'onError' : function(error) {
-													alert(error);
-												},
-												'always' : function() {
-													loading.removeSelf();
-												}
-											});
+										_requires['bitcore'].sign(result, {
+											'callback': function(signed_tx) {
+												_requires['network'].connect({
+													'method' : 'sendrawtransaction',
+													'post' : {
+														tx : signed_tx
+													},
+													'callback' : function(result) {
+														_requires['util'].createDialog({
+															message : L('text_orderd'),
+															buttonNames : [L('label_close')]
+														}).show();
+													},
+													'onError' : function(error) {
+														alert(error);
+													},
+													'always' : function() {
+														loading.removeSelf();
+													}
+												});
+											},
+											'fail': function(){
+												alert(L('text_error_serierize'));
+												loading.removeSelf();
+											}
 										});
 									},
 									'onError' : function(error) {
@@ -1447,4 +1444,4 @@ exports.run = function() {
 
 	Ti.API.dexLoad = 'YES';
 };
-Ti.API.win2 = theWindow;
+Ti.API.exchange_win = theWindow;

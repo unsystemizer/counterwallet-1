@@ -52,6 +52,8 @@ module.exports = (function() {
 	    
 	    var f2 = Ti.Filesystem.getFile( getRSAPath() );
 	    f2.write('');
+	    
+	    self.load();
 	};
 	
 	self.load_rsa = function(){

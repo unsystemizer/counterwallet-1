@@ -1,3 +1,27 @@
+#ver 0.8.0(2015.11.3)
+About the latest update ver0.8.0
+
+What's new?
+
+- Quick XCP purchase
+Through ShapeShift APIs, you can now purchase xcp easily with btc within the wallet.
+Use XCP to issue a new token and trade Counterparty tokens on the Dex from IndieSquare Wallet!
+
+-Easier registration process
+You no longer need to enter a password to use IndieSquare Wallet.
+Just by rubbing the screen for a few seconds, you can create a new account easily and securely.
+If you already have a 12 word passphrase from anywhere else, you can now enter it word by word for smoother login.
+
+-Others
+Overall performance improvements.
+We are aware that some accounts have trouble creating new transactions including issuing a new token.
+We've been looking into this and will solve the issue as soon as we can. Thanks for the patience!
+-----
+
+#ver 0.7.1(2015.9.30)
+Bug fixed.
+-----
+
 #ver 0.7.0(2015.9.30)
 -UI improvement
 The decentralized exchange(Dex) as well as the send and receive tokens features are now more intuitive and easier to use.
@@ -33,6 +57,7 @@ https://github.com/IndieSquare/counterwallet
 
 We will continue to work to improve security and usability of Counterwallet. The further updates coming soon, be excited!
 -----
+
 #ver 0.4.0(2015.5.15)
 Improved the UI overall. More simple and intuitive.
 
@@ -47,4 +72,5 @@ Improved the UI overall. More simple and intuitive.
 
 We will continue to improve usability as well as security to make Counterparty more accessible to everyone. Keep an eye on the next update!
 -----
-Indie Square
+
+IndieSquare Inc.
