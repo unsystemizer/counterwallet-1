@@ -18,8 +18,8 @@
 	<string name="label_quantity_send">Amount to Send</string>
 	<string name="label_cancel">Cancel</string>
 	<string name="label_ok">OK</string>
-	<string name="label_hinttext_password">password(at least 6 letters)</string>
-	<string name="label_password">Password</string>
+	<string name="label_hinttext_password">password (at least 6 letters)</string>
+	<string name="label_password">password</string>
 	<string name="label_send">send</string>
 	<string name="label_showinfo">asset info</string>
 	<string name="label_order">Order</string>
@@ -79,7 +79,6 @@
 	<string name="label_newwallet">Create a New Wallet</string>
 	<string name="label_signin">Sign In</string>
 	<string name="text_loginasuser">Already have a passphrase?</string>
-	
 	<string name="text_copied">Copied</string>
 	<string name="text_copied_message">Address copied to clipboard</string>
 	<string name="label_exchange_basic">simple order</string>
@@ -122,7 +121,7 @@
 	<string name="label_changedescription">Change the description</string>
 	<string name="label_noorders">no open orders</string>
 	<string name="label_noorders_closed">no closed orders</string>
-	<string name="text_holdcount">{count}people own this asset</string>
+	<string name="text_holdcount">{count} people own this asset</string>
 	<string name="label_holders">Show Assetholders</string>
 	
 	<string name="text_history_order">Sold {give_quantity} {give_asset} for {get_quantity} {get_asset}</string>
@@ -140,7 +139,7 @@
 	<string name="text_fingerprint">Would you like to set up Touch ID for easier access?</string>
 	<string name="label_adminerror">Authentication error</string>
 	<string name="text_adminerror">Authentication failed</string>
-	<string name="label_privecypolicy">Privacy Policy & Terms of Service</string>
+	<string name="label_privecypolicy">Privacy Policy &amp; Terms of Service</string>
 	<string name="label_privecypolicy2">By using this app I agree to the above.</string>
 	<string name="text_withmessage">Message attached</string>
 	<string name="text_unreadable">Could not recognize a valid address</string>
@@ -198,16 +197,16 @@
 	<string name="label_order_price">Price</string>
 	<string name="label_order_num">Quantity</string>
 	<string name="label_order_status">Status</string>
-	<string name="label_order_status_open"> Pending</string>
+	<string name="label_order_status_open">Pending</string>
 	<string name="label_order_status_filled">Complete</string>
 	<string name="label_order_status_expired">Incomplete</string>
 	<string name="label_order_status_canceled">Cancel</string>
-	<string name="label_hinttext_password_confirm">confirm password</string>
-	<string name="text_nohistory"> No history</string>
+	<string name="label_hinttext_password_confirm">Confirm password</string>
+	<string name="text_nohistory">No history</string>
 	<string name="text_history_error">Could not retrieve history</string>
 	
 	<string name="warning_insufficientfunds">Are you sure you have sufficient funds?</string>
-	<string name="text_assetinfo_error"> The asset might not exist or is yet to be confirmed</string>
+	<string name="text_assetinfo_error">The asset might not exist or is yet to be confirmed</string>
 	<string name="text_sendconfirmation">Send \n {amount} {token} to {address}</string>
 	<string name="text_sendconfirmation_shape_shift">Sending (approx) \n {amount} {token} to ShapeShift. \n you will get (approx) {amount2} {token2}  </string>
 	<string name="text_shape_shift_how_to">Instantly convert between BTC and XCP \n \nJust select which you\'d like to buy and which you\'d like to sell  \n \nThe tokens will be automatically sent from and deposited to this device\'s wallet!</string>
@@ -229,7 +228,8 @@
 	
 	<string name="text_imageupload">Asset Image</string>
 	<string name="label_website">Website</string>
-	<string name="label_pgpsig">pgp signature</string>
+    
+	<string name="label_pgpsig">PGP signature</string>
 	<string name="text_shapeshift_more">please spend more than {amount}{asset}</string>
 	<string name="text_shapeshift_less">please spend less than {amount}{asset}</string>
 	
