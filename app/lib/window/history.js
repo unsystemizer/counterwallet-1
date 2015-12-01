@@ -6,11 +6,10 @@ var theWindow =  Ti.UI.createWindow({
 });
 if( OS_IOS ) theWindow.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;
 exports.run = function(){
-
 	var _windows = globals.windows;
     var _requires = globals.requires;
-    
     var view = Ti.UI.createView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
+	
 	theWindow.add(view);
 	
 	var top_bar = Ti.UI.createView({ backgroundColor:'#e54353', width: Ti.UI.FILL, height: 55 });
@@ -26,6 +25,8 @@ exports.run = function(){
 	});
 	top_bar.add(  history_title_center );
 	
+	
+	
 	var scroll_view = Ti.UI.createScrollView({ scrollType: 'vertical', height: _requires['util'].getDisplayHeight() - 105, layout: 'vertical', showVerticalScrollIndicator: true });
 	scroll_view.top = 50;
 	view.add(scroll_view);
@@ -33,6 +34,7 @@ exports.run = function(){
 	var loading = null, history_error = null;
 	function createList( result, bool ){
 		try{
+			Titanium.API.log(result);
 			scroll_view.removeAllChildren();
 			if( history_error != null ){
 				view.remove(history_error);
@@ -57,17 +59,19 @@ exports.run = function(){
 					var history = ''; var address = null;
 					
 					if( val.type === 'order' ){
-						history = L('text_history_order').format({ 'give_quantity': val.give_quantity, 'give_asset': val.give_asset, 'get_quantity': val.get_quantity, 'get_asset': val.get_asset});
+						
+							history = L('text_history_order').format({ 'give_quantity': val.give_quantity, 'give_asset': val.give_asset, 'get_quantity': val.get_quantity, 'get_asset': val.get_asset});
+						
 					}
 					else if( val.type === 'send' ){
 						if(val.category === 'Send'){
 							val.type = 'send';
-							history = L('text_history_send').format({ 'quantity': Number(val.quantity), 'asset': val.asset, 'target': val.destination });
+							history = L('text_history_send').format({ 'quantity': Number(val.quantity), 'asset': val.asset });
 							address = val.destination;
 						}
 						else{
 							val.type = 'receive';
-							history = L('text_history_receive').format({ 'quantity': Number(val.quantity), 'asset': val.asset, 'target': val.source });
+							history = L('text_history_receive').format({ 'quantity': Number(val.quantity), 'asset': val.asset });
 							address = val.source;
 						}
 					}
@@ -85,6 +89,28 @@ exports.run = function(){
 					if(val.type == 'send') color = '#e54353';
 					if(val.type == 'order') color = '#4265d7';
 					
+					var label_history = _requires['util'].group({
+						'history': _requires['util'].makeLabel({
+							text: history,
+							top: 0, left: 0,
+							font:{ fontSize:12, fontWeight:'normal'},
+							textAlign: 'left'
+						}),
+						'address': _requires['util'].makeLabel({
+							text: address,
+							top: 1, left: 0,
+							color:'blue',
+							font:{ fontSize:12, fontWeight:'normal'},
+							textAlign: 'left'
+						})
+					}, 'vertical');
+					
+					label_history.top = 15;
+					label_history.left = 60;
+					if( address != null ){
+						label_history.address.text = address;
+					}
+					
 					var message = _requires['util'].group({
 						'category': _requires['util'].makeLabel({
 							text: L('label_historytype_' + val.type),
@@ -92,12 +118,7 @@ exports.run = function(){
 							font:{fontFamily:'Helvetica Neue', fontSize:13, fontWeight:'bold'},
 							color:color
 						}),
-						'history': _requires['util'].makeLabel({
-							text: history,
-							top: 15, left: 60,
-							font:{ fontSize:12, fontWeight:'normal'},
-							textAlign: 'left'
-						}),
+						'history': label_history,
 						'time': _requires['util'].makeLabel({
 							text: val.date,
 							textAlign: 'right',
@@ -105,7 +126,6 @@ exports.run = function(){
 							font:{fontFamily:'Helvetica Neue', fontSize:8, fontWeight:'bold'}
 						})
 					});
-					
 					_requires['util'].putTokenIcon({
 						info: val, parent: message,
 						width: 40, height: 40,
@@ -154,7 +174,7 @@ exports.run = function(){
 		loading = l;
 		if( bool ) loading = _requires['util'].showLoading(view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_history')});
 		_requires['network'].connect({
-			'method': 'getHistory',
+			'method': 'get_history',
 			'post': {
 				id: _requires['cache'].data.id
 			},
@@ -162,11 +182,25 @@ exports.run = function(){
 				createList( result, bool );
 			},
 			'onError': function(error){
-				var history = _requires['util'].makeLabel({
-					text: L('text_history_error'),
-					font:{ fontSize: 15 }
-				});
-				view.add(history);
+				if( history_error == null ){
+					history_error = _requires['util'].group({
+						'text': _requires['util'].makeLabel({
+							text: L('text_history_error'),
+							font:{ fontSize: 15 },
+							color: '#ffffff'
+						})
+					});
+					history_error.backgroundColor = 'E43E44';
+					history_error.opacity = 0.8;
+					history_error.width = '100%';
+					history_error.height = 50;
+					history_error.addEventListener('touchstart', function(){
+						view.remove(history_error);
+						history_error = null;
+						loadHistory(true);
+					});
+					view.add(history_error);
+				}
 			},
 			'always': function(){
 				if( loading != null ) loading.removeSelf();

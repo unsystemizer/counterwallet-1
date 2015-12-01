@@ -1,3 +1,16 @@
+#ver0.8.4
+Minor update.
+-----
+
+#ver0.8.1 update!
+
+-UI improvement of the decentralized exchange(Dex)
+Improved the UI of the Dex. Now token trading is even more simple and intuitive.
+
+-Bug fixes
+Fixed the bug where sending more than a certain amount of token failed. Other minor bug fixes and improvements were also made.
+-----
+
 #ver 0.8.0(2015.11.3)
 About the latest update ver0.8.0
 
@@ -72,5 +85,4 @@ Improved the UI overall. More simple and intuitive.
 
 We will continue to improve usability as well as security to make Counterparty more accessible to everyone. Keep an eye on the next update!
 -----
-
 IndieSquare Inc.

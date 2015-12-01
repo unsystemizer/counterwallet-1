@@ -50,6 +50,7 @@ exports.run = function(){
 		
 		return box;
 	}
+	
 	function createBox( params ){
 		var box = _requires['util'].group({
 			icon: _requires['util'].makeImage({
@@ -113,11 +114,11 @@ exports.run = function(){
 						if( e.success ){
 							var loading = _requires['util'].showLoading(box_user_name, { width: Ti.UI.FILL, height: Ti.UI.FILL});
 							_requires['network'].connect({
-								'method': 'dbUpdate',
+								'method': 'dbupdate',
 								'post': {
 									id: _requires['cache'].data.id,
-									data: JSON.stringify( [
-										{ column: 'user_name', value: inputText }
+									updates: JSON.stringify( [
+										{ column: 'username', value: inputText }
 									])
 								},
 								'callback': function( result ){
@@ -162,7 +163,7 @@ exports.run = function(){
 	
 	var currencies = _requires['util'].createTableList({
 		backgroundColor: 'white',
-		width: '100%', height: 200,
+		width: '100%', height: 350,
 		top:0,
 		rowHeight: 50
 	});
@@ -172,7 +173,7 @@ exports.run = function(){
 		"picker": currencies
 	}, 'vertical');
 	if(OS_ANDROID) picker1.top = display_height;
-	else picker1.bottom = -340;
+	else picker1.bottom = -390;
 	
 	close.addEventListener('click',function() {
 		picker1.animate(slide_out);
@@ -187,34 +188,34 @@ exports.run = function(){
 		currencies.setRowDesign(tikers, function(row, val) { //why is key visible here?
 			if( key !== 'XCP' ) {
 				currenciesArray.push(key);
-			var label = Ti.UI.createLabel({
-				text : key,
-				font : {
-					fontFamily : 'HelveticaNeue-Light',
-					fontSize : 20,
-					fontWeight : 'normal'
-				},
-				color : 'black',
-				width : 'auto',
-				height : 'auto',
-				left :10
-			});
-			row.add(label);
-			return row;
+				var label = Ti.UI.createLabel({
+					text : key,
+					font : {
+						fontFamily : 'HelveticaNeue-Light',
+						fontSize : 20,
+						fontWeight : 'normal'
+					},
+					color : 'black',
+					width : 'auto',
+					height : 'auto',
+					left :10
+				});
+				row.add(label);
+				return row;
 			}
 		});
 	};
 	
 	addCurrencies();
-	var slide_in; 
+	var slide_in;
 	var slide_out;
 	if( OS_ANDROID ){
-		slide_in = Ti.UI.createAnimation({top: display_height - 350, duration:200});
+		slide_in = Ti.UI.createAnimation({top: display_height - 400, duration:200});
 		slide_out = Ti.UI.createAnimation({top: display_height, duration:200});
 	}
 	else {
 		slide_in = Ti.UI.createAnimation({bottom: 0, duration:200});
-		slide_out = Ti.UI.createAnimation({bottom: -340, duration:200});
+		slide_out = Ti.UI.createAnimation({bottom: -390, duration:200});
 	}
 
 	var box_currency = createBox({ icon: 'icon_settings_currency.png', height: 45 });
@@ -238,7 +239,7 @@ exports.run = function(){
 	
 	function setCurrency(e) {
 		var selected_currency = currenciesArray[e.index];
-		Titanium.API.log(selected_currency);
+		//Titanium.API.log(selected_currency);
 		label_current.text = _requires['cache'].data.currncy = selected_currency;
 		globals.loadBalance();
 		if( globals.getOrders != null ) globals.getOrders();
@@ -297,6 +298,70 @@ exports.run = function(){
 		dialog.show();
 	});
 	
+	var box_pin = createBox({ icon: 'icon_settings_easypass.png', height: 45 });
+	box_pin.top = 10;
+	view.add(box_pin);
+	var box_description = createDescBox(L('text_desc_passcode'));
+	view.add(box_description);
+	var pin_group = _requires['util'].group();
+	var label_pin = _requires['util'].makeLabel({
+		text: L('label_passcode'),
+		font:{ fontSize: 14 },
+		textAlign: 'left', left: 0
+	});
+	pin_group.left = 60;
+	pin_group.width = '60%';
+	pin_group.add(label_pin);
+	
+	box_pin.add(pin_group);
+	box_pin.addEventListener('click', function(){
+		if( !_requires['cache'].data.isTouchId ){
+			var dialog = _requires['util'].createDialog({
+				title: L('label_easypass_change'),
+				message: L('text_easypass_change'),
+				buttonNames: [L('label_cancel'), L('label_ok')]
+			});
+			dialog.addEventListener('click', function(e){
+				
+				if( e.index == 1){
+					_requires['auth'].checkPasscode({
+						title : L('label_confirmorder'),
+						callback : function(e) {
+							if (e.success) {
+								regist = null;
+								var easyInput = _requires['util'].createEasyInput({
+									type: 'reconfirm',
+									callback: function( number ){
+										_requires['cache'].data.easypass = number;
+										_requires['cache'].save();
+										var dialog = _requires['util'].createDialog({
+											title: L('label_setting_completed'),
+											message: L('text_easypass_changed'),
+											buttonNames: [L('label_ok')]
+										}).show();
+									},	
+									cancel: function(){}
+								});
+								easyInput.open();
+							}
+						}
+					});
+				}
+			});
+			dialog.show();
+		}
+	});
+	
+	function pin_off(){
+		box_pin.opacity = 0.1;
+		box_description.opacity = 0.3;
+	}
+	function pin_on(){
+		box_pin.opacity = 1.0;
+		box_description.opacity = 1.0;
+	}
+	if( _requires['cache'].data.isTouchId ) pin_off();
+	
 	if( OS_IOS ){
 		var box_touchid = createBox({ icon: 'icon_settings_touchid.png', height: 50, arrow: false });
 		box_touchid.top = 10;
@@ -315,6 +380,7 @@ exports.run = function(){
 					_requires['cache'].data.isTouchId = true;
 					_requires['cache'].data.easypass = null;
 					_requires['cache'].save();
+					pin_off();
 				}
 				_requires['auth'].useTouchID({ callback: function(e){
 					if( e.success ) conn();
@@ -339,6 +405,7 @@ exports.run = function(){
 								_requires['cache'].data.easypass = number;
 								_requires['cache'].data.isTouchId = null;
 								_requires['cache'].save();
+								pin_on();
 							},
 							cancel: function(){
 								if( slider.is ) slider.off();

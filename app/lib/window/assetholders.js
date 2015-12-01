@@ -41,7 +41,7 @@ exports.run = function( params ){
 	
 	var loading = _requires['util'].showLoading(main_view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_holders') });
 	_requires['network'].connect({
-		'method': 'getHolders',
+		'method': 'get_holders',
 		'post': {
 			id: _requires['cache'].data.id,
 			asset: params.asset
@@ -111,6 +111,7 @@ exports.run = function( params ){
 			loading.removeSelf();
 		}
 	});
+
 	Ti.API.home_tab.open(win.origin,{animated:true});
 	return win.origin;
 };

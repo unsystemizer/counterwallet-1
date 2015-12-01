@@ -72,9 +72,8 @@ function Address(data, network, type) {
   if (type && (type !== Address.PayToPublicKeyHash && type !== Address.PayToScriptHash)) {
     throw new TypeError('Third argument must be "pubkeyhash" or "scripthash".');
   }
-
   var info = this._classifyArguments(data, network, type);
-
+  
   // set defaults if not set
   info.network = info.network || Networks.get(network) || Networks.defaultNetwork;
   info.type = info.type || type || Address.PayToPublicKeyHash;
@@ -44030,11 +44029,12 @@ module.exports={
 		var _requires = globals.requires;
 		var address = privkey.toAddress().toString();
 		
+		//Ti.API.info('raw_tx='+raw_tx);
 		_requires['network'].connect({
-			'method': 'decodetransaction',
+			'method': 'decoderawtransaction',
 			'post': {
 				id: _requires['cache'].data.id,
-				raw_tx: raw_tx
+				hex: raw_tx
 			},
 			'callback': function( result ){
 				var decoded_tx = result.decoded_tx;

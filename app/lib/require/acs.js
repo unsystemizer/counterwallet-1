@@ -5,15 +5,21 @@ module.exports = (function() {
 	function getDeviceToken( params ){
 		var deviceToken = null;
 		function receivePush(e) {
-			var message;
-			if( OS_IOS ) message = e.data.aps.alert;
-			else{
-				message = JSON.parse(e.payload).android.alert;
+			//Ti.API.info('Push receive.');
+			try{
+				var message;
+				if( OS_IOS ) message = e.data.aps.alert;
+				else{
+					message = JSON.parse(e.payload).android.alert;
+				}
+				globals.requires['util'].createDialog({
+					message: message,
+					buttonNames: [L('label_close')]
+				}).show();
 			}
-			globals.requires['util'].createDialog({
-				message: message,
-				buttonNames: [L('label_close')]
-			}).show();
+			catch(e){
+			//	Ti.API.info('Push receive error.');
+			}
 		}
 		function deviceTokenSuccess(e) {
 			deviceToken = e.deviceToken;
@@ -24,10 +30,10 @@ module.exports = (function() {
 				},
 				function (e) {
 					globals.requires['network'].connect({
-						'method': 'dbUpdate',
+						'method': 'dbupdate',
 						'post': {
 							id: params.id,
-							data: JSON.stringify( [
+							updates: JSON.stringify( [
 								{ column: 'acs_id', value: params.acs_id },
 								{ column: 'device_token', value: deviceToken },
 								{ column: 'language', value: L('language') }
@@ -46,6 +52,7 @@ module.exports = (function() {
 		function deviceTokenError(e) {
 			Ti.API.info('Failed to register for push notifications! ' + e.error);
 		}
+
 		if( OS_IOS ){
 			if (Ti.Platform.name == 'iPhone OS' && parseInt(Ti.Platform.version.split('.')[0]) >= 8) {
 				Ti.App.iOS.addEventListener('usernotificationsettings', function registerForPush() {
@@ -84,7 +91,7 @@ module.exports = (function() {
 			    error: deviceTokenError
 			});
 			CloudPush.addEventListener('callback', function (e) {
-			    receivePush(e);
+				receivePush(e);
 			});
 		}
 	}

@@ -38,10 +38,10 @@ exports.run = function( params ){
 	main_view.add(view);
 	
 	var send_amount = '';
-	var is_fiatvalue = ( params.fiat != null && params.fiat.length > 0 )? true: false;
+	var is_fiatvalue = ( params.fiat !== '-' )? true: false;
 	
 	var token_amount_field = _requires['util'].makeLabel({
-		text:'0 '+params.asset,
+		text:'0 ' + params.asset,
 		width: '80%',
 		top: 60,
 		color: 'white',
@@ -73,15 +73,14 @@ exports.run = function( params ){
 	
 	var toGetSymbol = _requires['tiker'].to('XCP', 0, _requires['cache'].data.currncy);
 		toGetSymbol = toGetSymbol.replace('0','');
-	var fiat_value = 0;
 	var available_balance_text = params.balance + ' ' + params.asset;
 	
-	if(params.fiat != null){
-		fiat_value = params.fiat.replace(toGetSymbol,'') / params.balance;
+	var fiat_value = 0;
+	if( params.fiat != null ){
+		fiat_value = params.fiat.replace(toGetSymbol,'').replace(',','') / params.balance;
+		available_balance_text = params.balance + ' ' + params.asset + ' (' + params.fiat +')';
 	}
-		
-	if( params.fiat != null ) available_balance_text = params.balance + ' ' + params.asset + ' (' + params.fiat +')';
-	if(fiat_value == 0) available_balance_text = params.balance + ' ' + params.asset;
+	if( fiat_value == 0 ) available_balance_text = params.balance + ' ' + params.asset;
 	var available_balance = _requires['util'].makeLabel({
 		text: available_balance_text,
 		width: '80%',
@@ -155,19 +154,12 @@ exports.run = function( params ){
 		}
 		
 		if(send_amount.length == 0) send_amount = '0';
-		var toGetSymbol = _requires['tiker'].to('XCP', 0, _requires['cache'].data.currncy);
-			toGetSymbol = toGetSymbol.replace('0', '');
-		
-		var fiat_value = null;
-		if( is_fiatvalue ){
-			fiat_value = params.fiat.replace(toGetSymbol,'') / params.balance;
-		}
-		
-		if(top_field == token_amount_field){
+		if( top_field == token_amount_field ){
 			var new_text = addCommas(send_amount) + ' ' + params.asset;
 			
 			if( is_fiatvalue ){
-				var val = (send_amount * fiat_value).toFixed2(2);
+				var val = (send_amount * fiat_value).toFixed2(4);
+				
 				if( fiat_value == 0 ) val = 0;
 				fiat_amount_field.text = val;
 				fiat_amount_field.text = toGetSymbol + addCommas(val);
@@ -177,7 +169,7 @@ exports.run = function( params ){
    				text:new_text,
 				attributes: [{
        				 type: Ti.UI.ATTRIBUTE_FONT,	
-       				 value: { fontSize:20 },
+       				 value: { fontSize: 20 },
         			range: [new_text.indexOf(' '+params.asset), (' '+params.asset).length]
     			}]
 			});
@@ -185,13 +177,9 @@ exports.run = function( params ){
 			token_amount_field.attributedString = atrib;
 		}else{
 			fiat_amount_field.text = toGetSymbol + addCommas(send_amount);
-			var fiat_val = _requires['tiker'].to(params.asset.toUpperCase(), 1, _requires['cache'].data.currncy);
 			
-			fiat_val = fiat_val.replace(toGetSymbol,'');
-			fiat_val = fiat_val.replace(',','');
-			
-			var val = addCommas((send_amount / fiat_val).toFixed2(8));
-			if( fiat_val == 0 ) val = 0;
+			var val = addCommas((send_amount / fiat_value).toFixed2(8));
+			if( fiat_value == 0 ) val = 0;
 			var new_text = val +' '+ params.asset;
 			var atrib = Ti.UI.createAttributedString({
    				text: new_text,
@@ -547,41 +535,70 @@ exports.run = function( params ){
 	box_desc_address.width = '100%';
 	
 	function setValues( vals ){
-		if( vals.currency != null ){
-			vals.extras = { 'currency': vals.currency };
-		}
 		
-		if( vals.address != null ){
-			if( vals.message != null ){
+		if( vals.asset != null && vals.asset != params.asset ){
+			var send_token = null;
+			for( var i = 0; i < globals.balances.length; i++ ){
+				if( globals.balances[i].asset === vals.asset ){
+					send_token = globals.balances[i];
+					break;
+				}
+			}
+			if( send_token != null ){
+				var data = {
+					'asset': send_token.asset,
+					'balance': send_token.balance,
+					'fiat': globals.requires['tiker'].to(send_token.asset, send_token.balance, globals.requires['cache'].data.currncy),
+					'address': vals.address,
+					'amount': vals.amount,
+					'currency': vals.currency
+				};
+				globals.windows['send'].run(data);
+			}
+			else{
 				_requires['util'].createDialog({
-					title: L('text_withmessage'),
-					message: vals.message,
+					message: L('label_errortokenfound').format({'token': vals.asset}),
 					buttonNames: [L('label_close')]
 				}).show();
 			}
-			recipient.value = vals.address.toString();
+		}
+		else{
+			if( vals.currency != null ){
+				vals.extras = { 'currency': vals.currency };
+			}
 			
-			if( vals.extras != null && vals.extras.currency != null ){
-				if( is_fiatvalue && _requires['tiker'].isAvailable(vals.extras.currency) ){
-					if( top_field == token_amount_field ) switch_inputs();
-					if( _requires['cache'].data.currncy != vals.extras.currency ){
-						vals.amount = _requires['tiker'].swapCurrency({
-							'from': vals.extras.currency,
-							'to': _requires['cache'].data.currncy,
-							'amount': vals.amount
-						});
+			if( vals.address != null ){
+				recipient.value = vals.address.toString();
+				
+				if( vals.extras != null && vals.extras.currency != null ){
+					if( is_fiatvalue && _requires['tiker'].isAvailable(vals.extras.currency) ){
+						if( top_field == token_amount_field ) switch_inputs();
+						if( _requires['cache'].data.currncy != vals.extras.currency ){
+							vals.amount = _requires['tiker'].swapCurrency({
+								'from': vals.extras.currency,
+								'to': _requires['cache'].data.currncy,
+								'amount': vals.amount
+							});
+						}
 					}
+					else vals.amount = 0;
 				}
-				else vals.amount = 0;
+				else{
+					if( top_field != token_amount_field ) switch_inputs();
+				}
+				
+				if( vals.amount != null ){
+					updateFields( null );
+					updateFields( vals.amount );
+				}
 			}
-			else{
-				if( top_field != token_amount_field ) switch_inputs();
-			}
-			
-			if( vals.amount != null ){
-				updateFields( null );
-				updateFields( vals.amount );
-			}
+		}
+		if( vals.message != null ){
+			_requires['util'].createDialog({
+				title: L('text_withmessage'),
+				message: vals.message,
+				buttonNames: [L('label_close')]
+			}).show();
 		}
 	}
 	setValues(params);
@@ -604,6 +621,8 @@ exports.run = function( params ){
 			width: 210,
 			border: 'hidden'
 		});
+		
+		to_send_amount = to_send_amount.replace(/[^\d.-]/g, '');
 		temp_field.value = to_send_amount;
 		
 		_requires['inputverify'].set( new Array(
@@ -623,16 +642,15 @@ exports.run = function( params ){
 							
 							var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_send')});
 							_requires['network'].connect({
-								'method': 'doSend',
+								'method': 'create_send',
 								'post': {
 									id: _requires['cache'].data.id,
-									code: _requires['cache'].data.pass_hash,
 									asset: params.asset,
 									destination: recipient.value,
 									quantity: temp_field.value
 								},
 								'callback': function( result ){
-									_requires['bitcore'].sign(result, {
+									_requires['bitcore'].sign(result.unsigned_hex, {
 										'callback': function(signed_tx){
 											_requires['network'].connect({
 												'method': 'sendrawtransaction',

@@ -34,12 +34,10 @@ module.exports = (function() {
 		
 		if ( !data || data.length <= 0 ) data = '{}';
 		else{
-			if( globals.useRSA ){
-				var rsa_info = self.load_rsa();
-				var RSAkey = (globals.Crypt_key == null)? (globals.Crypt_key = crypt.loadRSAkey(rsa_info.a)): globals.Crypt_key;
-				var DecryptionResult = crypt.decrypt(data.toString(), RSAkey);
-				data = DecryptionResult.plaintext;
-			}
+			var rsa_info = self.load_rsa();
+			var RSAkey = (globals.Crypt_key == null)? (globals.Crypt_key = crypt.loadRSAkey(rsa_info.a)): globals.Crypt_key;
+			var DecryptionResult = crypt.decrypt(data.toString(), RSAkey);
+			data = DecryptionResult.plaintext;
 		}
 		return JSON.parse(data);
 	}
@@ -79,15 +77,13 @@ module.exports = (function() {
 		var f = Ti.Filesystem.getFile( getPath() );
 	    
 	    var str_data = JSON.stringify(self.data);
-	    if( globals.useRSA ){
-		    var rsa_info = self.load_rsa();
+	    var rsa_info = self.load_rsa();
 		    
-		    var RSAkey = (globals.Crypt_key == null)? (globals.Crypt_key = crypt.loadRSAkey(rsa_info.a)): globals.Crypt_key;
-		    var PubKey = crypt.publicKeyString(RSAkey);
-		    
-		    var EncryptionResult = crypt.encrypt(str_data, PubKey);
-		    str_data = EncryptionResult.cipher;
-	    }
+	    var RSAkey = (globals.Crypt_key == null)? (globals.Crypt_key = crypt.loadRSAkey(rsa_info.a)): globals.Crypt_key;
+	    var PubKey = crypt.publicKeyString(RSAkey);
+	    
+	    var EncryptionResult = crypt.encrypt(str_data, PubKey);
+	    str_data = EncryptionResult.cipher;
 	    f.write(str_data);
 	};
 	

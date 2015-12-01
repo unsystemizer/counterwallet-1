@@ -1,10 +1,10 @@
 module.exports = (function() {
 	var self = {};
-	
+	token_fiat_values = [];
 	self.getTiker = function( params ){
 		var _requires = globals.requires;
 		_requires['network'].connect({
-			'method': 'getTiker',
+			'method': 'get_ticker',
 			'post': {},
 			'callback': function( result ){
 				globals.tiker = result;
@@ -19,8 +19,8 @@ module.exports = (function() {
    		 x = nStr.split('.');
    		 x1 = x[0];
    		 x2 = x.length > 1 ? '.' + x[1] : '';
-    	var rgx = /(\d+)(\d{3})/;
-    	while (rgx.test(x1)) {
+    	 var rgx = /(\d+)(\d{3})/;
+    	 while (rgx.test(x1)) {
             x1 = x1.replace(rgx, '$1' + ',' + '$2');
    		 }
    		 return x1 + x2;
@@ -32,13 +32,22 @@ module.exports = (function() {
 		var price = globals.tiker[currency].last;
 		var symbol = globals.tiker[currency].symbol;
 		
-		if( digit == null ) digit = 2;
+		if( digit == null ) digit = 4;
 		if( type === 'XCP' ){
 			var xcp_btc = globals.tiker['XCP'].last;
 			return '{0}{1}'.format(symbol, addCommas((quantity * price * xcp_btc).toFixed2(digit)));
 		}
-		else{
+		else if( type === 'BTC' ){
 			return '{0}{1}'.format(symbol, addCommas((quantity * price).toFixed2(digit)));
+		}
+		else{
+			if(token_fiat_values.hasOwnProperty(type)){
+				var val = token_fiat_values[type];
+				return '{0}{1}'.format(symbol, addCommas((quantity * val).toFixed2(digit)));
+			}
+			else{
+				return '{0}{1}'.format(symbol, 0);
+			}
 		}
 	};
 	

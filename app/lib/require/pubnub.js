@@ -996,7 +996,6 @@ function PN_API(setup) {
             ,   url;
 
             if (args['prepend']) add_msg = 'unshift';
-
             if (!channel)       return error('Missing Channel');
             if (!PUBLISH_KEY)   return error('Missing Publish Key');
             if (!SUBSCRIBE_KEY) return error('Missing Subscribe Key');
@@ -1015,11 +1014,9 @@ function PN_API(setup) {
                 0, encode(channel),
                 jsonp, encode(msg)
             ];
-
             params = { 'uuid' : UUID, 'auth' : auth_key };
 
             if (!store) params['store'] ="0";
-
             if (USE_INSTANCEID) params['instanceid'] = INSTANCEID;
 
             // Queue Message Send
@@ -1708,7 +1705,6 @@ function PN_API(setup) {
             if (auth_key) data['auth'] = auth_key;
 
             data = _get_url_params(data);
-
             if (!auth_key) delete data['auth'];
 
             sign_input += _get_pam_sign_input_from_params(data);
@@ -2383,7 +2379,6 @@ function CREATE_PUBNUB(setup) {
     setup['xdr'] = setup['native_tcp_socket'] ? xdr_tcp : xdr_http_client;
     setup['crypto_obj'] = crypto_obj();
     setup['params']      = { 'pnsdk' : PNSDK };
-
 
     SELF = function(setup) {
         return CREATE_PUBNUB(setup);

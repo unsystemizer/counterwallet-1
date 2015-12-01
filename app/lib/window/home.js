@@ -42,10 +42,10 @@ exports.run = function(){
 	});
 	
 	_requires['network'].connect({
-		'method': 'dbGet',
+		'method': 'dbget',
 		'post': {
 			id: _requires['cache'].data.id,
-			type: 'user_name'
+			column: 'username'
 		},
 		'callback': function( result ){
 			globals.user_name = result.value;
@@ -64,13 +64,22 @@ exports.run = function(){
 	});
 	top_bar.add( home_title_center );
 	
-	home_title_right = _requires['util'].makeLabel({
-		text:L('label_tab_receive'),
-		color:"white",
-		font:{ fontSize:15, fontWeight:'normal'},
-		textAlign: 'right',
-		top: 50, right:10
-	});
+	var home_title_right = _requires['util'].group({
+		'home_scroll_right_img': _requires['util'].makeImage({
+		    image: '/images/img_qrcode_white.png',
+		    height: 30,
+		    top: 0, right: 0
+		}),
+		'home_title_right': _requires['util'].makeLabel({
+			text:L('label_tab_receive'),
+			color:"white",
+			font:{ fontSize: 15, fontWeight:'normal'},
+			textAlign: 'right',
+			top: 3, right: 0
+		})
+	}, 'vertical');
+	home_title_right.right = 10;
+	home_title_right.bottom = 5;
 	top_bar.add( home_title_right );
 	
 	home_title_left = _requires['util'].makeLabel({
@@ -78,7 +87,7 @@ exports.run = function(){
 		color:"white",
 		font:{ fontSize:15, fontWeight:'normal'},
 		textAlign: 'right',
-		top: 50, left:10
+		bottom: 5, left: 10
 	});
 	top_bar.add( home_title_left );
 	home_title_left.opacity = 0;
@@ -103,6 +112,14 @@ exports.run = function(){
 	view_scroll['balance'] = Ti.UI.createScrollView({ scrollType: 'vertical', layout: 'vertical', backgroundColor: 'transparent', showVerticalScrollIndicator: true });
 	view_scroll['qrcode'] = Ti.UI.createScrollView({ scrollType: 'vertical', layout: 'vertical', backgroundColor: 'transparent', showVerticalScrollIndicator: true });
 	
+	var fade_in = Ti.UI.createAnimation();
+	fade_in.opacity = 1;
+	fade_in.duration = 400;
+	
+	var fade_out = Ti.UI.createAnimation();
+	fade_out.opacity = 0;
+	fade_out.duration = 400;
+	
 	var scrollableView = Ti.UI.createScrollableView({
 	    views: [view_scroll['balance'], view_scroll['qrcode']],
 	    maxZoomScale: 1.0,
@@ -110,37 +127,29 @@ exports.run = function(){
 	});
 	scrollableView.addEventListener('scroll', function(e){
 		if( e.currentPage != null ){
-			var a = Ti.UI.createAnimation();
-			a.opacity = 0;
-			a.duration = 400;
-		    home_title_right.animate(a);
-		    home_title_left.animate(a);
+			if( OS_ANDROID ){
+		    	home_title_right.opacity = home_title_left.opacity = 0;
+		    }
+		    else{
+			    home_title_right.animate(fade_out);
+			    home_title_left.animate(fade_out);
+		    }
 		}
 		
 	});
 	scrollableView.addEventListener('scrollend', function(e){
 		if( e.currentPage != null ){
-		
 			if( scrollableView.currentPage == 1 ){ 
-				
 				home_title_center.text = L('label_tab_receive');
 				home_scroll_indicator.image = '/images/scroll_indicator_2.png';
-				
-				var a = Ti.UI.createAnimation();
-				a.opacity = 1;
-				a.duration = 400;
-			    home_title_left.animate(a);
-				
+				if( OS_ANDROID ) home_title_left.opacity = 1.0;
+				else home_title_left.animate(fade_in);
 			}
 			if( scrollableView.currentPage == 0 ){ 
-				
 				home_title_center.text =  L('label_tab_home');
 			    home_scroll_indicator.image = '/images/scroll_indicator_1.png';
-			    
-			    var a = Ti.UI.createAnimation();
-				a.opacity = 1;
-				a.duration = 400;
-			    home_title_right.animate(a);
+			    if( OS_ANDROID ) home_title_right.opacity = 1.0;
+			    else home_title_right.animate(fade_in);
 			}
 		}
 	});
@@ -157,15 +166,21 @@ exports.run = function(){
 	
 	var assets_info = [];
 	
+	var balance_error = null;
 	globals.loadBalance = function(bool, l){
 		var loading = l;
 		if( bool ) loading = _requires['util'].showLoading(view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('label_load_tokens')});
 		_requires['network'].connect({
-			'method': 'getBalances',
+			'method': 'get_balances',
 			'post': {
 				id: _requires['cache'].data.id
 			},
 			'callback': function( result ){
+				if( balance_error != null ){
+					view.remove(balance_error);
+					balance_error = null;
+				}
+				
 				globals.balances = result;
 				_requires['tiker'].getTiker({
 					'callback': function(){
@@ -179,14 +194,21 @@ exports.run = function(){
 								else{
 									(function(key) {
 										_requires['network'].connect({
-											'method': 'getMarketPrice',
+											'method': 'get_marketprice',
 											'post': {
 												token: key
 											},
 											'callback': function( result ){
 												if( result != null ){
+													Titanium.API.log(key + ' ' + JSON.stringify(result));
 													var the_asset_object = assets_info[key];
-													the_asset_object.fiat_balance.text = _requires['tiker'].to('XCP', result.price * the_asset_object.balance , _requires['cache'].data.currncy);
+													if( result.price > 0 ){
+														var xcpval = result.price * the_asset_object.balance;
+														the_asset_object.fiat_balance.text = _requires['tiker'].to('XCP', xcpval , _requires['cache'].data.currncy, 4);
+													}
+													else{
+														the_asset_object.fiat_balance.text = '-';
+													}
 												}
 											}
 										});
@@ -330,10 +352,16 @@ exports.run = function(){
 				});
 				
 				view_scroll['balance'].add(create_button);
-				
-				var bottom_space = createBox({ height: 300 });
-				bottom_space.backgroundColor = "transparent",
-				bottom_space.top = 10;
+				if(result.length < 4){
+					var bottom_space = createBox({ height: 300 });
+					bottom_space.backgroundColor = "transparent",
+					bottom_space.top = 10;
+				}
+				else{
+					var bottom_space = createBox({ height: 30 });
+					bottom_space.backgroundColor = "transparent",
+					bottom_space.top = 10;
+				}
 				
 				view_scroll['balance'].add(bottom_space);
 				if( bool ){
@@ -344,6 +372,26 @@ exports.run = function(){
 			},
 			'onError': function(error){
 				alert(error);
+				if( balance_error == null ){
+					balance_error = _requires['util'].group({
+						'text': _requires['util'].makeLabel({
+							text: L('text_balance_error'),
+							font:{ fontSize: 15 },
+							color: '#ffffff'
+						})
+					});
+					balance_error.backgroundColor = 'E43E44';
+					balance_error.opacity = 0.8;
+					balance_error.height = 50;
+					balance_error.width = '100%';
+					
+					balance_error.addEventListener('touchstart', function(){
+						view.remove(balance_error);
+						balance_error = null;
+						globals.loadBalance(true);
+					});
+					view.add(balance_error);
+				}
 			},
 			'always': function(){
 				if( loading != null ) loading.removeSelf();
@@ -384,7 +432,7 @@ exports.run = function(){
 	var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'qr_address.png');
 	if( !_requires['cache'].data.qrcode ){
 		_requires['network'].connect({
-			'method': 'getQRcode',
+			'method': 'create_qrcode',
 			'binary': true,
 			'post': {
 				id: _requires['cache'].data.id
@@ -417,7 +465,7 @@ exports.run = function(){
 			function registEasyPass(){
 				var dialog = _requires['util'].createDialog({
 					title: L('label_easypass'),
-					message: L('text_easypass'),
+					message: L('text_easypass_explain'),
 					buttonNames: [L('label_ok')]
 				});
 				dialog.addEventListener('click', function(e){

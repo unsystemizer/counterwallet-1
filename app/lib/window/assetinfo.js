@@ -5,7 +5,7 @@ exports.run = function( params ){
 	var win = _requires['layer'].createWindow();
 	
 	
-	var main_view = Ti.UI.createView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
+	var main_view = Ti.UI.createScrollView({ backgroundColor:'#ececec', width: Ti.UI.FILL, height: Ti.UI.FILL });
 	win.origin.add(main_view);
 	
 	var top_bar = Ti.UI.createView({ backgroundColor:'#e54353', width: Ti.UI.FILL, height: 55 });
@@ -41,7 +41,7 @@ exports.run = function( params ){
 		
 	var loading = _requires['util'].showLoading(main_view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_assetinfo')});
 	_requires['network'].connect({
-		'method': 'getAssetInfo',
+		'method': 'get_asset_info',
 		'post': {
 			asset: params.asset
 		},
@@ -91,6 +91,7 @@ exports.run = function( params ){
 				}
 				
 				if( json != null ){
+					if( !json.image.match(/^https?:\/\//) ) json.image = 'https://' + json.image;
 					var image = Ti.UI.createImageView({
 						image: json.image,
 						width: 50, height: 50,

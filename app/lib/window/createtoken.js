@@ -52,7 +52,7 @@ exports.run = function( params ){
 		init: false,
 		on: function(){
 			if( OS_IOS ) box_token.field.fireEvent('change');
-			box_token.field.setValue('A' + ('000000' + Math.floor(Math.random() * 10000000) ).substr(-7) + ('000000' + Math.floor(Math.random() * 10000000) ).substr(-7) + ('0000' + Math.floor(Math.random() * 100000) ).substr(-5));
+			box_token.field.setValue('A1' + ('000000' + Math.floor(Math.random() * 10000000) ).substr(-7) + ('000000' + Math.floor(Math.random() * 10000000) ).substr(-7) + ('0000' + Math.floor(Math.random() * 100000) ).substr(-5));
 		},
 		off: function(){
 			if( OS_IOS ) box_token.field.fireEvent('change');
@@ -243,7 +243,7 @@ exports.run = function( params ){
 							if( e.success ){
 								var loading = _requires['util'].showLoading(win.origin, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_issue')});
 								_requires['network'].connect({
-									'method': 'makeEnhancedInfo',
+									'method': 'make_enhancedassetinfo',
 									'post': {
 										asset: token,
 										media: blobImage,
@@ -253,17 +253,16 @@ exports.run = function( params ){
 									},
 									'callback': function( url ){
 										_requires['network'].connect({
-											'method': 'doIssue',
+											'method': 'create_issuance',
 											'post': {
 												id: _requires['cache'].data.id,
-												code: _requires['cache'].data.pass_hash,
-												asset: token,
-												description: url,
+												token: token,
+												description: url.uri,
 												quantity: box_quantity.field.value,
 												divisible: sl_divisible.is
 											},
 											'callback': function( result ){
-												_requires['bitcore'].sign(result, {
+												_requires['bitcore'].sign(result.unsigned_hex, {
 													'callback': function(signed_tx){
 														_requires['network'].connect({
 															'method': 'sendrawtransaction',

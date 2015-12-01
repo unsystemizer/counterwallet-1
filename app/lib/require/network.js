@@ -18,7 +18,7 @@ module.exports = (function() {
 	
 	self.connect = function( params ){
 		var xhr = Ti.Network.createHTTPClient();
-		xhr.open('POST', Alloy.CFG.api_uri + 'counterparty/' + globals.api_ver + '/' + params.method + '.php');
+		xhr.open('POST', Alloy.CFG.api_uri + 'wallet/v1/' + params.method);
 		xhr.onload = function(){
 			if( params.binary ) params.callback( this.responseData );
 			else{
@@ -44,7 +44,7 @@ module.exports = (function() {
 	self.getjson = function( params ){
 		var xhr = Ti.Network.createHTTPClient();
 		
-		if( !params.uri.match(/^https?:\/\//) ) params.uri = 'http://' + params.uri;
+		if( !params.uri.match(/^https?:\/\//) ) params.uri = 'https://' + params.uri;
 		
 		xhr.open('GET', params.uri);
 		xhr.onload = function(){

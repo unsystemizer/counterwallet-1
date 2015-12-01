@@ -18,7 +18,7 @@
 	<string name="label_quantity_send">Amount to Send</string>
 	<string name="label_cancel">Cancel</string>
 	<string name="label_ok">OK</string>
-	<string name="label_hinttext_password">password (at least 6 letters)</string>
+	
 	<string name="label_password">password</string>
 	<string name="label_send">send</string>
 	<string name="label_showinfo">asset info</string>
@@ -27,9 +27,11 @@
 	<string name="label_quantity">Quantity</string>
 	<string name="label_buy">buy</string>
 	<string name="label_sell">sell</string>
+	<string name="label_buy_closed">bought</string>
+	<string name="label_sell_closed">sold</string>
 	<string name="label_noprice">No Price</string>
 	<string name="text_gocustom">please create a custom order</string>
-	<string name="label_confirm">Confirm</string>
+	<string name="label_confirm">confirm</string>
 	<string name="label_close">Close</string>
 	<string name="label_login">Login</string>
 	<string name="label_bitcoinaddress">My Bitcoin Address</string>
@@ -56,7 +58,7 @@
 	<string name="text_confirmsend">Confirm Send</string>
 	
 	<string name="text_issuance_done">Created {asset}</string>
-	<string name="text_orderd">Placed an Order</string>
+	<string name="text_orderd">Order placed</string>
 	<string name="text_sent">Sent</string>
 	<string name="text_sent_shape_shift">Your funds have been deposited with ShapeShift,\nonce appoved your tokens will be visible in the app's wallet.</string>
 	<string name="shape_shift_instruction">how much {asset} do you want to buy?</string>
@@ -72,15 +74,25 @@
 	<string name="text_makedivisible">Make Divisible</string>
 	<string name="text_hold">You Own {balance} Units of {asset}</string>
 	<string name="text_totalcost">Total {amount} {asset}</string>
-	<string name="text_confirmorder">Place an order for {quantity} {main_asset} at {price} {price_asset}</string>
-	<string name="text_necessarycost">You need {total} {price_asset}</string>
-	<string name="text_canget"> With order matched, you get {total} {price_asset}</string>
+	<string name="text_confirmorder_buying">You are buying {quantity} {main_asset} at {price} {price_asset} each \n\nTotal amount: {total} {total_asset} ({fiat})\n\nfee:{fee}</string>
+	<string name="text_confirmorder_selling">You are selling {quantity} {main_asset} at {price} {price_asset} each \n\nTotal amount: {total} {total_asset} ({fiat})\n\nfee:{fee}</string>
+	
+	<string name="text_error_shapeshiftbalance">You don't have enough {token} balance.\nYour balance: {balance} {token}</string>
 	
 	<string name="label_newwallet">Create a New Wallet</string>
 	<string name="label_signin">Sign In</string>
 	<string name="text_loginasuser">Already have a passphrase?</string>
+	
 	<string name="text_copied">Copied</string>
 	<string name="text_copied_message">Address copied to clipboard</string>
+	
+	<string name="label_exchange_instructions1">select which token you would like to buy or sell</string>
+	<string name="label_exchange_instructions2">select whether you'd like to buy or sell</string>
+	
+	
+	
+	<string name="label_exchange_xcp_balance">XCP balance</string>
+	<string name="label_exchange_token">please select a token</string>
 	<string name="label_exchange_basic">simple order</string>
 	<string name="label_exchange_advanced">custom order</string>
 	<string name="label_exchange_getting_tokens">getting tokens...</string>
@@ -96,7 +108,29 @@
 	<string name="label_exchange_open_orders">open orders</string>
 	<string name="label_exchange_price">price</string>
 	<string name="label_exchange_amount">amount</string>
-	<string name="label_exchange_closed_orders">closed orders</string>
+	<string name="label_exchange_select_token">select token</string>
+	
+	<string name="label_exchange_best_price_buy">best price</string>
+	<string name="label_exchange_best_price_sell">best price</string>
+	
+	<string name="label_exchange_sell_orders">sellers </string>
+	<string name="label_exchange_buy_orders">buyers </string>
+	<string name="label_exchange_sell_message"> (select a sell price below)</string>
+	<string name="label_exchange_buy_message"> (select a buy price below)</string>
+	
+	<string name="exchange_xcp_balance">XCP Balance {amount}</string>
+	<string name="label_exchange_token_not_found">you cannot sell a token you don't own\nplease select another token</string>
+	
+	
+	<string name="exchange_order_enter_amount">Enter the amount of {asset} you would like</string>
+	<string name="exchange_order_enter_price">Enter the price per {asset} you would like</string>
+	
+	
+	<string name="exchange_loading_closed">loading closed orders...</string>
+	<string name="exchange_loading_buy">loading buy orders...</string>
+	<string name="exchange_loading_sell">loading sell orders...</string>
+	<string name="label_exchange_total">total</string>
+	<string name="label_exchange_closed_orders">completed orders</string>
 	<string name="label_exchange_no_orders_message">there are no orders for these tokens</string>
 	<string name="label_exchange_too_much">there are not enough open orders to satisfy this request</string>
 	<string name="label_exchange_calculate">confirm</string>
@@ -106,7 +140,7 @@
 	<string name="label_tab_exchange">exchange</string>
 	<string name="label_tab_history">history</string>
 	<string name="label_tab_settings">settings</string>
-	<string name="label_tab_receive">receive</string>
+	<string name="label_tab_receive">my address</string>
 	<string name="label_asset_info">asset info</string>
 	<string name="label_send">send</string>
 	<string name="label_exchange_will_buy">get </string>
@@ -125,15 +159,25 @@
 	<string name="label_holders">Show Assetholders</string>
 	
 	<string name="text_history_order">Sold {give_quantity} {give_asset} for {get_quantity} {get_asset}</string>
-	<string name="text_history_send">Sent {quantity} {asset} to {target}</string>
-	<string name="text_history_receive">Received {quantity} {asset} from {target}</string>
+	<string name="text_history_order_sold">Sold {give_quantity} {give_asset} for {get_quantity} {get_asset}</string>
+	<string name="text_history_order_bought">Bought {give_quantity} {give_asset} for {get_quantity} {get_asset}</string>
+	<string name="text_history_send">Sent {quantity} {asset} to</string>
+	<string name="text_history_receive">Received {quantity} {asset} from</string>
 	<string name="text_history_issuance">Issued {quantity} {asset}</string>
 	<string name="text_history_dividend">Issued {quantity_per_unit}% {dividend_asset} dividends to {asset} holders</string>
 	<string name="text_history_get_dividend">Received {quantity_per_unit}% {dividend_asset} dividends for {asset} holders</string>
 	<string name="shapeshift_sell">sell</string>
 	<string name="shapeshift_get">get</string>
 	<string name="label_easypass">Quick Passcode</string>
-	<string name="text_easypass">Please input a 4 digit passcode.</string>
+	<string name="text_easypass">Enter your 4 digit passcode.</string>
+	<string name="text_easypass_explain">Setting your 4 digit passcode.</string>
+	<string name="text_easypass_current">Enter your CURRENT 4 digit passcode.</string>
+	
+	<string name="label_passcode">Passcode</string>
+	<string name="label_easypass_change">Change passcode</string>
+	<string name="text_easypass_change">Are you sure you want to change your 4 digit passcode?</string>
+	<string name="text_easypass_changed">Passcode updated</string>
+	
 	<string name="text_easypass_set">Please set up a 4 digit passcode.</string>
 	<string name="label_fingerprint">Touch ID</string>
 	<string name="text_fingerprint">Would you like to set up Touch ID for easier access?</string>
@@ -154,6 +198,7 @@
 	<string name="text_desc_username">Change your name</string>
 	<string name="text_desc_fiat">Choose your preferred currency</string>
 	<string name="text_desc_passphrase">Check your passphrase</string>
+	<string name="text_desc_passcode">Change your passcode</string>
 	<string name="text_desc_fingerprint">Authorize transactions using your fingerprint</string>
 	<string name="text_desc_identifier">The ID identifies your account</string>
 	<string name="text_desc_password">The password for this account</string>
@@ -162,8 +207,8 @@
 	<string name="text_identifier">ID that identifies your wallet</string>
 	<string name="label_copy">Copy</string>
 	<string name="label_copied">Copied</string>
-	<string name="text_copied">Paste anywhere you want!</string>
-	<string name="text_inputverify_number">Input {name}with numbers</string>
+	<string name="text_copied">Copied to clipboard</string>
+	<string name="text_inputverify_number">Input {name} with numbers</string>
 	<string name="text_inputverify_equal">{name} doesn't match</string>
 	<string name="text_inputverify_empty">Enter {name}</string>
 	<string name="text_inputverify_more">{name} requires more than {over} letters</string>
@@ -181,7 +226,7 @@
 	<string name="text_passphrase">"{passphrase}"</string>
 	
 	<string name="label_passphrase_ok">I wrote it down</string>
-	<string name="text_passphrase_re">You can see passphrase at settings.</string>
+	<string name="text_passphrase_re">You can see your passphrase in the settings page</string>
 	<string name="label_passphrase_re"> Look again</string>
 	<string name="label_passphrase_continue">I definitely wrote it down</string>
 	
@@ -203,7 +248,7 @@
 	<string name="label_order_status_canceled">Cancel</string>
 	<string name="label_hinttext_password_confirm">Confirm password</string>
 	<string name="text_nohistory">No history</string>
-	<string name="text_history_error">Could not retrieve history</string>
+	<string name="text_history_error">Could not retrieve history.\nTouch here to reload.</string>
 	
 	<string name="warning_insufficientfunds">Are you sure you have sufficient funds?</string>
 	<string name="text_assetinfo_error">The asset might not exist or is yet to be confirmed</string>
@@ -215,6 +260,27 @@
 	<string name="shape_shift_view_terms">View Terms</string>
 	<string name="label_issue_supply">Total supply {supply}</string>
 	<string name="label_issue_balance">Balance {balance}</string>
+	<string name="how_to_exchange_ok">I got it!</string>
+	<string name="exchange_how_to_title">How to use</string>
+	<string name="exchange_how_to">Buy and Sell your favourite tokens for XCP! \n\nSimply select your desired token, and choose whether to buy or sell\n\nYou can set your own price or checkout the open buyers or sellers\n\nIf you get stuck you can always press the '?' in the top right corner
+	</string>			
+	
+	<string name="exchange_how_to_orders_title_sell">How to buy {asset}</string>
+	<string name="exchange_how_to_orders_title_buy">How to sell {asset}</string>
+	
+	<string name="exchange_how_to_orders_sell">Set the amount of tokens you'd like to buy using the form above \n\nThen set your own price per token or \n\nSelect a price from the "sellers" section\n\nThis will give you a better chance of having your order matched quickly!</string>			
+	<string name="exchange_how_to_orders_buy">Set the amount of tokens you'd like to sell using the form above \n\nThen set your own price per token or \n\nSelect a price from the "buyers" section\n\nThis will give you a better chance of having your order matched quickly!</string>	
+	
+	<string name="exchange_order_placed_message">Order Placed! \n\nIt may take around 10 mins for your order to visible</string>	
+	
+	
+	<string name="exchange_how_to_no_orders_sell">Looks like there are no sellers! \n\nYou will have to set your own "price" \n\nChoose the amount of {asset} you want \n\nSet a price per {asset} or set the total price for your amount</string>			
+	<string name="exchange_how_to_no_orders_buy">Looks like there are no buyers! \n\nYou will have to set your own "price" \n\nChoose the amount of {asset} you want \n\nSet a price per {asset} or set the total price for your amount</string>	
+	
+	<string name="label_exchange_copied">Copied into price field above!</string>
+	
+	
+	<string name="exchange_tutorial">Buy and sell tokens for XCP\n\nSelect your token and select whether to buy or sell\n\nDecide a price or copy the price of an open order\n\nYou can view the open orders to get a better idea of the current market price\n\nIf you're buying copy a price from the current sell orders by tapping a row.\nIf you're selling copy from the current buy orders instead.\nThis will give you a better chance of having your order matched quickly\n\nIf you're a beginner we recommend tapping the 'best price' button</string>			
 	
 	<string name="label_exchange">Exchange</string>
 	<string name="label_dividend">Dividend</string>
@@ -228,7 +294,6 @@
 	
 	<string name="text_imageupload">Asset Image</string>
 	<string name="label_website">Website</string>
-    
 	<string name="label_pgpsig">PGP signature</string>
 	<string name="text_shapeshift_more">please spend more than {amount}{asset}</string>
 	<string name="text_shapeshift_less">please spend less than {amount}{asset}</string>
@@ -254,7 +319,7 @@
 	<string name="text_reorganisation2">(May take upto 30 minutes.)</string>
 	
 	<string name="label_linkage">System linkage(β)</string>
-	<string name="text_signerror">Could not be signed...</string>
+	<string name="text_signerror">Transaction could not be signed...</string>
 	<string name="text_authentication">Authentication</string>
 	
 	<string name="draw_explain">Generate a new passphrase. \nPlease rub the screen until the progress bar is filled.</string>
@@ -281,7 +346,7 @@
 	
 	<string name="text_finish_reorg">Reorganization has completed!</string>
 	
-	<string name="label_setting_completed">Completed.</string>
+	<string name="label_setting_completed">Completed</string>
 	<string name="text_setting_completed">Enjoy the world of tokens!</string>
 	<string name="label_start">START</string>
 	
@@ -300,4 +365,8 @@
 	<string name="label_mail_happens">What happened?</string>
 	
 	<string name="text_error_serierize">Failed to sign the transaction. Please try again later.</string>
+	<string name="text_balance_error">Error occured...\nTouch here to reload.</string>
+	
+	<string name="label_errortokenfound">{token} not found...</string>
+	<string name="loading_waiting_first">Now loading...</string>
 </resources>
