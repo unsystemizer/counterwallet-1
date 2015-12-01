@@ -70,6 +70,7 @@ module.exports = (function() {
 					label.text = new_label;
 				};
 				view_range.add(view);
+				
 				return view_range;
 			}
 			else{
@@ -106,7 +107,7 @@ module.exports = (function() {
 		}
 		else{
 			if( OS_ANDROID ){
-				basic.backgroundColor = 'transparent';
+				basic.backgroundColor = '#ffffff';
 				basic.borderWidth = 1;
 				basic.borderColor = '#a9a9a9';
 				params.border = null;
@@ -114,12 +115,13 @@ module.exports = (function() {
 		}
 		params.font = getFont( params );
 		
-		if( params.keyboardType == Ti.UI.KEYBOARD_DECIMAL_PAD ){
-			if( OS_ANDROID ) params.keyboardType = Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION;
-		}
-		
-		if( params.height != null ){
-			if( OS_ANDROID ) params.height += 5;
+		if( OS_ANDROID ){
+			if( params.keyboardType == Ti.UI.KEYBOARD_DECIMAL_PAD ){
+				params.keyboardType = Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION;
+			}
+			if( params.height != null ){
+				params.height += 5;
+			}
 		}
 		
 		var field = Ti.UI.createTextField( merge(basic, params) );
@@ -693,6 +695,7 @@ module.exports = (function() {
 		self.openScanner({
 			'callback': function(e){
 				var uri = globals.requires['bitcore'].URI((e.barcode.indexOf('bitcoin:') >= 0)?e.barcode:'bitcoin:'+e.barcode);
+				if( uri == null ) uri = globals._parseCip2(e.barcode);
 				if( uri == null ){
 					if( e.barcode.match(/^indiewallet:\/\//) ){
 						globals._parseArguments(e.barcode, true);
@@ -813,9 +816,15 @@ module.exports = (function() {
 	self.createTableList = function(params){
 		var tableview = Ti.UI.createTableView(params);
 		
-		tableview.setRowDesign = function(data, func){
+		tableview.setRowDesign = function(data, func, rowHeight){
 			function createRow( key, val ){
-				var row = Ti.UI.createTableViewRow({ height: (params.rowHeight != null)? params.rowHeight: 30 });
+				var rowData = {
+					height: (params.rowHeight != null)? params.rowHeight: 30
+				};
+				if( rowHeight != null ) rowData.height = rowHeight;
+				if( OS_ANDROID ) rowData.className = 'row';
+				
+				var row = Ti.UI.createTableViewRow(rowData);
 				return func(row, val);
 			}
 			var table_data = [];

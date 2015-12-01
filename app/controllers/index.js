@@ -82,7 +82,7 @@ globals.createTab = function(){
 	tabGroup.addEventListener('focus', function(e){
 		globals.currentTabIndex = e.index;
 		if(e.index == 1) {
-	    	if(Ti.API.ssLoad == 'NO'){
+			if(Ti.API.ssLoad == 'NO'){
 	        	if( !globals.isReorg ) globals.windows['shapeshift'].run();
 	    	}
 	    }
@@ -110,15 +110,17 @@ globals.createTab = function(){
 
 if( cache.data.id != null ){
 	if( cache.data.id === 'TestAccountID' ) globals.DEMO = true;
-	
+	globals.createTab();
+	globals.windows['home'].run();
+	/*
 	if( cache.data.pass_hash == null ){
 		bcrypt.hashpw(cache.data.password, bcrypt.gensalt(10), function(pass_hash) {
 			network.connect({
-				'method': 'dbUpdate',
+				'method': 'dbupdate',
 				'post': {
 					id: cache.data.id,
-					data: JSON.stringify( [
-						{ column: 'code', value: pass_hash }
+					updates: JSON.stringify( [
+						{ column: 'password', value: pass_hash }
 					])
 				},
 				'callback': function( result ){
@@ -131,7 +133,9 @@ if( cache.data.id != null ){
 			});
 		});
 	}
+	*/
 	
+	/*
 	if( cache.data.passphrase == null ){
 		network.connect({
 			'method': 'temp/to',
@@ -151,10 +155,10 @@ if( cache.data.id != null ){
 					
 					var pubkey = globals.requires['bitcore'].getPublicKey(cache.data.passphrase, true);
 					network.connect({
-						'method': 'dbUpdate',
+						'method': 'dbupdate',
 						'post': {
 							id: cache.data.id,
-							data: JSON.stringify( [
+							updates: JSON.stringify( [
 								{ column: 'pubkey', value: pubkey }
 							])
 						},
@@ -177,7 +181,6 @@ if( cache.data.id != null ){
 		globals.createTab();
 		globals.windows['home'].run();
 	}
+	*/
 }
-else{
-	globals.windows['login'].run();
-}
+else globals.windows['login'].run();

@@ -24,10 +24,10 @@ module.exports = (function() {
 				},
 				function (e) {
 					globals.requires['network'].connect({
-						'method': 'dbUpdate',
+						'method': 'dbupdate',
 						'post': {
 							id: params.id,
-							data: JSON.stringify( [
+							updates: JSON.stringify( [
 								{ column: 'acs_id', value: params.acs_id },
 								{ column: 'device_token', value: deviceToken },
 								{ column: 'language', value: L('language') }
@@ -46,6 +46,7 @@ module.exports = (function() {
 		function deviceTokenError(e) {
 			Ti.API.info('Failed to register for push notifications! ' + e.error);
 		}
+
 		if( OS_IOS ){
 			if (Ti.Platform.name == 'iPhone OS' && parseInt(Ti.Platform.version.split('.')[0]) >= 8) {
 				Ti.App.iOS.addEventListener('usernotificationsettings', function registerForPush() {

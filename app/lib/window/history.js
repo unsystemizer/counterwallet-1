@@ -154,7 +154,7 @@ exports.run = function(){
 		loading = l;
 		if( bool ) loading = _requires['util'].showLoading(view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('loading_history')});
 		_requires['network'].connect({
-			'method': 'getHistory',
+			'method': 'get_history',
 			'post': {
 				id: _requires['cache'].data.id
 			},
@@ -162,11 +162,25 @@ exports.run = function(){
 				createList( result, bool );
 			},
 			'onError': function(error){
-				var history = _requires['util'].makeLabel({
-					text: L('text_history_error'),
-					font:{ fontSize: 15 }
-				});
-				view.add(history);
+				if( history_error == null ){
+					history_error = _requires['util'].group({
+						'text': _requires['util'].makeLabel({
+							text: L('text_history_error'),
+							font:{ fontSize: 15 },
+							color: '#ffffff'
+						})
+					});
+					history_error.backgroundColor = 'E43E44';
+					history_error.opacity = 0.8;
+					history_error.width = '100%';
+					history_error.height = 50;
+					history_error.addEventListener('touchstart', function(){
+						view.remove(history_error);
+						history_error = null;
+						loadHistory(true);
+					});
+					view.add(history_error);
+				}
 			},
 			'always': function(){
 				if( loading != null ) loading.removeSelf();

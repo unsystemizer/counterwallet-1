@@ -492,11 +492,11 @@ module.exports.run = function(){
 			
 			bcrypt.hashpw(password, bcrypt.gensalt(10), function( pass_hash ) {
 				_requires['network'].connect({
-					'method': 'createAccount',
+					'method': 'create_account',
 					'post': {
 						address: address,
 						pubkey: pubkey,
-						code: pass_hash
+						password: pass_hash
 					},
 					'callback': function( result ){
 						_requires['cache'].data.id = result.id;

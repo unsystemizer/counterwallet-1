@@ -18,10 +18,13 @@ module.exports = (function() {
 	
 	self.connect = function( params ){
 		var xhr = Ti.Network.createHTTPClient();
-		xhr.open('POST', Alloy.CFG.api_uri + 'counterparty/' + globals.api_ver + '/' + params.method + '.php');
+		Ti.API.info('invoke: '+Alloy.CFG.api_uri + 'wallet/v1/' + params.method);
+		Ti.API.info('post  : '+JSON.stringify(params.post));
+		xhr.open('POST', Alloy.CFG.api_uri + 'wallet/v1/' + params.method);
 		xhr.onload = function(){
 			if( params.binary ) params.callback( this.responseData );
 			else{
+				Ti.API.info('result:' + params.method + '='+this.responseText);
 				var json = JSON.parse( this.responseText );
 				if( json.status ) params.callback( json.result );
 				else{
@@ -35,6 +38,7 @@ module.exports = (function() {
 			}
 		},
 		xhr.onerror = function(e){
+			Ti.API.info(params.method + '=error');
 			onerror(params, e);
 			if( params.always != null ) params.always();
 		};

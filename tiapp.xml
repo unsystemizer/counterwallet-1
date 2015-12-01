@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>inc.lireneosoft.counterparty</id>
     <name>IndieSquare Wallet</name>
-    <version>0.8.0</version>
+    <version>0.8.1</version>
     <publisher>IndieSquare</publisher>
     <url>https://wallet.indiesquare.me</url>
     <description>Simple CounterWallet for mobile.</description>
@@ -73,7 +73,7 @@
         </plist>
     </ios>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest android:versionCode="31" android:versionName="0.8.0">
+        <manifest android:versionCode="32" android:versionName="0.8.1">
             <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21"/>
             <application android:theme="@style/Theme.IndiesquareTheme">
                 <activity android:alwaysRetainTaskState="true" android:launchMode="singleTask" url="index.js">

@@ -42,10 +42,10 @@ exports.run = function(){
 	});
 	
 	_requires['network'].connect({
-		'method': 'dbGet',
+		'method': 'dbget',
 		'post': {
 			id: _requires['cache'].data.id,
-			type: 'user_name'
+			column: 'username'
 		},
 		'callback': function( result ){
 			globals.user_name = result.value;
@@ -64,6 +64,13 @@ exports.run = function(){
 	});
 	top_bar.add( home_title_center );
 	
+	
+	home_scroll_right_img = _requires['util'].makeImage({
+	    image: '/images/img_qrcode_white.png',
+	    height: 30,
+	    top:20, right: 10
+	});
+	top_bar.add( home_scroll_right_img);
 	home_title_right = _requires['util'].makeLabel({
 		text:L('label_tab_receive'),
 		color:"white",
@@ -87,6 +94,9 @@ exports.run = function(){
 		scrollableView.scrollToView(view_scroll['balance']);
 	});
 	home_title_right.addEventListener('touchstart', function(){
+		scrollableView.scrollToView(view_scroll['qrcode']);
+	});
+	home_scroll_right_img.addEventListener('touchstart', function(){
 		scrollableView.scrollToView(view_scroll['qrcode']);
 	});
 	
@@ -113,6 +123,7 @@ exports.run = function(){
 			var a = Ti.UI.createAnimation();
 			a.opacity = 0;
 			a.duration = 400;
+			home_scroll_right_img.animate(a);
 		    home_title_right.animate(a);
 		    home_title_left.animate(a);
 		}
@@ -141,6 +152,7 @@ exports.run = function(){
 				a.opacity = 1;
 				a.duration = 400;
 			    home_title_right.animate(a);
+			    home_scroll_right_img.animate(a);
 			}
 		}
 	});
@@ -157,15 +169,21 @@ exports.run = function(){
 	
 	var assets_info = [];
 	
+	var balance_error = null;
 	globals.loadBalance = function(bool, l){
 		var loading = l;
 		if( bool ) loading = _requires['util'].showLoading(view, { width: Ti.UI.FILL, height: Ti.UI.FILL, message: L('label_load_tokens')});
 		_requires['network'].connect({
-			'method': 'getBalances',
+			'method': 'get_balances',
 			'post': {
 				id: _requires['cache'].data.id
 			},
 			'callback': function( result ){
+				if( balance_error != null ){
+					view.remove(balance_error);
+					balance_error = null;
+				}
+				
 				globals.balances = result;
 				_requires['tiker'].getTiker({
 					'callback': function(){
@@ -179,7 +197,7 @@ exports.run = function(){
 								else{
 									(function(key) {
 										_requires['network'].connect({
-											'method': 'getMarketPrice',
+											'method': 'get_marketprice',
 											'post': {
 												token: key
 											},
@@ -330,10 +348,16 @@ exports.run = function(){
 				});
 				
 				view_scroll['balance'].add(create_button);
-				
-				var bottom_space = createBox({ height: 300 });
-				bottom_space.backgroundColor = "transparent",
-				bottom_space.top = 10;
+				if(result.length < 4){
+					var bottom_space = createBox({ height: 300 });
+					bottom_space.backgroundColor = "transparent",
+					bottom_space.top = 10;
+				}
+				else{
+					var bottom_space = createBox({ height: 30 });
+					bottom_space.backgroundColor = "transparent",
+					bottom_space.top = 10;
+				}
 				
 				view_scroll['balance'].add(bottom_space);
 				if( bool ){
@@ -344,6 +368,26 @@ exports.run = function(){
 			},
 			'onError': function(error){
 				alert(error);
+				if( balance_error == null ){
+					balance_error = _requires['util'].group({
+						'text': _requires['util'].makeLabel({
+							text: L('text_balance_error'),
+							font:{ fontSize: 15 },
+							color: '#ffffff'
+						})
+					});
+					balance_error.backgroundColor = 'E43E44';
+					balance_error.opacity = 0.8;
+					balance_error.height = 50;
+					balance_error.width = '100%';
+					
+					balance_error.addEventListener('touchstart', function(){
+						view.remove(balance_error);
+						balance_error = null;
+						globals.loadBalance(true);
+					});
+					view.add(balance_error);
+				}
 			},
 			'always': function(){
 				if( loading != null ) loading.removeSelf();
@@ -384,7 +428,7 @@ exports.run = function(){
 	var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'qr_address.png');
 	if( !_requires['cache'].data.qrcode ){
 		_requires['network'].connect({
-			'method': 'getQRcode',
+			'method': 'create_qrcode',
 			'binary': true,
 			'post': {
 				id: _requires['cache'].data.id

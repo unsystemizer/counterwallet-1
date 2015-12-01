@@ -5,10 +5,9 @@ module.exports = (function() {
 	self.createWindow = function(){
 		var win = {};
 		win.origin = Ti.UI.createWindow({
-				orientationModes: [Ti.UI.PORTRAIT],
-				navBarHidden: true
-			}
-		);
+			orientationModes: [Ti.UI.PORTRAIT],
+			navBarHidden: true
+		});
 		if( OS_IOS ) win.origin.statusBarStyle = Ti.UI.iPhone.StatusBar.LIGHT_CONTENT;
 		if( OS_ANDROID ) win.origin.windowSoftInputMode = Ti.UI.Android.SOFT_INPUT_ADJUST_PAN;
 		

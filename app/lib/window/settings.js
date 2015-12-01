@@ -113,11 +113,11 @@ exports.run = function(){
 						if( e.success ){
 							var loading = _requires['util'].showLoading(box_user_name, { width: Ti.UI.FILL, height: Ti.UI.FILL});
 							_requires['network'].connect({
-								'method': 'dbUpdate',
+								'method': 'dbupdate',
 								'post': {
 									id: _requires['cache'].data.id,
-									data: JSON.stringify( [
-										{ column: 'user_name', value: inputText }
+									updates: JSON.stringify( [
+										{ column: 'username', value: inputText }
 									])
 								},
 								'callback': function( result ){
@@ -162,7 +162,7 @@ exports.run = function(){
 	
 	var currencies = _requires['util'].createTableList({
 		backgroundColor: 'white',
-		width: '100%', height: 200,
+		width: '100%', height: 350,
 		top:0,
 		rowHeight: 50
 	});
@@ -172,7 +172,7 @@ exports.run = function(){
 		"picker": currencies
 	}, 'vertical');
 	if(OS_ANDROID) picker1.top = display_height;
-	else picker1.bottom = -340;
+	else picker1.bottom = -390;
 	
 	close.addEventListener('click',function() {
 		picker1.animate(slide_out);
@@ -206,15 +206,15 @@ exports.run = function(){
 	};
 	
 	addCurrencies();
-	var slide_in; 
+	var slide_in;
 	var slide_out;
 	if( OS_ANDROID ){
-		slide_in = Ti.UI.createAnimation({top: display_height - 350, duration:200});
+		slide_in = Ti.UI.createAnimation({top: display_height - 400, duration:200});
 		slide_out = Ti.UI.createAnimation({top: display_height, duration:200});
 	}
 	else {
 		slide_in = Ti.UI.createAnimation({bottom: 0, duration:200});
-		slide_out = Ti.UI.createAnimation({bottom: -340, duration:200});
+		slide_out = Ti.UI.createAnimation({bottom: -390, duration:200});
 	}
 
 	var box_currency = createBox({ icon: 'icon_settings_currency.png', height: 45 });

@@ -51,6 +51,7 @@
 	<string name="text_createToken">トークンを発行します</string>
 	<string name="text_confirmIssuance">{token}を{quantity}発行します</string>
 	
+	
 	<string name="label_confirmorder">注文の確認</string>
 	<string name="text_confirmsend">送信します</string>
 	<string name="text_shapeshift_more">{amount}{asset}以上の金額を送ってください。</string>
@@ -69,11 +70,15 @@
 	<string name="text_doissuance">発行</string>
 	<string name="text_dosend">送信</string>
 	
+	<string name="label_exchange_best_price_buy">最低購入価格</string>
+	<string name="label_exchange_best_price_sell">最高販売価格</string>
+	
 	<string name="text_makedivisible">小数単位を許可</string>
 	<string name="text_hold">{asset}を{balance}持っています</string>
 	
 	<string name="text_totalcost">{asset}の合計 {amount}</string>
-	<string name="text_confirmorder">{price} {price_asset}の価格で {quantity} {main_asset}の注文を出します</string>
+	<string name="text_confirmorder_buying">{quantity} {main_asset}をそれぞれ{price} {price_asset}の価格で買います。\n\n合計金額: {total} {total_asset} ({fiat})\n\n手数料:{fee}</string>
+	<string name="text_confirmorder_selling">{quantity} {main_asset}をそれぞれ{price} {price_asset}の価格で売ります。\n\n合計金額: {total} {total_asset} ({fiat})\n\n手数料:{fee}</string>
 	<string name="text_necessarycost">{price_asset}が{total}必要です</string>
 	<string name="text_canget">成立すると{price_asset}を{total}入手できます</string>
 	
@@ -85,6 +90,46 @@
 	<string name="text_copied_message">アドレスをクリップボードにコピーしました</string>
 	<string name="text_use_line">LINEで伝える</string>
 	<string name="text_use_mail">メールで伝える</string>
+	
+	<string name="label_exchange_xcp_balance">XCPの保有数</string>
+	<string name="label_exchange_instructions1">取引したいトークンを選んで下さい。</string>
+	<string name="label_exchange_instructions2">このトークンを買いたいか、売りたいか\nどちらかを選択して下さい。</string>
+	<string name="label_exchange_token_not_found">持っていないトークンを売ることはできません。\n他のトークンを選んでください。</string>
+	<string name="exchange_loading_closed">読み込み中...</string>
+	<string name="exchange_loading_buy">読み込み中...</string>
+	<string name="exchange_loading_sell">読み込み中...</string>
+	<string name="label_buy_closed">買い</string>
+	<string name="label_sell_closed">売り</string>
+	<string name="label_exchange_sell_orders">{asset}を売りたい</string>
+	<string name="label_exchange_buy_orders">{asset}を買いたい</string>
+	<string name="label_exchange_sell_message">売りオーダー表から価格をコピーすることができます。</string>
+	<string name="label_exchange_buy_message">買いオーダー表から価格をコピーすることができます。</string>
+	
+	
+	<string name="exchange_order_enter_amount">{asset}の注文量を入力してください</string>
+	<string name="exchange_order_enter_price">{asset}の注文量を入力してください</string>
+	
+	<string name="label_exchange_select_token">トークン</string>
+	<string name="label_exchange_token">please select a token</string>
+	<string name="exchange_how_to_title">取引所について</string>
+	<string name="exchange_how_to">トークンとXCPの売買が取引所では可能です。\n\nトークンを選択し、そのトークンを「買う」、もしくは「売る」を選択してください。\n\n注文欄に、自分で直接価格を入力するか、オーダー表から価格をコピーすることもできます。\n\nわからなくなった場合は、右上の？マークでヘルプを確認してください！</string>
+	<string name="exchange_tutorial">トークンとXCPの売買が取引所では可能です。\n\nトークンを選択し、そのトークンを「買う」、もしくは「売る」を選択してください。\n\n注文欄に、自分で直接価格を入力するか、オーダー表から価格をコピーすることもできます。\n\nわからなくなった場合は、\n\nそれぞれの列をタップすることで、価格をコピーできます。\n\n「最安購入価格」が、市場で最も安くトークンを購入できる価格です。\n\n最大販売価格」が、市場で最も高くトークンを販売できる価格です。</string>
+	
+	
+	<string name="exchange_how_to_orders_title_sell">{asset}の購入</string>
+	<string name="exchange_how_to_orders_title_buy">{asset}の販売</string>
+	<string name="exchange_order_placed_message">注文完了！注文が履歴などで確認できるまで10分ほどかかります。</string>	
+	
+		
+	<string name="exchange_how_to_orders_sell">それぞれの行をタップすることで、価格をコピーできます。\n\n「最低購入価格」が、市場で最も安く{asset}を購入できる価格です。</string>			
+	<string name="exchange_how_to_orders_buy">それぞれの行をタップすることで、価格をコピーできます。\n\n「最高販売価格」が、市場で最も高く{asset}を販売できる価格です</string>
+	
+	<string name="exchange_how_to_no_orders_sell">注文フォームに購入/販売量と価格を入力することで、\n自分のカスタム注文を作成することができます。</string>			
+	<string name="exchange_how_to_no_orders_buy">>注文フォームに購入/販売量と価格を入力することで、\n自分のカスタム注文を作成することができます。</string>
+	<string name="how_to_exchange_ok">OK</string>
+	
+	<string name="label_exchange_copied">画面上の注文フォームにコピーされました</string>
+	
 	<string name="label_exchange_basic">簡単注文</string>
 	<string name="label_exchange_advanced">カスタム注文</string>
 	<string name="label_exchange_too_much">この注文をするのに必要なオープン注文が足りません</string>
@@ -100,10 +145,11 @@
 	<string name="label_exchange_search_limit">3文字以上必要です</string>
 	<string name="label_exchange_disclaimer">(価格は、カスタム注文で変更できます)</string>
 	<string name="label_exchange_open_orders">オープン注文</string>
-	<string name="label_exchange_closed_orders">過去注文</string>
+	<string name="label_exchange_closed_orders">過去のトレード成立履歴</string>
 	<string name="label_exchange_calculate">確認</string>
 	<string name="label_exchange_price">価格</string>
 	<string name="label_exchange_amount">注文量</string>
+	<string name="label_exchange_total">合計</string>
 	<string name="label_approx">概算</string>
 	<string name="label_tab_home">トップ</string>
 	<string name="label_tab_ss">shapeshift</string>
@@ -129,6 +175,8 @@
 	<string name="label_noorders_closed">注文がありません</string>
 	<string name="text_holdcount">{count}人が保有しています</string>
 	<string name="label_holders">保有者を見る</string>
+	
+	<string name="exchange_xcp_balance">XCPの保有数 {amount}</string>
 	
 	<string name="text_history_order">{give_quantity} {give_asset} で {get_quantity} {get_asset}を入手します</string>
 	<string name="text_history_send">{quantity} {asset}を{target}へ送りました</string>
@@ -205,7 +253,7 @@
 	<string name="label_order_status_canceled">キャンセル</string>
 	<string name="label_hinttext_password_confirm">もう一度パスワード</string>
 	<string name="text_nohistory">履歴はまだありません</string>
-	<string name="text_history_error">履歴を取得できませんでした</string>
+	<string name="text_history_error">履歴を取得できませんでした...\nここをタッチで再取得</string>
 	
 	<string name="warning_insufficientfunds">残高が未承認の可能性があります</string>
 	<string name="text_assetinfo_error">トークンが存在しないか、まだ未承認です</string>
@@ -305,4 +353,8 @@
 	<string name="label_mail_happens">お困りの内容</string>
 	
 	<string name="text_error_serierize">署名に失敗しました。しばらくしてからまたお試し下さい。</string>
+	<string name="text_balance_error">取得に失敗しました。\nここをタッチで再取得</string>
+	
+	<string name="label_errortokenfound">{token} が見つかりませんでした...</string>
+	<string name="loading_waiting_first">読み込み中です...</string>
 </resources>

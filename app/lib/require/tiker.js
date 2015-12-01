@@ -4,7 +4,7 @@ module.exports = (function() {
 	self.getTiker = function( params ){
 		var _requires = globals.requires;
 		_requires['network'].connect({
-			'method': 'getTiker',
+			'method': 'get_ticker',
 			'post': {},
 			'callback': function( result ){
 				globals.tiker = result;
@@ -19,8 +19,8 @@ module.exports = (function() {
    		 x = nStr.split('.');
    		 x1 = x[0];
    		 x2 = x.length > 1 ? '.' + x[1] : '';
-    	var rgx = /(\d+)(\d{3})/;
-    	while (rgx.test(x1)) {
+    	 var rgx = /(\d+)(\d{3})/;
+    	 while (rgx.test(x1)) {
             x1 = x1.replace(rgx, '$1' + ',' + '$2');
    		 }
    		 return x1 + x2;
