@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="language">zh_TW</string>
+	
+	<string name="appname">IndieSquare Wallet</string>
+	<string name="label_about">關於</string>
+	<string name="label_load_tokens">令牌訊息取得中...</string>
+	<string name="label_holdAssets">領牌餘額</string>
+	<string name="label_ownAssets">已發行的令牌{asset}</string>
+	<string name="label_qrcode">顯示QR嗎</string>
+	<string name="label_histories">交易紀錄</string>
+	<string name="label_createtoken">發行令牌</string>
+	<string name="label_tokenname">選擇令牌名稱</string>
+	<string name="label_numeric">免註冊費領牌</string>
+	<string name="label_description">令牌說明</string>
+	<string name="label_quantity_issue">數量</string>
+	<string name="label_quantity_order">買入金額</string>
+	<string name="label_quantity_send">支出金額</string>
+	<string name="label_cancel">取消</string>
+	<string name="label_ok">確認</string>
+	
+	<string name="label_password">密碼</string>
+	<string name="label_send">發送</string>
+	<string name="label_showinfo">令牌名稱</string>
+	<string name="label_order">訂單</string>
+	<string name="label_price">價格</string>
+	<string name="label_quantity">數量</string>
+	<string name="label_buy">買入</string>
+	<string name="label_sell">賣出</string>
+	<string name="label_buy_closed">已買入</string>
+	<string name="label_sell_closed">已賣出</string>
+	<string name="label_noprice">沒價格訊息</string>
+	<string name="text_gocustom">請確認客製化訂單內容</string>
+	<string name="label_confirm">確認</string>
+	<string name="label_close">關閉</string>
+	<string name="label_login">登錄</string>
+	<string name="label_bitcoinaddress">我的比特幣地址</string>
+	<string name="label_qrcopy">輕按兩次</string>
+	<string name="label_destination">到比特幣地址</string>
+	<string name="label_fee">比特幣交易費</string>
+	<string name="label_create">建立</string>
+	<string name="label_back">回一步</string>
+	<string name="label_login_back">回一步</string>
+	<string name="label_login_cancel"> 取消 </string>
+	<string name="label_delete">刪除</string>
+	<string name="label_reconfirm_redo">重複</string>
+	<string name="text_reconfirm">請確認您的密碼</string>
+	<string name="label_done">完畢</string>
+	<string name="label_search">搜尋</string>
+	
+	<string name="label_gocustom_noprice">市面上沒有價格資料,請考慮建立客製化訂單</string>
+	<string name="text_choose">請選擇買入/賣出領牌</string>
+	
+	<string name="text_createToken">發行令牌</string>
+	<string name="text_confirmIssuance">發行{quantity}個{token}</string>
+	
+	<string name="label_confirmorder">確認訂單</string>
+	<string name="text_confirmsend">確認發送</string>
+	
+	<string name="text_issuance_done">{asset}建立已完成</string>
+	<string name="text_orderd">訂單已發送</string>
+	<string name="text_sent">發送完成</string>
+	<string name="text_sent_shape_shift">您的令牌或比特幣已經送到ShapeShift.交易處理完後\n令牌或比特幣會</string>
+	<string name="shape_shift_instruction">how much {asset} do you want to buy?</string>
+	<string name="shape_shift_instruction2">enter amount below</string>
+	<string name="shape_shift_get">you will get {amount}</string>
+	<string name="shape_shift_spend">you will spend {amount}</string>
+	<string name="shape_shift_disclaimer">*having trouble? contact support@indiesquare.me</string>
+	<string name="shape_shift_norate">rate not loaded, try again</string>
+	<string name="text_doissuance">發行</string>
+	<string name="text_dosend">發送</string>
+	<string name="label_get_xcp">每次發行令牌操作燒0.5 XCP. 您可以透過Shapeshift標籤購買XCP</string>
+	<string name="label_buy_xcp">購買XCP</string>
+	<string name="text_makedivisible">可分令牌</string>
+	<string name="text_hold">您擁有{balance}個{asset}</string>
+	<string name="text_totalcost">總共 {amount} {asset}</string>
+	<string name="text_confirmorder_buying">You are buying {quantity} {main_asset} at {price} {price_asset} each \n\nTotal amount:{total} {total_asset} ({fiat})\n\nfee:{fee}</string>
+	<string name="text_confirmorder_selling">You are selling {quantity} {main_asset} at {price} {price_asset} each \n\nTotal amount:{total} {total_asset} ({fiat})\n\nfee:{fee}</string>
+	
+	<string name="text_error_shapeshiftbalance">You don&apos;t have enough {token} balance.\nYour balance:{balance} {token}</string>
+	
+	<string name="label_newwallet">建立新錢包</string>
+	<string name="label_signin">登錄</string>
+	<string name="text_loginasuser">您已經有密碼嗎?</string>
+	
+	<string name="text_copied">複製完成</string>
+	<string name="text_copied_message">地址複製到剪貼簿完成</string>
+	
+	<string name="label_exchange_instructions1">選擇要買或賣的令牌</string>
+	<string name="label_exchange_instructions2">選擇買入或賣出</string>
+	
+	
+	
+	<string name="label_exchange_xcp_balance">XCP 餘額</string>
+	<string name="label_exchange_token">請選擇令牌</string>
+	<string name="label_exchange_basic">簡易訂單</string>
+	<string name="label_exchange_advanced">進階訂單</string>
+	<string name="label_exchange_getting_tokens">令牌取得中...</string>
+	<string name="label_exchange_search_limit">輸入至少3個字母</string>
+	<string name="label_exchange_how_many">多少</string>
+	<string name="label_exchange_like_to_buy">您想買入的數量為?</string>
+	<string name="label_exchange_like_to_spend">您想賣出的數量?</string>
+	<string name="label_exchange_buy_large">買入</string>
+	<string name="label_exchange_sell_large">賣出</string>
+	<string name="label_exchange_place_order">下訂單</string>
+	<string name="label_exchange_custom_order">進階訂單</string>
+	<string name="label_exchange_create_custom_order">準備進階訂單</string>
+	<string name="label_exchange_open_orders">有效訂單</string>
+	<string name="label_exchange_price">價格</string>
+	<string name="label_exchange_amount">金額</string>
+	<string name="label_exchange_select_token">選擇令牌</string>
+	
+	<string name="label_exchange_best_price_buy">市面上最好價格</string>
+	<string name="label_exchange_best_price_sell">市面上最好價格</string>
+	
+	<string name="label_exchange_sell_orders">賣方 </string>
+	<string name="label_exchange_buy_orders">賣方 </string>
+	<string name="label_exchange_sell_message"> (選擇賣價低於)</string>
+	<string name="label_exchange_buy_message"> (選擇買價高於)</string>
+	
+	<string name="exchange_xcp_balance">XCP 餘額 {數量}</string>
+	<string name="label_exchange_token_not_found">您不能賣錢包裡沒有的令牌\n請選擇別的令牌</string>
+	
+	
+	<string name="exchange_order_enter_amount">輸入要買多少 {asset}</string>
+	<string name="exchange_order_enter_price">輸入價格{asset}</string>
+	
+	
+	<string name="exchange_loading_closed">已結訂單載入中...</string>
+	<string name="exchange_loading_buy">買入訂單載入中...</string>
+	<string name="exchange_loading_sell">賣出訂單載入中...</string>
+	<string name="label_exchange_total">全部的訂單</string>
+	<string name="label_exchange_closed_orders">已結訂單</string>
+	<string name="label_exchange_no_orders_message">這些令牌目前沒有有效訂單</string>
+	<string name="label_exchange_too_much">目前有效訂單量無法滿足這訂單</string>
+	<string name="label_exchange_calculate">確認</string>
+	<string name="label_approx">大約</string>
+    <string name="label_tab_home">令牌</string>
+    <string name="label_tab_ss">Shapeshift</string>
+	<string name="label_tab_exchange">分布交易所</string>
+	<string name="label_tab_history">歷史</string>
+	<string name="label_tab_settings">設定</string>
+	<string name="label_tab_receive">我的地址</string>
+	<string name="label_asset_info">令牌名稱</string>
+	<string name="label_send">發送</string>
+	<string name="label_exchange_will_buy">取得 </string>
+	<string name="label_exchange_will_spend">費用 </string>
+	<string name="label_exchange_disclaimer">(您可以用進階訂單改變價格)</string>
+	<string name="text_use_line">用Line發送</string>
+	<string name="text_use_mail">用郵件發送您的比特幣地址</string>
+	
+	<string name="label_issueadditional">增發令牌</string>
+	<string name="label_transferownership">把令牌發行權轉到別的地址</string>
+	<string name="label_locktoken">鎖住發行</string>
+	<string name="label_changedescription">編輯令牌說明</string>
+	<string name="label_noorders">沒有有效訂單</string>
+	<string name="label_noorders_closed">沒有已結訂單</string>
+	<string name="text_holdcount">{count}個人擁有這個令牌</string>
+	<string name="label_holders">顯示令牌擁有者</string>
+	
+	<string name="text_history_order">賣出 {give_quantity} {give_asset} 換 {get_quantity} {get_asset}</string>
+	<string name="text_history_order_sold">賣出 {give_quantity} {give_asset} 換 {get_quantity} {get_asset}</string>
+	<string name="text_history_order_bought">Bought {give_quantity} {give_asset} for {get_quantity} {get_asset}</string>
+	<string name="text_history_send">Sent {quantity} {asset} to</string>
+	<string name="text_history_receive">Received {quantity} {asset} from</string>
+	<string name="text_history_issuance">已發行 {quantity} {asset}</string>
+	<string name="text_history_dividend">已發行 {quantity_per_unit}% {dividend_asset} 股息分給 {asset}擁有者</string>
+	<string name="text_history_get_dividend">已收到 {quantity_per_unit}% {dividend_asset} 股息分給 {asset}擁有者</string>
+	<string name="shapeshift_sell">賣出</string>
+	<string name="shapeshift_get">取得</string>
+	<string name="label_easypass">簡捷密碼</string>
+	<string name="text_easypass">輸入4位數的PIN</string>
+	<string name="text_easypass_explain">設定4位數密碼</string>
+	<string name="text_easypass_current">請輸入現在的PIN</string>
+	
+	<string name="label_passcode">PIN密碼</string>
+	<string name="label_easypass_change">改變PIN密碼</string>
+	<string name="text_easypass_change">您確認想要改變PIN嗎?</string>
+	<string name="text_easypass_changed">PIN已更新</string>
+	
+	<string name="text_easypass_set">請設定4位數PIN密碼</string>
+	<string name="label_fingerprint">Touch ID</string>
+	<string name="text_fingerprint">您想設定Touch ID嗎?</string>
+	<string name="label_adminerror">認證錯誤</string>
+	<string name="text_adminerror">認證失敗</string>
+	<string name="label_privecypolicy">隱私權和使用條款範例</string>
+	<string name="label_privecypolicy2">若我使用或登入這程式，即代表您同意使用條款</string>
+	<string name="text_withmessage">附件訊息</string>
+	<string name="text_unreadable">無法辨認此地址</string>
+	<string name="text_noregisted"> 未註冊</string>
+	<string name="label_rename">改變名稱</string>
+	<string name="text_rename">您可以改變您的帳號名稱</string>
+	
+	<string name="text_section_basic">基本資料</string>
+	<string name="text_section_account">關於帳號</string>
+	<string name="text_section_other">其他</string>
+	
+	<string name="text_desc_username">改變帳號名稱</string>
+	<string name="text_desc_fiat">選擇您習慣用的貨幣</string>
+	<string name="text_desc_passphrase">檢查您的密碼</string>
+	<string name="text_desc_passcode">檢查您的4位數PIN</string>
+	<string name="text_desc_fingerprint">使用指紋操作支出</string>
+	<string name="text_desc_identifier">ID 是您的帳號</string>
+	<string name="text_desc_password">此帳號的密碼</string>
+	<string name="text_desc_linkage">看板所使用的訊息這功能以後的版本才會使用.</string>
+	
+	<string name="text_identifier">您的錢包ID</string>
+	<string name="label_copy">複製</string>
+	<string name="label_copied">複製完成</string>
+	<string name="text_copied">已複製到剪貼簿</string>
+	<string name="text_inputverify_number">用數字輸入 {name}</string>
+	<string name="text_inputverify_equal">{name} 不符合</string>
+	<string name="text_inputverify_empty">輸入{name}</string>
+	<string name="text_inputverify_more">{Name} 需要至少 {over} 字母</string>
+	<string name="text_inputverify_shouldvalue">{name} 無效</string>
+	<string name="text_inputpass">請輸入您的密碼</string>
+	<string name="text_wrongpass">密碼錯誤</string>
+	<string name="text_pleasefingerprint"> 您必須提供Touch ID, 才能繼續</string>
+	<string name="text_initialize">準備中...</string>
+	
+	<string name="label_reload">資料更新中...</string>
+	
+	<string name="label_passphrase">複雜密碼</string>
+	<string name="label_getting_price">取得價格訊息...</string>
+	<string name="label_passphrase_title">請寫下密碼回復訊息</string>
+	<string name="text_passphrase">&quot;{passphrase}&quot;</string>
+	
+	<string name="label_passphrase_ok">我現在有至少一個密碼恢復字串的備份</string>
+	<string name="text_passphrase_re">您可以在錢包設定看到您的複雜密碼</string>
+	<string name="label_passphrase_re"> 再次顯示</string>
+	<string name="label_passphrase_continue">我確定我有至少一個密碼恢復字串的備份</string>
+	
+	<string name="label_historytype_send">發送</string>
+	<string name="label_historytype_receive">收入</string>
+	<string name="label_historytype_order">訂單</string>
+	<string name="label_historytype_issuance">發行</string>
+	<string name="label_historytype_dividend">股息支出</string>
+	<string name="label_historytype_get_dividend">股息收入</string>
+	<string name="label_historytype_"></string>
+	
+	<string name="lebal_orderhistory">訂單歷史</string>
+	<string name="label_order_price">價格</string>
+	<string name="label_order_num">數量</string>
+	<string name="label_order_status">狀態</string>
+	<string name="label_order_status_open">等待比對中</string>
+	<string name="label_order_status_filled">完成</string>
+	<string name="label_order_status_expired">未完成</string>
+	<string name="label_order_status_canceled">取消</string>
+	<string name="label_hinttext_password_confirm">確認密碼</string>
+	<string name="text_nohistory">沒有交易歷史</string>
+	<string name="text_history_error">無法載入歷史交易資料.\n請按這重新嘗試.</string>
+	
+	<string name="warning_insufficientfunds">您確認此地址有足夠的金額嗎?</string>
+	<string name="text_assetinfo_error">此令牌可能不存在或剛發行了</string>
+	<string name="text_sendconfirmation">發送 \n {amount} {token} 到 {address}</string>
+	<string name="text_sendconfirmation_shape_shift">發送 (大約) \n {amount} {token} 到 ShapeShift.\N 您會收到(大約) {amount2} {token2}  </string>
+	<string name="text_shape_shift_how_to">快速把 BTC 換 XCP \n \n您只要確認哪一個要買,哪一個要賣\n \n虛擬貨幣會自動送到Shapeshift以及從Shapeshift回到這錢包!</string>
+	<string name="text_dont_show">不要再提醒我</string>
+	<string name="shape_shift_accept">發送</string>
+	<string name="shape_shift_view_terms">顯示使用條款</string>
+	<string name="label_issue_supply">總數量 {supply}</string>
+	<string name="label_issue_balance">帳戶餘額 {balance}</string>
+	<string name="how_to_exchange_ok">知道了!</string>
+	<string name="exchange_how_to_title">使用說明</string>
+	<string name="exchange_how_to">使用XCP虛擬貨幣買賣令牌!\n\nSimply select your desired token, and choose whether to buy or sell\n\nYou can set your own price or checkout the open buyers or sellers\n\nIf you get stuck you can always press the &apos;?&apos; in the top right corner</string>			
+	
+	<string name="exchange_how_to_orders_title_sell">怎麼買入 {令牌}</string>
+	<string name="exchange_how_to_orders_title_buy">怎麼賣出 {令牌}</string>
+	
+	<string name="exchange_how_to_orders_sell">Set the amount of tokens you&apos;d like to buy using the form above \n\nThen set your own price per token or \n\nSelect a price from the &quot;sellers&quot; section\n\nThis will give you a better chance of having your order matched quickly!</string>			
+	<string name="exchange_how_to_orders_buy">Set the amount of tokens you&apos;d like to sell using the form above \n\nThen set your own price per token or \n\nSelect a price from the &quot;buyers&quot; section\n\nThis will give you a better chance of having your order matched quickly!</string>	
+	
+	<string name="exchange_order_placed_message">訂單已發送!\n\n訂單需要大約10分鐘才會顯示</string>	
+	
+	
+	<string name="exchange_how_to_no_orders_sell">好像目前沒有人想要賣!\n\nYou will have to set your own &quot;price&quot; \n\nChoose the amount of {asset} you want \n\nSet a price per {asset} or set the total price for your amount</string>			
+	<string name="exchange_how_to_no_orders_buy">好像目前沒有人想要買!\n\nYou will have to set your own &quot;price&quot; \n\nChoose the amount of {asset} you want \n\nSet a price per {asset} or set the total price for your amount</string>	
+	
+	<string name="label_exchange_copied">已複製到您的價格欄位</string>
+	
+	
+	<string name="exchange_tutorial">Buy and sell tokens for XCP\n\nSelect your token and select whether to buy or sell\n\nDecide a price or copy the price of an open order\n\nYou can view the open orders to get a better idea of the current market price\n\nIf you&apos;re buying copy a price from the current sell orders by tapping a row.\nIf you&apos;re selling copy from the current buy orders instead.\nThis will give you a better chance of having your order matched quickly\n\nIf you&apos;re a beginner we recommend tapping the &apos;best price&apos; button</string>			
+	
+	<string name="label_exchange">分布交易所</string>
+	<string name="label_dividend">股息</string>
+	
+	<string name="label_dividend_token">令牌名稱</string>
+	<string name="text_dividend_description">發股息給{asset}的擁有者</string>
+	<string name="label_dodividend">發股息</string>
+	
+	<string name="text_dividendconfirmation">支出｛perunit｝% 股息給 {token} 給令牌的所有擁有者.</string>
+	<string name="text_dividend">完成</string>
+	
+	<string name="text_imageupload">令牌圖檔</string>
+	<string name="label_website">網站</string>
+	<string name="label_pgpsig">PGP 簽名</string>
+	<string name="text_shapeshift_more">請輸入至少{amount}{asset}</string>
+	<string name="text_shapeshift_less">請輸入小於 {amount}{asset}</string>
+	
+	<string name="text_passphrase_q">顯示複雜密碼碼?</string>
+	<string name="text_password_q">顯示密碼嗎?</string>
+	<string name="label_show">顯示!</string>
+	<string name="label_reissue">增發令牌</string>
+	<string name="text_reissue">您想增發多少?</string>
+	<string name="text_reissued">發行已完成</string>
+	<string name="label_lock">鎖住發行</string>
+	<string name="text_lock">您確認您想鎖住領牌發行嗎? 鎖住無法取消.鎖住發行量操作需要比特幣交易費 (0.0001 BTC)</string>
+	<string name="text_locked">鎖住完成</string>
+	<string name="label_edit">編輯</string> 
+	<string name="text_doedit">完畢</string>
+	
+	<string name="text_webfailed">無法讀取...</string>
+	<string name="label_signout">登出</string>
+	<string name="text_signout">確認想登出嗎?</string>
+	 
+	<string name="label_reorganisation">比特幣區塊連整理中</string>
+	<string name="text_reorganisation">很抱歉, 請等待幾分鐘, 服務重新同步化...</string>
+	<string name="text_reorganisation2">(區塊連整理通常需要5到30分鐘)</string>
+	
+	<string name="label_linkage">System linkage(β)</string>
+	<string name="text_signerror">錢包無法簽名這筆交易...</string>
+	<string name="text_authentication">認證</string>
+	
+	<string name="draw_explain">建立新密碼.\n請幕螢幕到進度條全滿</string>
+	<string name="text_inputbyeach">請一個一個字輸入 (保留文字間一個空白字元)</string>
+	<string name="text_word_num">文字 {num}</string>
+	<string name="text_inputbyeach_next">下一個</string>
+	<string name="text_inputbyeach_prev">前一個</string>
+	
+	<string name="label_loading">準備中...</string>
+	
+	<string name="label_review">評論 ★★★★★</string>
+	<string name="label_support">客戶服務</string>
+	
+	<string name="text_support_title">謝謝您是使用Indiesquare Wallet</string>
+	<string name="text_support">使用上有任何問題嗎?\n請聯絡我們!</string>
+	<string name="text_support_yes">聯絡</string>
+	<string name="text_support_no">我喜歡這個app!</string>
+	
+	<string name="text_review_title">謝謝!</string>
+	<string name="text_review">感謝幫我們寫評論</string>
+	<string name="text_review_yes">現在寫評論!</string>
+	<string name="text_review_no">下次</string>
+	<string name="text_desc_review">您喜歡這APP? 請給我們評論!</string>
+	
+	<string name="text_finish_reorg">比特幣區塊連整理完成了!</string>
+	
+	<string name="label_setting_completed">完成</string>
+	<string name="text_setting_completed">享受虛擬令牌世界!</string>
+	<string name="label_start">開始</string>
+	
+	<string name="loading_holders">取得令牌擁有者訊息中...</string>
+	<string name="loading_assetinfo">讀取訊息中...</string>
+	<string name="loading_issue">建立中...</string>
+	<string name="loading_history">讀取歷史交易中...</string>
+	<string name="loading_createaccount">資料載入中...</string>
+	<string name="loading_send">發送中...</string>
+	
+	<string name="label_mail_desc">謝謝您跟我們練習!\n為了讓我們了解您的情況，請您提供我們以下的訊息.</string>
+	<string name="label_mail_name">姓名</string>
+	<string name="label_mail_device">您的裝置</string>
+	<string name="label_mail_id">使用者 ID</string>
+	<string name="label_mail_os">作業系統</string>
+	<string name="label_mail_happens">請說明您所遇到的問題?</string>
+	
+	<string name="text_error_serierize">無法簽名交易.請晚一點再試.</string>
+	<string name="text_balance_error">發生錯誤...\n請按這重新載入資料.</string>
+	
+	<string name="label_errortokenfound">找不到令牌{token}...</string>
+	<string name="loading_waiting_first">資料讀取中...</string>
+</resources>
